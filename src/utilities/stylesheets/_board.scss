@@ -1,8 +1,53 @@
-.mainboard{
-    width: 50%;
-    height: 0;
-    padding-bottom: 50%;
+.game-container{
+    height: 100vh;
+    width: 100vh;
+    position: relative;
+    background: #FF8728
+}
+.side-bar{
+    position: absolute;
+    left: 0;
+    top: 10vh;
+    bottom: 0;
+    width: 10vh;
+    height: 90vh;
+    background: #FF8728
+
+}
+.top-bar{
+    position: absolute;
+    left: 10vh;
+    right: 0;
+    top: 0;
+    height: 10vh;
+    width: 90vh;
+    background: #FF8728
+}
+.board{
+    left: 10    vh;
+    top: 10vh;
+    right: 0;
+    bottom: 0;
+    height: 90vh;
+    width: 90vh;
     color: teal;
-    border:1px solid indigo;
+    background: white;
+    border:0.5vh solid indigo;
     box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(15,1fr);
+    grid-auto-rows: 5.4vh;
+    grid-gap: 0.5vh;
+    padding: 0.4vh 0.25vh;
+    position: absolute;
+}
+.board-cell{
+    width: 5.4vh;
+    height: 5.4vh;
+    border-radius: 0.25vh;
+    background:#e2e2e2;
+}
+.top-bar-grid{
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
 }
