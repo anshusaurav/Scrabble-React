@@ -1,14 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+.main-container{
+    width: 100vh;
+    margin: 0 auto;
+}
 .game-container{
     height: 100vh;
     width: 100vh;
     position: relative;
-    // background: #FF8728
+    background: #36363696;
 }
 .side-bar-one, .side-bar-two{
     position: absolute;
     width: 5vh;
     height: 90vh;
-    background: #FF8728
+    background: #36363696;
 
 }
 .side-bar-one{
@@ -25,7 +30,7 @@
     position: absolute;
     height: 5vh;
     width: 90vh;
-    background: #e07adb
+    background: #36363696;
 }
 .top-bar-one{
     left: 5vh;
@@ -36,6 +41,33 @@
     left: 5vh;
     right: 0;
     top: 95vh;
+}
+.side-bar-grid{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: 5.4vh;
+    grid-gap: 0.5vh;
+    padding: 0 0.75vh;
+}
+.top-bar-grid{
+    display: grid;
+    grid-template-columns: repeat(15,1fr);
+    grid-auto-columns: 5.4vh;
+    grid-gap: 0.5vh;
+    height: 100%;   
+}
+.side-bar-grid, .top-bar-grid{
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: white;
+    font-family: 'Fredoka One', cursive;
+    
+}
+.all-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
 }
 .board{
     left: 5vh;

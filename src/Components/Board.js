@@ -118,7 +118,8 @@ class Board extends React.Component {
     return '';
   }
   render () {
-    let cells = []
+    let cells = [], alphaCells=[], numCells=[];
+    let alphas = 'ABCDEFGHIJKLMNO';
     for (let i = 0; i < 15; i++) {
       for (let j = 0; j < 15; j++) {
         console.log(i, j, Board.findColor(i, j))
@@ -130,21 +131,30 @@ class Board extends React.Component {
         )
       }
     }
+    for(let i = 0; i < 15; i++) {
+        alphaCells.push(<div className='all-center' key={shortid.generate()}><p>{alphas[i]}</p></div>)
+    }
+    for(let i = 0; i < 15; i++) {
+        numCells.push(<div className='all-center' key={shortid.generate()}><p>{i+1}</p></div>)
+    }
+    
     return (
+        <div className='main-container'>
       <div className="game-container">
         <div className="side-bar-one">
-          <div className="side-bar-grid"></div>
+          <div className="side-bar-grid">{numCells}</div>
         </div>
         <div className="top-bar-one">
-          <div className="top-bar-grid"></div>
+          <div className="top-bar-grid">{alphaCells}</div>
         </div>
         <div className="side-bar-two">
-          <div className="side-bar-grid"></div>
+          <div className="side-bar-grid">{numCells}</div>
         </div>
         <div className="top-bar-two">
-          <div className="top-bar-grid"></div>
+          <div className="top-bar-grid">{alphaCells}</div>
         </div>
         <div className="board">{cells}</div>
+      </div>
       </div>
     )
   }
