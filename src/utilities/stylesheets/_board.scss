@@ -2,30 +2,44 @@
     height: 100vh;
     width: 100vh;
     position: relative;
-    background: #FF8728
+    // background: #FF8728
 }
-.side-bar{
+.side-bar-one, .side-bar-two{
     position: absolute;
-    left: 0;
-    top: 10vh;
-    bottom: 0;
-    width: 10vh;
+    width: 5vh;
     height: 90vh;
     background: #FF8728
 
 }
-.top-bar{
+.side-bar-one{
+    left: 0;
+    top: 5vh;
+    bottom: 0;
+}
+.side-bar-two{
+    left: 95vh;
+    top: 5vh;
+    bottom: 0;
+}
+.top-bar-one, .top-bar-two{
     position: absolute;
-    left: 10vh;
+    height: 5vh;
+    width: 90vh;
+    background: #e07adb
+}
+.top-bar-one{
+    left: 5vh;
     right: 0;
     top: 0;
-    height: 10vh;
-    width: 90vh;
-    background: #FF8728
+}
+.top-bar-two{
+    left: 5vh;
+    right: 0;
+    top: 95vh;
 }
 .board{
-    left: 10    vh;
-    top: 10vh;
+    left: 5vh;
+    top: 5vh;
     right: 0;
     bottom: 0;
     height: 90vh;
@@ -46,6 +60,18 @@
     height: 5.4vh;
     border-radius: 0.25vh;
     background:#e2e2e2;
+}
+.red{
+    background: #f14a4a;
+}
+.pred{
+    background: #ffafaf;
+}
+.blue{
+    background: #4747fd;
+}
+.pblue{
+    background: #c0c0fc;
 }
 .top-bar-grid{
     display: grid;

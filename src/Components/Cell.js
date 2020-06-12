@@ -1,20 +1,21 @@
-import React from 'react';
+import React from 'react'
 
-class Cell extends React.Component{
-    constructor(props) {
-        super(props);
-    }
-    render(){
-        return (
-            <div className='board-cell'>
-                {this.props.bgTag > 0 && 
-                    <p>
-                        {this.props.bgTag}
-                    </p>
-                }
-            </div>
-        );
-    }
-
+const Cell = ({ bgTag }) => {
+  return (
+    <div
+      className={
+        bgTag === 'red'
+          ? 'board-cell red'
+          : bgTag === 'pred'
+          ? 'board-cell pred'
+          : bgTag === 'blue'
+          ? 'board-cell blue'
+          : bgTag === 'pblue'
+          ? 'board-cell pblue'
+          : 'board-cell'
+      }
+    ></div>
+  )
 }
-export default Cell;
+
+export default Cell
