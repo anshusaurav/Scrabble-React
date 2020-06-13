@@ -11,9 +11,9 @@ class Board extends React.Component {
       ['B', 2],
       ['C', 2],
       ['D', 4],
-      ['E', 2],
+      ['E', 12],
       ['F', 2],
-      ['G', 2],
+      ['G', 3],
       ['H', 2],
       ['I', 9],
       ['J', 1],
@@ -35,24 +35,55 @@ class Board extends React.Component {
       ['Z', 1],
       [' ', 2],
     ];
+    let mapLetterPointArr =[
+      ['A', 1],
+      ['B', 3],
+      ['C', 3],
+      ['D', 2],
+      ['E', 1],
+      ['F', 4],
+      ['G', 2],
+      ['H', 4],
+      ['I', 1],
+      ['J', 8],
+      ['K', 5],
+      ['L', 1],
+      ['M', 3],
+      ['N', 1],
+      ['O', 1],
+      ['P', 3],
+      ['Q', 10],
+      ['R', 1],
+      ['S', 1],
+      ['T', 1],
+      ['U', 1],
+      ['V', 4],
+      ['W', 4],
+      ['X', 8],
+      ['Y', 4],
+      ['Z', 10],
+      [' ', 2],
+    ];
+
+    //New word should be checked against dictionary + added words. Shoud present in dictionary and absent from addedWords
     this.state = {
-      addedWords: [],
-      boardState: [],
-      letterMap: new Map(mapLetterArr),
-    };
+      addedWords: [], // Array of string the words which have been used
+      boardState: [], //15*15 array with marked letters
+      letterMapCount: new Map(mapLetterArr),
+    }
 
     // console.log(this.state.letterMap);
   }
-  static check(word) {
-    return languageRegex.test(word);
+  static check (word) {
+    return languageRegex.test(word)
   }
   render () {
-    console.log(Board.check('dog'));
+    console.log(Board.check('dog'))
     let cells = [],
       alphaCells = [],
       numCells = []
     let alphas = 'ABCDEFGHIJKLMNO'
-    for (let i = 0; i < 15; i++) 
+    for (let i = 0; i < 15; i++)
       for (let j = 0; j < 15; j++) {
         cells.push(
           <Cell
@@ -61,7 +92,6 @@ class Board extends React.Component {
           />,
         )
       }
-    
 
     for (let i = 0; i < 15; i++) {
       alphaCells.push(
