@@ -1,86 +1,36 @@
 import React from 'react'
 import Cell from './Cell'
 import shortid from 'shortid'
-import findColor from './../utilities/markerPosition'
+import findColor from '../utilities/marker-position'
 import * as languageRegex from './../utilities/en-regex'
+import {mapLetterArr, mapLetterPointArr} from './../utilities/board-init'
+import PlayerLetter from './PlayerLetter'
+
 class Board extends React.Component {
   constructor (props) {
     super(props)
-    let mapLetterArr = [
-      ['A', 9],
-      ['B', 2],
-      ['C', 2],
-      ['D', 4],
-      ['E', 12],
-      ['F', 2],
-      ['G', 3],
-      ['H', 2],
-      ['I', 9],
-      ['J', 1],
-      ['K', 1],
-      ['L', 4],
-      ['M', 2],
-      ['N', 6],
-      ['O', 8],
-      ['P', 2],
-      ['Q', 1],
-      ['R', 6],
-      ['S', 4],
-      ['T', 6],
-      ['U', 4],
-      ['V', 2],
-      ['W', 2],
-      ['X', 1],
-      ['Y', 2],
-      ['Z', 1],
-      [' ', 2],
-    ];
-    let mapLetterPointArr =[
-      ['A', 1],
-      ['B', 3],
-      ['C', 3],
-      ['D', 2],
-      ['E', 1],
-      ['F', 4],
-      ['G', 2],
-      ['H', 4],
-      ['I', 1],
-      ['J', 8],
-      ['K', 5],
-      ['L', 1],
-      ['M', 3],
-      ['N', 1],
-      ['O', 1],
-      ['P', 3],
-      ['Q', 10],
-      ['R', 1],
-      ['S', 1],
-      ['T', 1],
-      ['U', 1],
-      ['V', 4],
-      ['W', 4],
-      ['X', 8],
-      ['Y', 4],
-      ['Z', 10],
-      [' ', 2],
-    ];
+    
     let board = [
-      ["","","","","","","","","","","","","","","","","",],
-      ["","","","","","","","","","","","","","","","","",],
-      ["","","","","","","","","H","","","","","","","","",],
-      ["","","","","","","","","O","W","N","A","G","E","","","",],
-      ["","","","","","","","","P","","","","","","","","",],
-      ["","","","","","","","","E","X","P","E","N","S","E","","",],
-      ["","","","","","","","","","","","","","","","","",],
-      ["","","","","","","","","","","","","","","","","",],
-      ["","","","","","","","","","","","","","","","","",],
-      ["","","","","","","","","","","","","","","","","",],
-      ["","","","","","","","","","","","","","","","","",],
-      ["","","","","","","","","","","","","","","","","",],
-      ["","","","","","","","","","","","","","","","","",],
-      ["","","","","","","","","","","","","","","","","",],
-      ["","","","","","","","","","","","","","","","","",]
+      ["","","","","","","","","","","","","","",""],
+      ["","","","","","","","","","","","","","",""],
+      ["","","","","","","","","","","","","","",""],
+      ["","","","","","","","","","","","","","",""],
+      ["","","","","","","","","","","","","","",""],
+      ["","","","","","","","","","","","","","",""],
+      ["","","","","","","","","","","","","","",""],
+      ["","","","","","","C","A","M","P","U","S","","",""],
+      ["","","","","","","","L","","","","","","",""],
+      ["","","","","","","","T","","","","","","",""],
+      ["","","","","","","","","","","","","","",""],
+      ["","","","","","","","","","","","","","",""],
+      ["","","","","","","","","","","","","","",""],
+      ["","","","","","","","","","","","","","",""],
+      ["","","","","","","","","","","","","","",""]
     ];
+    let arrAllDraws = [];
+
+    // console.log(mapLetterArr);
+    // console.log(mapLetterPointArr);
     //New word should be checked against dictionary + added words. Shoud present in dictionary and absent from addedWords
     this.state = {
       addedWords: [], // Array of string the words which have been used
@@ -88,17 +38,59 @@ class Board extends React.Component {
       letterMapCount: new Map(mapLetterArr),
       letterMapPoint: new Map(mapLetterPointArr)
     }
+    let sumLetters = 0, sumPoints = 0;
+    this.state.letterMapCount.forEach((value, key) =>{
+      // console.log(sumLetters, key, value);
+      // console.log(sumPoints, key, value, this.state.letterMapPoint.get(key))
+      for(let i = 0; i <value; i++){
+        arrAllDraws.push(key);
+      }
+      sumLetters += value;
+      sumPoints += this.state.letterMapPoint.get(key)*value;
+    });
+    // console.log(sumLetters);
+    // console.log(sumPoints);
+    // console.log(arrAllDraws);
 
+    let fPlayerTiles = [];
+    let sPlayerTiles =[];
+    console.log(arrAllDraws);
+    for(let i=0; i < 7; i++) {
+      let random = Board.randomInteger(0, arrAllDraws.length);
+      // console.log(random);
+      let letterGot = arrAllDraws[random];
+      fPlayerTiles.push(letterGot);
+      arrAllDraws.splice(random,1);
+      // console.log(arrAllDraws);
+      random = Board.randomInteger(0, arrAllDraws.length);
+      // console.log(random);
+      letterGot = arrAllDraws[random];
+      sPlayerTiles.push(letterGot);
+      arrAllDraws.splice(random,1);
+      // console.log(arrAllDraws);
+    }
+    // console.log(fPlayerTiles);
+    // console.log(sPlayerTiles);
+    this.state.fPlayerTiles = fPlayerTiles;
+    this.state.sPlayerTiles = sPlayerTiles;
+    
     // console.log(this.state.letterMap);
+  }
+  static randomInteger(min, max) {
+    // now rand is from  (min-0.5) to (max+0.5)
+    let rand = min - 0.5 + Math.random() * (max - min + 1);
+    return Math.round(rand);
   }
   static check (word) {
     return languageRegex.test(word)
   }
   render () {
-    console.log(Board.check('dog'))
+    console.log(this.state);
+    console.log(Board.check('alt'))
     let cells = [],
       alphaCells = [],
-      numCells = []
+      numCells = [];
+      
     let alphas = 'ABCDEFGHIJKLMNO'
     for (let i = 0; i < 15; i++)
       for (let j = 0; j < 15; j++) {
@@ -133,7 +125,7 @@ class Board extends React.Component {
         </div>,
       )
     }
-
+    
     return (
       <div className="main-container">
         <div className="game-container">
@@ -150,6 +142,13 @@ class Board extends React.Component {
             <div className="top-bar-grid">{alphaCells}</div>
           </div>
           <div className="board">{cells}</div>
+        </div>
+        <div className='controls-container'>
+          <div className='player-control'>
+            <div className='player-letter-grid'>
+
+            </div>
+          </div>
         </div>
       </div>
     )
