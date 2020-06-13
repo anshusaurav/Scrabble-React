@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Cell = ({ bgTag }) => {
+const Cell = ({ bgTag, value, point }) => {
   return (
     <div
       className={
@@ -14,7 +14,17 @@ const Cell = ({ bgTag }) => {
           ? 'board-cell pblue'
           : 'board-cell'
       }
-    ></div>
+      
+    >
+      <div className={value?'letter-bg wooden-bg':''}>
+        <p className='singleletter-p'>
+          {value}
+        </p>
+        <p className='singleletter-p-point'>
+          {point}
+        </p>
+      </div>
+    </div>
   )
 }
 

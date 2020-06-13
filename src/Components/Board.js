@@ -64,12 +64,29 @@ class Board extends React.Component {
       ['Z', 10],
       [' ', 2],
     ];
-
+    let board = [
+      ["","","","","","","","","","","","","","","","","",],
+      ["","","","","","","","","","","","","","","","","",],
+      ["","","","","","","","","H","","","","","","","","",],
+      ["","","","","","","","","O","W","N","A","G","E","","","",],
+      ["","","","","","","","","P","","","","","","","","",],
+      ["","","","","","","","","E","X","P","E","N","S","E","","",],
+      ["","","","","","","","","","","","","","","","","",],
+      ["","","","","","","","","","","","","","","","","",],
+      ["","","","","","","","","","","","","","","","","",],
+      ["","","","","","","","","","","","","","","","","",],
+      ["","","","","","","","","","","","","","","","","",],
+      ["","","","","","","","","","","","","","","","","",],
+      ["","","","","","","","","","","","","","","","","",],
+      ["","","","","","","","","","","","","","","","","",],
+      ["","","","","","","","","","","","","","","","","",]
+    ];
     //New word should be checked against dictionary + added words. Shoud present in dictionary and absent from addedWords
     this.state = {
       addedWords: [], // Array of string the words which have been used
-      boardState: [], //15*15 array with marked letters
+      boardState: board, //15*15 array with marked letters
       letterMapCount: new Map(mapLetterArr),
+      letterMapPoint: new Map(mapLetterPointArr)
     }
 
     // console.log(this.state.letterMap);
@@ -89,6 +106,8 @@ class Board extends React.Component {
           <Cell
             key={shortid.generate()}
             bgTag={findColor(i, j)}
+            value={this.state.boardState[i][j]}
+            point={this.state.boardState[i][j] && this.state.letterMapPoint.get(this.state.boardState[i][j])}
           />,
         )
       }
