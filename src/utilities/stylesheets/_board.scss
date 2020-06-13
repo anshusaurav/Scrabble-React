@@ -172,10 +172,34 @@ letter-bg{
 
 //Controls Container
 .controls-container{
-  background: #343148FF;
+  background: #c9bbc8;
   position: absolute;
   top: 0;
   left: 100vh;
   right: 0;
   height: 100vh
+}
+
+.player-letter-grid{
+  border: 1px solid khaki;
+}
+.player-control{
+  position: relative;
+}
+.player-letter-grid{
+  display: grid;
+}
+.player-div-one{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50vh;
+}
+.player-div-one{
+  position: absolute;
+  top: 50vh;
+  left: 0;
+  right: 0;
+  height: 50vh;
 }

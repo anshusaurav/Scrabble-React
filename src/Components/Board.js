@@ -3,32 +3,275 @@ import Cell from './Cell'
 import shortid from 'shortid'
 import findColor from '../utilities/marker-position'
 import * as languageRegex from './../utilities/en-regex'
-import {mapLetterArr, mapLetterPointArr} from './../utilities/board-init'
+import {
+  mapLetterArr,
+  mapLetterPointArr,
+} from './../utilities/board-init'
 import PlayerLetter from './PlayerLetter'
 
 class Board extends React.Component {
   constructor (props) {
     super(props)
-    
-    let board = [
-      ["","","","","","","","","","","","","","",""],
-      ["","","","","","","","","","","","","","",""],
-      ["","","","","","","","","","","","","","",""],
-      ["","","","","","","","","","","","","","",""],
-      ["","","","","","","","","","","","","","",""],
-      ["","","","","","","","","","","","","","",""],
-      ["","","","","","","","","","","","","","",""],
-      ["","","","","","","C","A","M","P","U","S","","",""],
-      ["","","","","","","","L","","","","","","",""],
-      ["","","","","","","","T","","","","","","",""],
-      ["","","","","","","","","","","","","","",""],
-      ["","","","","","","","","","","","","","",""],
-      ["","","","","","","","","","","","","","",""],
-      ["","","","","","","","","","","","","","",""],
-      ["","","","","","","","","","","","","","",""]
-    ];
-    let arrAllDraws = [];
 
+    let arrAllDraws = []
+
+    let board = [
+      [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        'C',
+        'A',
+        'M',
+        'P',
+        'U',
+        'S',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        'L',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        'T',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ],
+    ]
     // console.log(mapLetterArr);
     // console.log(mapLetterPointArr);
     //New word should be checked against dictionary + added words. Shoud present in dictionary and absent from addedWords
@@ -36,61 +279,67 @@ class Board extends React.Component {
       addedWords: [], // Array of string the words which have been used
       boardState: board, //15*15 array with marked letters
       letterMapCount: new Map(mapLetterArr),
-      letterMapPoint: new Map(mapLetterPointArr)
+      letterMapPoint: new Map(mapLetterPointArr),
     }
-    let sumLetters = 0, sumPoints = 0;
-    this.state.letterMapCount.forEach((value, key) =>{
+    let sumLetters = 0,
+      sumPoints = 0
+    this.state.letterMapCount.forEach((value, key) => {
       // console.log(sumLetters, key, value);
       // console.log(sumPoints, key, value, this.state.letterMapPoint.get(key))
-      for(let i = 0; i <value; i++){
-        arrAllDraws.push(key);
+      for (let i = 0; i < value; i++) {
+        arrAllDraws.push(key)
       }
-      sumLetters += value;
-      sumPoints += this.state.letterMapPoint.get(key)*value;
-    });
+      sumLetters += value
+      sumPoints +=
+        this.state.letterMapPoint.get(key) * value
+    })
     // console.log(sumLetters);
     // console.log(sumPoints);
     // console.log(arrAllDraws);
 
-    let fPlayerTiles = [];
-    let sPlayerTiles =[];
-    console.log(arrAllDraws);
-    for(let i=0; i < 7; i++) {
-      let random = Board.randomInteger(0, arrAllDraws.length);
+    let fPlayerTiles = []
+    let sPlayerTiles = []
+    console.log(arrAllDraws)
+    for (let i = 0; i < 7; i++) {
+      let randomOne = Board.randomInteger(
+        0,
+        arrAllDraws.length,
+      )
       // console.log(random);
-      let letterGot = arrAllDraws[random];
+      let letterGot = arrAllDraws[randomOne];
       fPlayerTiles.push(letterGot);
-      arrAllDraws.splice(random,1);
+      arrAllDraws.splice(randomOne, 1);
       // console.log(arrAllDraws);
-      random = Board.randomInteger(0, arrAllDraws.length);
+      let randomTwo = Board.randomInteger(0, arrAllDraws.length);
       // console.log(random);
-      letterGot = arrAllDraws[random];
+      letterGot = arrAllDraws[randomTwo];
       sPlayerTiles.push(letterGot);
-      arrAllDraws.splice(random,1);
+      arrAllDraws.splice(randomTwo, 1);
       // console.log(arrAllDraws);
     }
     // console.log(fPlayerTiles);
     // console.log(sPlayerTiles);
-    this.state.fPlayerTiles = fPlayerTiles;
-    this.state.sPlayerTiles = sPlayerTiles;
-    
+    this.state.fPlayerTiles = fPlayerTiles
+    this.state.sPlayerTiles = sPlayerTiles
+
     // console.log(this.state.letterMap);
   }
-  static randomInteger(min, max) {
+  static randomInteger (min, max) {
     // now rand is from  (min-0.5) to (max+0.5)
-    let rand = min - 0.5 + Math.random() * (max - min + 1);
-    return Math.round(rand);
+    let rand = min - 0.5 + Math.random() * (max - min + 1)
+    return Math.round(rand)
   }
   static check (word) {
     return languageRegex.test(word)
   }
   render () {
-    console.log(this.state);
+    console.log(this.state)
     console.log(Board.check('alt'))
     let cells = [],
       alphaCells = [],
-      numCells = [];
-      
+      numCells = [],
+      playerOneLetters = [],
+      playerTwoLetters = []
     let alphas = 'ABCDEFGHIJKLMNO'
     for (let i = 0; i < 15; i++)
       for (let j = 0; j < 15; j++) {
@@ -99,7 +348,12 @@ class Board extends React.Component {
             key={shortid.generate()}
             bgTag={findColor(i, j)}
             value={this.state.boardState[i][j]}
-            point={this.state.boardState[i][j] && this.state.letterMapPoint.get(this.state.boardState[i][j])}
+            point={
+              this.state.boardState[i][j] &&
+              this.state.letterMapPoint.get(
+                this.state.boardState[i][j],
+              )
+            }
           />,
         )
       }
@@ -125,7 +379,28 @@ class Board extends React.Component {
         </div>,
       )
     }
-    
+    for (let i = 0; i < 7; i++) {
+      playerOneLetters.push(
+        <PlayerLetter
+          key={shortid.generate()}
+          value={this.state.fPlayerTiles[i]}
+          point={this.state.letterMapPoint.get(
+            this.state.fPlayerTiles[i]
+          )}
+        />,
+      )
+    }
+    for (let i = 0; i < 7; i++) {
+      playerTwoLetters.push(
+        <PlayerLetter
+          key={shortid.generate()}
+          value={this.state.sPlayerTiles[i]}
+          point={this.state.letterMapPoint.get(
+            this.state.sPlayerTiles[i]
+          )}
+        />,
+      )
+    }
     return (
       <div className="main-container">
         <div className="game-container">
@@ -143,10 +418,17 @@ class Board extends React.Component {
           </div>
           <div className="board">{cells}</div>
         </div>
-        <div className='controls-container'>
-          <div className='player-control'>
-            <div className='player-letter-grid'>
-
+        <div className="controls-container">
+          <div className="player-control">
+            <div className="player-div-one">
+              <div className='player-letter-grid'>
+                {playerOneLetters}
+              </div>
+            </div>
+            <div className="player-div-two">
+              <div className="player-letter-grid">
+                {playerTwoLetters}
+              </div>
             </div>
           </div>
         </div>
