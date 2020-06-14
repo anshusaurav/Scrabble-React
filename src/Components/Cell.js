@@ -1,22 +1,30 @@
 import React from 'react'
 
 class Cell extends React.Component {
-  
+  constructor(props){
+    super(props);
+    this.handleChange =  this.handleChange.bind(this);
+  }
+  handleChange(e) {
+    console.log(this.props.xPos, this.props.yPos);
+    this.props.onBoardLetterChange(this.props.xPos, this.props.yPos);
+  }
   render () {
-    let {bgTag, value, point} = this.props
+    const {bgTag, value, point} = this.props
     return (
       <div
         className={
-          bgTag === 'red'
-            ? 'board-cell red'
+          `board-cell ${bgTag === 'red'
+            ? 'red'
             : bgTag === 'pred'
-            ? 'board-cell pred'
+            ? 'pred'
             : bgTag === 'blue'
-            ? 'board-cell blue'
+            ? 'blue'
             : bgTag === 'pblue'
-            ? 'board-cell pblue'
-            : 'board-cell'
+            ? 'pblue'
+            : ''}`
         }
+        onClick={this.handleChange}
       >
         <div className={value ? 'letter-bg wooden-bg' : ''}>
           <p className="singleletter-p">{value}</p>

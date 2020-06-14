@@ -1,9 +1,9 @@
 import React from 'react'
 
-class PlayerControlButton extends React.Component {
+class PlayerControlButtons extends React.Component {
   render () {
     return (
-      <div class="player-control-button">
+      <div className="player-control-button">
         <div className="all-center">
           <button className='pass-btn general-btn'>Pass</button>
         </div>
@@ -17,4 +17,4 @@ class PlayerControlButton extends React.Component {
     )
   }
 }
-export default PlayerControlButton
+export default PlayerControlButtons

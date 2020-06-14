@@ -8,7 +8,7 @@ import {
   mapLetterPointArr,
 } from './../utilities/board-init'
 import PlayerLetter from './PlayerLetter'
-import PlayerControlButton from './PlayerControlButton'
+import PlayerControlButtons from './PlayerControlButton'
 
 class Board extends React.Component {
   constructor (props) {
@@ -143,25 +143,8 @@ class Board extends React.Component {
         '',
         '',
         '',
-        'C',
-        'A',
-        'M',
-        'P',
-        'U',
-        'S',
         '',
         '',
-        '',
-      ],
-      [
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        'L',
         '',
         '',
         '',
@@ -178,7 +161,24 @@ class Board extends React.Component {
         '',
         '',
         '',
-        'T',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
         '',
         '',
         '',
@@ -282,17 +282,17 @@ class Board extends React.Component {
       letterMapCount: new Map(mapLetterArr),
       letterMapPoint: new Map(mapLetterPointArr),
     }
-    let sumLetters = 0,
-      sumPoints = 0
+    // let sumLetters = 0,
+    //   sumPoints = 0
     this.state.letterMapCount.forEach((value, key) => {
       // console.log(sumLetters, key, value);
       // console.log(sumPoints, key, value, this.state.letterMapPoint.get(key))
       for (let i = 0; i < value; i++) {
         arrAllDraws.push(key)
       }
-      sumLetters += value
-      sumPoints +=
-        this.state.letterMapPoint.get(key) * value
+      // sumLetters += value
+      // sumPoints +=
+      //   this.state.letterMapPoint.get(key) * value;
     })
     // console.log(sumLetters);
     // console.log(sumPoints);
@@ -325,7 +325,11 @@ class Board extends React.Component {
     // console.log(sPlayerTiles);
     this.state.fPlayerTiles = fPlayerTiles
     this.state.sPlayerTiles = sPlayerTiles
-
+    this.state.currentMode = 'SelectLetterToPlace';
+    this.state.selectedLetter = null;
+    
+    this.handlePlayerLetterChange = this.handlePlayerLetterChange.bind(this);
+    this.handleBoardLetterChange = this.handleBoardLetterChange.bind(this);
     // console.log(this.state.letterMap);
   }
   static randomInteger (min, max) {
@@ -336,9 +340,25 @@ class Board extends React.Component {
   static check (word) {
     return languageRegex.test(word)
   }
+  handlePlayerLetterChange(lo, selectedLetterValue, pointOfSelectLetter){
+    console.log(lo, selectedLetterValue, pointOfSelectLetter);
+    let selectedLetter = {value: selectedLetterValue, point:pointOfSelectLetter};
+    // this.setState({selectedLetter});
+    this.selectedLetter = selectedLetter;
+  }
+  handleBoardLetterChange(xPos, yPos) {
+    console.log(xPos, yPos);
+    if(this.selectedLetter){
+      console.log(this.selectedLetter);
+      var newBoard = this.state.boardState;
+      newBoard[xPos][yPos] = this.selectedLetter.value;
+      this.setState({boardState:newBoard});
+    }
+  }
   render () {
-    console.log(this.state)
-    // console.log(Board.check('alt'))
+    // console.log(check('wordf'), 'wordf');
+    // console.log(check('word'), 'word');
+    console.log(this.state);
     let cells = [],
       alphaCells = [],
       numCells = [],
@@ -352,12 +372,15 @@ class Board extends React.Component {
             key={shortid.generate()}
             bgTag={findColor(i, j)}
             value={this.state.boardState[i][j]}
-            point={
+            point={ 
               this.state.boardState[i][j] &&
               this.state.letterMapPoint.get(
                 this.state.boardState[i][j],
               )
             }
+            xPos = {i}
+            yPos = {j}
+            onBoardLetterChange = {this.handleBoardLetterChange}
           />,
         )
       }
@@ -387,10 +410,12 @@ class Board extends React.Component {
       playerOneLetters.push(
         <PlayerLetter
           key={shortid.generate()}
+          id={shortid.generate()}
           value={this.state.fPlayerTiles[i]}
           point={this.state.letterMapPoint.get(
             this.state.fPlayerTiles[i],
           )}
+          onPlayerLetterChange = {this.handlePlayerLetterChange}
         />,
       )
     }
@@ -398,10 +423,12 @@ class Board extends React.Component {
       playerTwoLetters.push(
         <PlayerLetter
           key={shortid.generate()}
+          id={shortid.generate()}
           value={this.state.sPlayerTiles[i]}
           point={this.state.letterMapPoint.get(
             this.state.sPlayerTiles[i],
           )}
+          onPlayerLetterChange = {this.handlePlayerLetterChange}
         />,
       )
     }
@@ -424,18 +451,22 @@ class Board extends React.Component {
         </div>
         <div className="controls-container">
           <div className="player-control">
-            <div className="player-div-one">
-              
-              <div className="player-letter-grid">
-                {playerOneLetters}
+            <div className="player-one-outer-div">
+              <div className="player-div-one">
+              <h2 class='player-control-title'>player I</h2>
+                <div className="player-letter-grid">
+                  {playerOneLetters }
+                </div>
+                <PlayerControlButtons/>
               </div>
-              <PlayerControlButton/>
             </div>
-            <div className="player-div-two">
-              
-              <PlayerControlButton/>
-              <div className="player-letter-grid">
-                {playerTwoLetters}
+            <div className="player-two-outer-div">
+              <div className="player-div-two">
+                <PlayerControlButtons/>
+                <div className="player-letter-grid">
+                  {playerTwoLetters}
+                </div>
+                <h2 class='player-control-title'>player II</h2>
               </div>
             </div>
           </div>
