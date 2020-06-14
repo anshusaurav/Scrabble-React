@@ -284,9 +284,8 @@ class Board extends React.Component {
     }
     // let sumLetters = 0,
     //   sumPoints = 0
+    //letterMapCount contains letters as many times they are currently avaiable in game
     this.state.letterMapCount.forEach((value, key) => {
-      // console.log(sumLetters, key, value);
-      // console.log(sumPoints, key, value, this.state.letterMapPoint.get(key))
       for (let i = 0; i < value; i++) {
         arrAllDraws.push(key)
       }
@@ -294,10 +293,6 @@ class Board extends React.Component {
       // sumPoints +=
       //   this.state.letterMapPoint.get(key) * value;
     })
-    // console.log(sumLetters);
-    // console.log(sumPoints);
-    // console.log(arrAllDraws);
-
     let fPlayerTiles = []
     let sPlayerTiles = []
     console.log(arrAllDraws)
@@ -306,23 +301,17 @@ class Board extends React.Component {
         0,
         arrAllDraws.length,
       )
-      // console.log(random);
       let letterGot = arrAllDraws[randomOne]
       fPlayerTiles.push(letterGot)
       arrAllDraws.splice(randomOne, 1)
-      // console.log(arrAllDraws);
       let randomTwo = Board.randomInteger(
         0,
         arrAllDraws.length,
       )
-      // console.log(random);
       letterGot = arrAllDraws[randomTwo]
       sPlayerTiles.push(letterGot)
       arrAllDraws.splice(randomTwo, 1)
-      // console.log(arrAllDraws);
     }
-    // console.log(fPlayerTiles);
-    // console.log(sPlayerTiles);
     this.state.fPlayerTiles = fPlayerTiles
     this.state.sPlayerTiles = sPlayerTiles
     this.state.currentMode = 'SelectLetterToPlace';
@@ -330,20 +319,23 @@ class Board extends React.Component {
     
     this.handlePlayerLetterChange = this.handlePlayerLetterChange.bind(this);
     this.handleBoardLetterChange = this.handleBoardLetterChange.bind(this);
-    // console.log(this.state.letterMap);
   }
   static randomInteger (min, max) {
     // now rand is from  (min-0.5) to (max+0.5)
     let rand = min - 0.5 + Math.random() * (max - min + 1)
     return Math.round(rand)
   }
-  static check (word) {
-    return languageRegex.test(word)
+  static checkValidAsync(word) {
+    return new Promise((resolve, reject) => {
+      languageRegex.test(word, (err, isWordValid) => {
+          console.log('HERe', isWordValid);
+          if (err) reject(err);
+          return resolve(isWordValid);
+        })
+    });
   }
   handlePlayerLetterChange(lo, selectedLetterValue, pointOfSelectLetter){
-    console.log(lo, selectedLetterValue, pointOfSelectLetter);
     let selectedLetter = {value: selectedLetterValue, point:pointOfSelectLetter};
-    // this.setState({selectedLetter});
     this.selectedLetter = selectedLetter;
   }
   handleBoardLetterChange(xPos, yPos) {
@@ -355,9 +347,18 @@ class Board extends React.Component {
       this.setState({boardState:newBoard});
     }
   }
+  componentDidMount(){
+    
+    let result = Board.checkValidAsync('dog').then(results => {
+      console.log(results);
+    }).catch(err => console.error(err));
+
+    
+  }
   render () {
     // console.log(check('wordf'), 'wordf');
     // console.log(check('word'), 'word');
+   
     console.log(this.state);
     let cells = [],
       alphaCells = [],
@@ -453,7 +454,7 @@ class Board extends React.Component {
           <div className="player-control">
             <div className="player-one-outer-div">
               <div className="player-div-one">
-              <h2 class='player-control-title'>player I</h2>
+              <h2 className='player-control-title'>player I</h2>
                 <div className="player-letter-grid">
                   {playerOneLetters }
                 </div>
@@ -466,7 +467,7 @@ class Board extends React.Component {
                 <div className="player-letter-grid">
                   {playerTwoLetters}
                 </div>
-                <h2 class='player-control-title'>player II</h2>
+                <h2 className='player-control-title'>player II</h2>
               </div>
             </div>
           </div>
