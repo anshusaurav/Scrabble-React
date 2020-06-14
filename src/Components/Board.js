@@ -8,6 +8,7 @@ import {
   mapLetterPointArr,
 } from './../utilities/board-init'
 import PlayerLetter from './PlayerLetter'
+import PlayerControlButton from './PlayerControlButton'
 
 class Board extends React.Component {
   constructor (props) {
@@ -306,15 +307,18 @@ class Board extends React.Component {
         arrAllDraws.length,
       )
       // console.log(random);
-      let letterGot = arrAllDraws[randomOne];
-      fPlayerTiles.push(letterGot);
-      arrAllDraws.splice(randomOne, 1);
+      let letterGot = arrAllDraws[randomOne]
+      fPlayerTiles.push(letterGot)
+      arrAllDraws.splice(randomOne, 1)
       // console.log(arrAllDraws);
-      let randomTwo = Board.randomInteger(0, arrAllDraws.length);
+      let randomTwo = Board.randomInteger(
+        0,
+        arrAllDraws.length,
+      )
       // console.log(random);
-      letterGot = arrAllDraws[randomTwo];
-      sPlayerTiles.push(letterGot);
-      arrAllDraws.splice(randomTwo, 1);
+      letterGot = arrAllDraws[randomTwo]
+      sPlayerTiles.push(letterGot)
+      arrAllDraws.splice(randomTwo, 1)
       // console.log(arrAllDraws);
     }
     // console.log(fPlayerTiles);
@@ -334,7 +338,7 @@ class Board extends React.Component {
   }
   render () {
     console.log(this.state)
-    console.log(Board.check('alt'))
+    // console.log(Board.check('alt'))
     let cells = [],
       alphaCells = [],
       numCells = [],
@@ -385,7 +389,7 @@ class Board extends React.Component {
           key={shortid.generate()}
           value={this.state.fPlayerTiles[i]}
           point={this.state.letterMapPoint.get(
-            this.state.fPlayerTiles[i]
+            this.state.fPlayerTiles[i],
           )}
         />,
       )
@@ -396,7 +400,7 @@ class Board extends React.Component {
           key={shortid.generate()}
           value={this.state.sPlayerTiles[i]}
           point={this.state.letterMapPoint.get(
-            this.state.sPlayerTiles[i]
+            this.state.sPlayerTiles[i],
           )}
         />,
       )
@@ -421,11 +425,15 @@ class Board extends React.Component {
         <div className="controls-container">
           <div className="player-control">
             <div className="player-div-one">
-              <div className='player-letter-grid'>
+              
+              <div className="player-letter-grid">
                 {playerOneLetters}
               </div>
+              <PlayerControlButton/>
             </div>
             <div className="player-div-two">
+              
+              <PlayerControlButton/>
               <div className="player-letter-grid">
                 {playerTwoLetters}
               </div>
