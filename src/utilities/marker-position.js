@@ -1,5 +1,5 @@
 
-function findColor(xPos, yPos) {
+function findColor(index) {
     let redColorArr = [
       {x: 0, y: 0},
       {x: 7, y: 0},
@@ -75,7 +75,7 @@ function findColor(xPos, yPos) {
     let res = ''
     redColorArr.forEach(elem => {
     //   console.log(elem.x, xPos, elem.y, yPos)
-      if (elem.x === xPos && elem.y === yPos) {
+      if (elem.x*15 + elem.y  === index) {
         res = 'red'
       }
     })
@@ -83,7 +83,7 @@ function findColor(xPos, yPos) {
 
     pRedColorArr.forEach(elem => {
     //   console.log(elem.x, xPos, elem.y, yPos)
-      if (elem.x === xPos && elem.y === yPos) {
+      if (elem.x*15 + elem.y  === index) {
         res = 'pred'
       }
     })
@@ -91,14 +91,14 @@ function findColor(xPos, yPos) {
 
     blueColorArr.forEach(elem => {
     //   console.log(elem.x, xPos, elem.y, yPos)
-      if (elem.x === xPos && elem.y === yPos) {
+      if (elem.x*15 + elem.y  === index) {
         res = 'blue'
       }
     })
     if (res) return res
     pBlueColorArr.forEach(elem => {
     //   console.log(elem.x, xPos, elem.y, yPos)
-      if (elem.x === xPos && elem.y === yPos) {
+      if (elem.x*15 + elem.y  === index) {
         res = 'pblue'
       }
     })
