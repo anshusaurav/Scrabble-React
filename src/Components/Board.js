@@ -55,6 +55,7 @@ class Board extends React.Component {
       sPlayerTiles.push({letter: letterGot, checked:false})
       arrAllDraws.splice(randomTwo, 1)
     }
+    this.state.arrAllDraws = arrAllDraws;
     this.state.fPlayerTiles = fPlayerTiles;
     this.state.sPlayerTiles = sPlayerTiles;
     this.state.currentMode = 'SelectLetterToPlace';
@@ -82,36 +83,47 @@ class Board extends React.Component {
       })
     })
   }
+  //Modify state fPlayerTiles and dPlayerTiles to keep track of checked letters
   handlePlayerLetterChange(
     lo, index,
     selectedLetterValue,
     pointOfSelectLetter,
   ) {
     // if(lo){
-      console.log(lo, selectedLetterValue, pointOfSelectLetter)
+      // console.log(lo, selectedLetterValue, pointOfSelectLetter)
       let selectedLetter = {
         value: selectedLetterValue,
         point: pointOfSelectLetter,
-      }
+      };
+      this.setState({selectedLetter});
       if(this.state.firstIsNext){
-        let fPlayerTiles = this.state.fPlayerTiles;
+        let fPlayerTiles = [...this.state.fPlayerTiles];
         fPlayerTiles[index].checked = !fPlayerTiles[index].checked;
         this.setState({fPlayerTiles});
+        let selectedLetter = {
+          value: fPlayerTiles[index].letter,
+          point: this.state.letterMapPoint.get(fPlayerTiles[index].letter)
+        };
+        this.setState({selectedLetter});
       }
       else{
-        let sPlayerTiles = this.state.sPlayerTiles;
+        let sPlayerTiles = [...this.state.sPlayerTiles];
         sPlayerTiles[index].checked = !sPlayerTiles[index].checked;
         this.setState({sPlayerTiles});
+        let selectedLetter = {
+          value: sPlayerTiles[index].letter,
+          point: this.state.letterMapPoint.get(sPlayerTiles[index].letter)
+        };
+        this.setState({selectedLetter});
       }
-    //   this.setState({selectedLetter :selectedLetter});
-    // }
   }
+  //Modify boardState, Add to boardState
   handleBoardLetterChange(xPos, yPos) {
-    console.log('dsadas', xPos, yPos)
-    if (this.selectedLetter) {
-      console.log(this.selectedLetter)
+    // console.log('dsadas', xPos, yPos)
+    if (this.state.selectedLetter) {
+      // console.log(this.state.selectedLetter)
       var newBoard = this.state.boardState
-      newBoard[xPos * 15 + yPos] = this.selectedLetter.value
+      newBoard[xPos * 15 + yPos] = this.state.selectedLetter.value
       this.setState({ boardState: newBoard })
     }
   }
@@ -123,7 +135,52 @@ class Board extends React.Component {
 
   }
   onPlayerSubmit(){
-
+    let validWord = true;
+    let arrAllDraws = [...this.state.arrAllDraws];
+    let firstIsNext = this.state.firstIsNext;
+    if(validWord) {
+      if(this.state.firstIsNext) {
+        let fPlayerTiles = [...this.state.fPlayerTiles];
+        console.log('asa', fPlayerTiles);
+        fPlayerTiles = fPlayerTiles.filter(letter => !letter.checked);
+        console.log(fPlayerTiles.length, ' remaning');
+        for(let i =fPlayerTiles.length; i < 7; i++) {
+          
+          let randomOne = Board.randomInteger(
+            0,
+            arrAllDraws.length,
+          )
+          // console.log(randomOne, arrAllDraws.length);
+          let letterGot = arrAllDraws[randomOne];
+          // console.log(randomOne, letterGot, arrAllDraws.length)
+          fPlayerTiles.push({letter: letterGot, checked:false});
+          console.log(fPlayerTiles);
+        }
+        console.log('bsa', fPlayerTiles);
+        this.setState({fPlayerTiles});
+        // this.setState({firstIsNext: !firstIsNext})
+      }
+      else {
+        let sPlayerTiles = [...this.state.sPlayerTiles];
+        sPlayerTiles = sPlayerTiles.filter(letter => !letter.checked);
+        for(let i =sPlayerTiles.length; i < 7; i++) {
+          
+          let randomOne = Board.randomInteger(
+            0,
+            arrAllDraws.length,
+          )
+          // console.log(randomOne, arrAllDraws.length);
+          let letterGot = arrAllDraws[randomOne];
+          // console.log(randomOne, letterGot, arrAllDraws.length)
+          sPlayerTiles.push({letter: letterGot, checked:false});
+          
+        }
+        this.setState({sPlayerTiles});
+      }
+      firstIsNext = !firstIsNext;
+      this.setState({arrAllDraws});
+      this.setState({firstIsNext})
+    }
   }
   componentWillMount() { }
   componentDidMount() { }
