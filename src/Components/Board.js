@@ -12,6 +12,7 @@ import PlayerControlButtons from './PlayerControlButton'
 import BoardMainCell from './BoardMainCell'
 import BoardSideBar from './BoardSideBar'
 import BordTopBar from './BoardTopBar'
+import PlayerLetterGrp from './PlayerLetterGrp'
 
 class Board extends React.Component {
   constructor (props) {
@@ -41,10 +42,10 @@ class Board extends React.Component {
       // sumPoints +=
       //   this.state.letterMapPoint.get(key) * value;
     })
-    let fPlayerTiles = []
-    let sPlayerTiles = []
+    let fPlayerTiles = [];
+    let sPlayerTiles = [];
     console.log(arrAllDraws)
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 4; i++) {
       let randomOne = Board.randomInteger(
         0,
         arrAllDraws.length,
@@ -80,7 +81,7 @@ class Board extends React.Component {
   static checkValidAsync (word) {
     return new Promise((resolve, reject) => {
       languageRegex.test(word, (err, isWordValid) => {
-        console.log('HERe', isWordValid)
+        // console.log('HERe', isWordValid)
         if (err) reject(err)
         return resolve(isWordValid)
       })
@@ -206,28 +207,24 @@ class Board extends React.Component {
             }
           />
         </div>
-        {/* <div className="controls-container">
+        <div className="controls-container">
           <div className="player-control">
             <div className="player-one-outer-div">
               <div className="player-div-one">
               <h2 className='player-control-title'>player I</h2>
-                <div className="player-letter-grid">
-                  {playerOneLetters }
-                </div>
+                <PlayerLetterGrp playerTiles={this.state.fPlayerTiles} handlePlayerLetterChange={this.handlePlayerLetterChange} letterMapPoint={this.state.letterMapPoint}/>
                 <PlayerControlButtons/>
               </div>
             </div>
             <div className="player-two-outer-div">
               <div className="player-div-two">
                 <PlayerControlButtons/>
-                <div className="player-letter-grid">
-                  {playerTwoLetters}
-                </div>
+                <PlayerLetterGrp playerTiles={this.state.sPlayerTiles} handlePlayerLetterChange={this.handlePlayerLetterChange} letterMapPoint={this.state.letterMapPoint}/>
                 <h2 className='player-control-title'>player II</h2>
               </div>
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
     )
   }

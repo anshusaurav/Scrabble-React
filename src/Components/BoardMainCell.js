@@ -2,25 +2,22 @@ import React from 'react'
 import shortid from 'shortid'
 import Cell from './Cell'
 import findColor from '../utilities/marker-position'
-import {
-  mapLetterArr,
-  mapLetterPointArr,
-} from './../utilities/board-init'
+
 
 class BoardMainCell extends React.Component {
   constructor (props) {
     super(props)
     console.log('MAinCell', this.props.boardState)
-    this.handleBoardLetterChange = this.handleBoardLetterChange.bind(
-      this,
-    )
+    // this.handleBoardLetterChange = this.handleBoardLetterChange.bind(
+    //   this,
+    // )
   }
-  handleBoardLetterChange (e) {
-    this.props.handleBoardLetterChange(
-      e.target.xPos,
-      e.target.yPos,
-    )
-  }
+  // handleBoardLetterChange (e) {
+  //   this.props.handleBoardLetterChange(
+  //     e.target.xPos,
+  //     e.target.yPos,
+  //   )
+  // }
   render () {
     let cells = new Array(225).fill('')
     return (
