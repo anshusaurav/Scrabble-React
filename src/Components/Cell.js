@@ -6,7 +6,9 @@ class Cell extends React.Component {
     this.handleChange =  this.handleChange.bind(this);
   }
   handleChange(e) {
-    console.log(this.props.xPos, this.props.yPos);
+
+    console.log('props',this.props.xPos, this.props.yPos);
+    
     this.props.onBoardLetterChange(this.props.xPos, this.props.yPos);
   }
   render () {
