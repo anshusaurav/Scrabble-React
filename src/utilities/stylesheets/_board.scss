@@ -59,7 +59,7 @@
   grid-template-columns: 1fr;
   grid-auto-rows: 5.4vh;
   grid-gap: 0.5vh;
-  padding: 0.75vh 0;
+  padding: 0.6vh 0;
 }
 .top-bar-grid {
   display: grid;
@@ -144,6 +144,7 @@
   right: 0;
   bottom: 0;
   border-radius: 0.4vh;
+  border-bottom-right-radius: 0;
   display: flex;
   opacity: 0.8;
   justify-content: center;
@@ -163,7 +164,7 @@ letter-bg {
   position: absolute;
   bottom: 1px;
   right: 1px;
-  font-size: 0.75rem;
+  font-size: 0.6rem;
   font-weight: 400;
   color: white;
   font-family: 'Nanum Gothic', sans-serif;
@@ -187,6 +188,7 @@ letter-bg {
 .player-letter-grid {
   display: grid;
   padding: 0.5rem;
+  padding-left: 0.2rem;
   grid-template-columns: repeat(7, 1fr);
   justify-content: space-around;
   grid-auto-rows: 10vh;
@@ -256,22 +258,56 @@ letter-bg {
     .playerletter-p-point {
       color: #e7a518;
     }
-    -webkit-box-shadow: -3px -3px 11px -1px
-      rgba(231, 165, 24, 0.65);
-    -moz-box-shadow: -3px -3px 11px -1px
-      rgba(231, 165, 24, 0.65);
-    box-shadow: -3px -3px 11px -1px rgba(231, 165, 24, 0.65);
+    -webkit-box-shadow: 1px 1px 0px rgba(231, 165, 24, 0.65),
+  2px 2px 0px rgba(231, 165, 24, 0.65),
+  3px 3px 0px rgba(231, 165, 24, 0.65),
+  4px 4px 0px rgba(231, 165, 24, 0.65),
+  5px 5px 0px rgba(231, 165, 24, 0.65),
+  6px 6px 0px rgba(231, 165, 24, 0.65),
+  7px 7px 0px rgba(231, 165, 24, 0.65);
+  -moz-box-shadow: 1px 1px 0px rgba(231, 165, 24, 0.65),
+  2px 2px 0px rgba(231, 165, 24, 0.65),
+  3px 3px 0px rgba(231, 165, 24, 0.65),
+  4px 4px 0px rgba(231, 165, 24, 0.65),
+  5px 5px 0px rgba(231, 165, 24, 0.65),
+  6px 6px 0px rgba(231, 165, 24, 0.65),
+  7px 7px 0px rgba(231, 165, 24, 0.65);
+  box-shadow: 1px 1px 0px rgba(231, 165, 24, 0.65),
+  2px 2px 0px rgba(231, 165, 24, 0.65),
+  3px 3px 0px rgba(231, 165, 24, 0.65),
+  4px 4px 0px rgba(231, 165, 24, 0.65),
+  5px 5px 0px rgba(231, 165, 24, 0.65),
+  6px 6px 0px rgba(231, 165, 24, 0.65),
+  7px 7px 0px rgba(231, 165, 24, 0.65);
+   
   }
   input[type='checkbox']:disabled + label {
     opacity: 0.25;
     transition-delay: 0.2s;
     transition: opacity 0.2s ease-in;
   }
-  -webkit-box-shadow: -3px -3px 11px -1px
-    rgba(126, 107, 94, 0.75);
-  -moz-box-shadow: -3px -3px 11px -1px
-    rgba(126, 107, 94, 0.75);
-  box-shadow: -3px -3px 11px -1px rgba(126, 107, 94, 0.75);
+  -webkit-box-shadow: 1px 1px 0px rgba(126, 107, 94, 0.6),
+  2px 2px 0px rgba(126, 107, 94, 0.6),
+  3px 3px 0px rgba(126, 107, 94, 0.6),
+  4px 4px 0px rgba(126, 107, 94, 0.6),
+  5px 5px 0px rgba(126, 107, 94, 0.6),
+  6px 6px 0px rgba(126, 107, 94, 0.6),
+  7px 7px 0px rgba(126, 107, 94, 0.6);
+  -moz-box-shadow: 1px 1px 0px rgba(126, 107, 94, 0.6),
+  2px 2px 0px rgba(126, 107, 94, 0.6),
+  3px 3px 0px rgba(126, 107, 94, 0.6),
+  4px 4px 0px rgba(126, 107, 94, 0.6),
+  5px 5px 0px rgba(126, 107, 94, 0.6),
+  6px 6px 0px rgba(126, 107, 94, 0.6),
+  7px 7px 0px rgba(126, 107, 94, 0.6);
+  box-shadow: 1px 1px 0px rgba(126, 107, 94, 0.6),
+  2px 2px 0px rgba(126, 107, 94, 0.6),
+  3px 3px 0px rgba(126, 107, 94, 0.6),
+  4px 4px 0px rgba(126, 107, 94, 0.6),
+  5px 5px 0px rgba(126, 107, 94, 0.6),
+  6px 6px 0px rgba(126, 107, 94, 0.6),
+  7px 7px 0px rgba(126, 107, 94, 0.6);
+  
 
   overflow-inline: hidden;
 }

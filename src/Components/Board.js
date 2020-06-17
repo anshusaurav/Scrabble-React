@@ -27,7 +27,8 @@ class Board extends React.Component {
       letterMapPoint: new Map(mapLetterPointArr),
       firstIsNext: true,
       firstPlayer:{name:'Mark', score:0},
-      secondPlayer:{name:'Mia', score: 0}
+      secondPlayer:{name:'Mia', score: 0},
+      currMoveLetters:[],
     }
 
     //letterMapCount contains letters as many times they are currently avaiable in game
@@ -48,7 +49,7 @@ class Board extends React.Component {
       let letterGot = arrAllDraws[randomOne]
       console.log(randomOne, letterGot, arrAllDraws.length)
       fPlayerTiles.push({letter: letterGot, checked:false})
-      arrAllDraws.splice(randomOne, 1)
+      arrAllDraws.splice(randomOne, 1);
       let randomTwo = Board.randomInteger(
         0,
         arrAllDraws.length,
@@ -92,8 +93,6 @@ class Board extends React.Component {
     selectedLetterValue,
     pointOfSelectLetter,
   ) {
-    // if(lo){
-      // console.log(lo, selectedLetterValue, pointOfSelectLetter)
       let selectedLetter = {
         value: selectedLetterValue,
         point: pointOfSelectLetter,
@@ -122,12 +121,14 @@ class Board extends React.Component {
   }
   //Modify boardState, Add to boardState
   handleBoardLetterChange(xPos, yPos) {
-    // console.log('dsadas', xPos, yPos)
     if (this.state.selectedLetter) {
-      // console.log(this.state.selectedLetter)
+      let currMoveLetters = this.state.currMoveLetters;
       var newBoard = this.state.boardState
-      newBoard[xPos * 15 + yPos] = this.state.selectedLetter.value
+      newBoard[xPos * 15 + yPos] = this.state.selectedLetter.value;
+      currMoveLetters.push({xPos, yPos, letter:this.state.selectedLetter.value});
       this.setState({ boardState: newBoard })
+      this.setState({currMoveLetters});
+      this.setState({selectedLetter: null})
     }
   }
   onPlayerPass(){
@@ -155,6 +156,7 @@ class Board extends React.Component {
             arrAllDraws.length,
           );
           let letterGot = arrAllDraws[randomOne];
+          arrAllDraws.splice(randomOne, 1);
           acc.push({letter: letterGot, checked:false});
         }
         return acc;
@@ -182,6 +184,7 @@ class Board extends React.Component {
             arrAllDraws.length,
           );
           let letterGot = arrAllDraws[randomOne];
+          arrAllDraws.splice(randomOne, 1);
           acc.push({letter: letterGot, checked:false});
         }
         return acc;
@@ -206,6 +209,25 @@ class Board extends React.Component {
   
   onPlayerSubmit(){
     let validWord = true;
+    let allIncludingNewWords = findAllWordsOfBoard([...this.state.boardState]);
+    let currMoveLetters = [...this.state.currMoveLetters];
+    let oldBoardState = [...this.state.boardState];
+    currMoveLetters.forEach(elem =>{
+      oldBoardState[elem.xPos*15 + elem.yPos] = '';
+    });
+
+    let allOldWords = findAllWordsOfBoard(oldBoardState);
+    console.log('Old words: ',  allOldWords);
+    console.log('All words: ', allIncludingNewWords);
+    let oldWordsMap = new Map([...new Set(allOldWords)].map(
+      x => [x, allOldWords.filter(y => y === x).length]
+    ));
+
+    let allWordsMap = new Map([...new Set(allIncludingNewWords)].map(
+      x => [x, allIncludingNewWords.filter(y => y === x).length]
+    ));
+    console.log(oldWordsMap);
+    console.log(allWordsMap);
     //Still need to check if word is valid and not used in game till now
     let arrAllDraws = [...this.state.arrAllDraws];
     let firstIsNext = this.state.firstIsNext;
@@ -220,6 +242,7 @@ class Board extends React.Component {
               arrAllDraws.length,
             );
             let letterGot = arrAllDraws[randomOne];
+            arrAllDraws.splice(randomOne, 1);
             removedLetters.push(letterObj.letter);
             return({letter: letterGot, checked:false});
           }
@@ -240,6 +263,7 @@ class Board extends React.Component {
               arrAllDraws.length,
             );
             let letterGot = arrAllDraws[randomOne];
+            arrAllDraws.splice(randomOne, 1);
             removedLetters.push(letterObj.letter);
             return({letter: letterGot, checked:false});
           }
@@ -254,6 +278,7 @@ class Board extends React.Component {
       firstIsNext = !firstIsNext;
       this.setState({arrAllDraws});
       this.setState({firstIsNext});
+      this.setState({currMoveLetters:[]});
     }
     
   }

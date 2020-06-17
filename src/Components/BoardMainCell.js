@@ -4,10 +4,7 @@ import Cell from './Cell'
 import findColor from '../utilities/marker-position'
 
 class BoardMainCell extends React.Component {
-  constructor (props) {
-    super(props)
-    console.log('MAinCell', this.props.boardState)
-  }
+  
   render () {
     let cells = new Array(225).fill('')
     return (
