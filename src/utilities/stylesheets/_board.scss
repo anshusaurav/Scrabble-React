@@ -241,6 +241,7 @@ letter-bg{
   font-size: 3rem;
   letter-spacing: 1.2px;
   margin: 2rem;
+  color: #1c6e50;
 }
 .player-letter-elem{
   // margin: 0.5rem 0;
@@ -271,6 +272,12 @@ letter-bg{
   -moz-box-shadow: -6px 1px 12px -5px rgba(0,0,0,0.54);
   box-shadow: -6px 1px 12px -5px rgba(0,0,0,0.54);
   overflow-inline: hidden;
+}
+.input+label{
+  opacity: 1.0;
+}
+input:disabled+label {
+  opacity: 0.8;
 }
 .player-letter-bg{
   position: relative;
@@ -518,5 +525,7 @@ $turquoise: #2e70cc;
   
 	&:hover {
     background-position: 100px;
-	}
+  }
+  
+  
 }

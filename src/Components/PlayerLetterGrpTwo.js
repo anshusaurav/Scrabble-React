@@ -22,6 +22,11 @@ class PlayerLetterGrpTwo extends React.Component {
                   ? this.props.playerTiles[index].letter
                   : ''
               }
+              isDisabled={
+                index < this.props.playerTiles.length
+                  ? this.props.isDisabled
+                  : ''
+              }
               checked={
                 index < this.props.playerTiles.length
                   ?this.props.playerTiles[index].checked:''

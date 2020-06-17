@@ -10,7 +10,7 @@ import BoardSideBar from './BoardSideBar'
 import BordTopBar from './BoardTopBar'
 import PlayerLetterGrpOne from './PlayerLetterGrpOne'
 import PlayerLetterGrpTwo from './PlayerLetterGrpTwo'
-
+import PlayerDetails from './PlayerDetails'
 class Board extends React.Component {
   constructor(props) {
     super(props)
@@ -25,6 +25,8 @@ class Board extends React.Component {
       letterMapCount: new Map(mapLetterArr),
       letterMapPoint: new Map(mapLetterPointArr),
       firstIsNext: true,
+      firstPlayer:{name:'Mark', score:0},
+      secondPlayer:{name:'Mia', score: 0}
     }
 
     //letterMapCount contains letters as many times they are currently avaiable in game
@@ -128,58 +130,120 @@ class Board extends React.Component {
     }
   }
   onPlayerPass(){
-
+    this.setState({firstIsNext:!this.state.firstIsNext});
   }
 
   onPlayerDraw(){
+    let arrAllDraws = [...this.state.arrAllDraws];
+    let firstIsNext = this.state.firstIsNext;
+    
+    if(this.state.firstIsNext) {
+      let fPlayerTiles = [...this.state.fPlayerTiles];
+      let updateArrInd = 0;
 
+      let fNewPlayerTiles = fPlayerTiles.reduce((acc, letterObj) => {
+        if(letterObj.checked) {
+          let randomOne = Board.randomInteger(
+            0,
+            arrAllDraws.length,
+          );
+          let letterGot = arrAllDraws[randomOne];
+          acc.push({letter: letterGot, checked:false});
+        }
+        return acc;
+      },[]);
+      console.log('newTiles ', fNewPlayerTiles);
+      fPlayerTiles = fPlayerTiles.map(letterObj =>{
+        if(letterObj.checked) {
+          updateArrInd++;
+          arrAllDraws.push(letterObj.letter);
+          return fNewPlayerTiles[updateArrInd-1];
+        }
+        return letterObj;
+      });
+      console.log('newTiles Updates ', fPlayerTiles);
+      this.setState({fPlayerTiles});
+    }
+    else {
+      let sPlayerTiles = [...this.state.sPlayerTiles];
+      let updateArrInd = 0;
+
+      let sNewPlayerTiles = sPlayerTiles.reduce((acc, letterObj) => {
+        if(letterObj.checked) {
+          let randomOne = Board.randomInteger(
+            0,
+            arrAllDraws.length,
+          );
+          let letterGot = arrAllDraws[randomOne];
+          acc.push({letter: letterGot, checked:false});
+        }
+        return acc;
+      },[]);
+      console.log('newTiles ', sNewPlayerTiles);
+      sPlayerTiles = sPlayerTiles.map(letterObj =>{
+        if(letterObj.checked) {
+          updateArrInd++;
+          arrAllDraws.push(letterObj.letter);
+          return sNewPlayerTiles[updateArrInd-1];
+        }
+        return letterObj;
+      });
+      console.log('newTiles updates', sPlayerTiles);
+      this.setState({sPlayerTiles});
+    }
+    firstIsNext = !firstIsNext;
+    this.setState({arrAllDraws});
+    this.setState({firstIsNext});
   }
   onPlayerSubmit(){
     let validWord = true;
+    //Still need to check if word is valid and not used in game till now
     let arrAllDraws = [...this.state.arrAllDraws];
     let firstIsNext = this.state.firstIsNext;
     if(validWord) {
       if(this.state.firstIsNext) {
         let fPlayerTiles = [...this.state.fPlayerTiles];
-        console.log('asa', fPlayerTiles);
-        fPlayerTiles = fPlayerTiles.filter(letter => !letter.checked);
-        console.log(fPlayerTiles.length, ' remaning');
-        for(let i =fPlayerTiles.length; i < 7; i++) {
-          
-          let randomOne = Board.randomInteger(
-            0,
-            arrAllDraws.length,
-          )
-          // console.log(randomOne, arrAllDraws.length);
-          let letterGot = arrAllDraws[randomOne];
-          // console.log(randomOne, letterGot, arrAllDraws.length)
-          fPlayerTiles.push({letter: letterGot, checked:false});
-          console.log(fPlayerTiles);
-        }
-        console.log('bsa', fPlayerTiles);
+
+        fPlayerTiles = fPlayerTiles.map(letterObj => {
+          if(letterObj.checked) {
+            let randomOne = Board.randomInteger(
+              0,
+              arrAllDraws.length,
+            );
+            let letterGot = arrAllDraws[randomOne];
+            return({letter: letterGot, checked:false});
+          }
+          return letterObj;
+        });
         this.setState({fPlayerTiles});
-        // this.setState({firstIsNext: !firstIsNext})
+        let firstPlayer = {...this.state.firstPlayer};
+        firstPlayer.score++;
+        this.setState({firstPlayer});
       }
       else {
         let sPlayerTiles = [...this.state.sPlayerTiles];
-        sPlayerTiles = sPlayerTiles.filter(letter => !letter.checked);
-        for(let i =sPlayerTiles.length; i < 7; i++) {
-          
-          let randomOne = Board.randomInteger(
-            0,
-            arrAllDraws.length,
-          )
-          // console.log(randomOne, arrAllDraws.length);
-          let letterGot = arrAllDraws[randomOne];
-          // console.log(randomOne, letterGot, arrAllDraws.length)
-          sPlayerTiles.push({letter: letterGot, checked:false});
-          
-        }
+
+        sPlayerTiles = sPlayerTiles.map(letterObj => {
+          if(letterObj.checked) {
+            let randomOne = Board.randomInteger(
+              0,
+              arrAllDraws.length,
+            );
+            let letterGot = arrAllDraws[randomOne];
+            
+            return({letter: letterGot, checked:false});
+          }
+          return letterObj;
+        });
+      
         this.setState({sPlayerTiles});
+        let secondPlayer = {...this.state.secondPlayer};
+        secondPlayer.score++;
+        this.setState({secondPlayer});
       }
       firstIsNext = !firstIsNext;
       this.setState({arrAllDraws});
-      this.setState({firstIsNext})
+      this.setState({firstIsNext});
     }
   }
   componentWillMount() { }
@@ -214,32 +278,30 @@ class Board extends React.Component {
           <div className="player-control">
             <div className="player-one-outer-div">
               <div className="player-div-one">
-                <h2 className="player-control-title">
-                  player I
-                </h2>
+              <PlayerDetails player={this.state.firstPlayer}/>
                 <PlayerLetterGrpOne
                   playerTiles={this.state.fPlayerTiles}
                   handlePlayerLetterChange={
                     this.handlePlayerLetterChange
                   }
+                  isDisabled={!this.state.firstIsNext}
                   letterMapPoint={this.state.letterMapPoint}
                 />
-                <PlayerControlButtons handlePlayerPass = {this.onPlayerPass} handlePlayerSubmit={this.onPlayerSubmit} handlePayerDraw = {this.onPlayerDraw}/>
+                <PlayerControlButtons isDisabled={!this.state.firstIsNext} handlePlayerPass = {this.onPlayerPass} handlePlayerSubmit={this.onPlayerSubmit} handlePlayerDraw = {this.onPlayerDraw}/>
               </div>
             </div>
             <div className="player-two-outer-div">
               <div className="player-div-two">
-                <PlayerControlButtons handlePlayerPass = {this.onPlayerPass} handlePlayerSubmit={this.onPlayerSubmit} handlePayerDraw = {this.onPlayerDraw}/>
+                <PlayerControlButtons isDisabled={this.state.firstIsNext} handlePlayerPass = {this.onPlayerPass} handlePlayerSubmit={this.onPlayerSubmit} handlePlayerDraw = {this.onPlayerDraw}/>
                 <PlayerLetterGrpTwo
                   playerTiles={this.state.sPlayerTiles}
                   handlePlayerLetterChange={
                     this.handlePlayerLetterChange
                   }
+                  isDisabled={this.state.firstIsNext}
                   letterMapPoint={this.state.letterMapPoint}
                 />
-                <h2 className="player-control-title">
-                  player II
-                </h2>
+                <PlayerDetails player={this.state.secondPlayer}/>
               </div>
             </div>
           </div>

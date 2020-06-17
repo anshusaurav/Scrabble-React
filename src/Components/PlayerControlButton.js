@@ -20,7 +20,7 @@ class PlayerControlButtons extends React.Component {
     return (
       <div className="player-control-button">
         <div className="all-center">
-          <button
+          <button disabled={this.props.isDisabled}
             className="pass-btn general-btn"
             onClick={this.handlePass}
           >
@@ -28,7 +28,7 @@ class PlayerControlButtons extends React.Component {
           </button>
         </div>
         <div className="all-center">
-          <button
+          <button disabled={this.props.isDisabled}
             className="submit-btn general-btn"
             onClick={this.handleSubmit}
           >
@@ -36,9 +36,9 @@ class PlayerControlButtons extends React.Component {
           </button>
         </div>
         <div className="all-center">
-          <button
+          <button disabled={this.props.isDisabled}
             className="draw-btn general-btn"
-            onClick={this.handle}
+            onClick={this.handleDraw}
           >
             Draw
           </button>
