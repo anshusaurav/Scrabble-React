@@ -4,6 +4,7 @@ import {
   mapLetterArr,
   mapLetterPointArr,
 } from './../utilities/board-init'
+import {calcScore} from './../utilities/Calculation';
 import PlayerControlButtons from './PlayerControlButton'
 import BoardMainCell from './BoardMainCell'
 import BoardSideBar from './BoardSideBar'
@@ -130,6 +131,12 @@ class Board extends React.Component {
     }
   }
   onPlayerPass(){
+    let fPlayerTiles = this.state.fPlayerTiles;
+    let sPlayerTiles = this.state.sPlayerTiles;
+    fPlayerTiles.forEach(elem =>elem.checked=false);
+    sPlayerTiles.forEach(elem=>elem.checked=false);
+    this.setState({fPlayerTiles});
+    this.setState({sPlayerTiles});
     this.setState({firstIsNext:!this.state.firstIsNext});
   }
 
@@ -195,6 +202,8 @@ class Board extends React.Component {
     this.setState({arrAllDraws});
     this.setState({firstIsNext});
   }
+
+  
   onPlayerSubmit(){
     let validWord = true;
     //Still need to check if word is valid and not used in game till now
@@ -203,7 +212,7 @@ class Board extends React.Component {
     if(validWord) {
       if(this.state.firstIsNext) {
         let fPlayerTiles = [...this.state.fPlayerTiles];
-
+        let removedLetters = [];
         fPlayerTiles = fPlayerTiles.map(letterObj => {
           if(letterObj.checked) {
             let randomOne = Board.randomInteger(
@@ -211,18 +220,19 @@ class Board extends React.Component {
               arrAllDraws.length,
             );
             let letterGot = arrAllDraws[randomOne];
+            removedLetters.push(letterObj.letter);
             return({letter: letterGot, checked:false});
           }
           return letterObj;
         });
         this.setState({fPlayerTiles});
         let firstPlayer = {...this.state.firstPlayer};
-        firstPlayer.score++;
+        firstPlayer.score+=calcScore(removedLetters);
         this.setState({firstPlayer});
       }
       else {
         let sPlayerTiles = [...this.state.sPlayerTiles];
-
+        let removedLetters = [];
         sPlayerTiles = sPlayerTiles.map(letterObj => {
           if(letterObj.checked) {
             let randomOne = Board.randomInteger(
@@ -230,7 +240,7 @@ class Board extends React.Component {
               arrAllDraws.length,
             );
             let letterGot = arrAllDraws[randomOne];
-            
+            removedLetters.push(letterObj.letter);
             return({letter: letterGot, checked:false});
           }
           return letterObj;
@@ -238,7 +248,7 @@ class Board extends React.Component {
       
         this.setState({sPlayerTiles});
         let secondPlayer = {...this.state.secondPlayer};
-        secondPlayer.score++;
+        secondPlayer.score+=calcScore(removedLetters);
         this.setState({secondPlayer});
       }
       firstIsNext = !firstIsNext;

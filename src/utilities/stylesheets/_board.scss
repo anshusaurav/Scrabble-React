@@ -202,7 +202,7 @@ letter-bg{
   padding: 1rem;
   margin: 0.5rem;
   border: 1px solid #949494;
-  background: #aaaaaa;
+  background: #d6e3e0;
   height: 96%;
   // background-image: url('../images/89499.jpg');
 }
@@ -242,6 +242,7 @@ letter-bg{
   letter-spacing: 1.2px;
   margin: 2rem;
   color: #1c6e50;
+  cursor: default;
 }
 .player-letter-elem{
   // margin: 0.5rem 0;
@@ -265,6 +266,10 @@ letter-bg{
   -moz-box-shadow: -6px 1px 12px -5px rgba(231, 165, 24, 0.65);
   box-shadow: -6px 1px 12px -5px rgba(231, 165, 24, 0.65);
   }
+  input[type="checkbox"]:disabled + label {
+    opacity: 0.25;
+    
+  }
   -webkit-box-shadow: 8px 1px 12px -5px rgba(0,0,0,0.54);
   -moz-box-shadow: 8px 1px 12px -5px rgba(0,0,0,0.54);
   box-shadow: 8px 1px 12px -5px rgba(0,0,0,0.54);
@@ -282,6 +287,7 @@ input:disabled+label {
 .player-letter-bg{
   position: relative;
   height: 100%;
+  cursor: pointer;
 }
 .playerletter-p{
   
@@ -354,6 +360,10 @@ $turquoise: #2e70cc;
     color: #fff;
     outline: 0;
   }
+  &:disabled{
+    opacity: 0.25;
+
+  }
 }
 .submit-btn{
   // height: 60px;
@@ -415,10 +425,7 @@ $turquoise: #2e70cc;
   }
 }
 .pass-btn{
-  // transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
-  // &:hover {
-  //   box-shadow: 0 0 40px 40px $red inset;
-  // }
+  
   border-color: $red;
   color: #fff;
   background: {
@@ -469,7 +476,7 @@ $turquoise: #2e70cc;
 	transition: background 300ms ease-in-out;
   
 	&:hover {
-    background-position: 100px;
+    background-position: 80px;
 	}
 }
 .draw-btn{
@@ -524,7 +531,7 @@ $turquoise: #2e70cc;
 	transition: background 300ms ease-in-out;
   
 	&:hover {
-    background-position: 100px;
+    background-position: 80px;
   }
   
   
