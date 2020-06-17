@@ -2,7 +2,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&display=swap');
 
-
 // $total-width: 100vw;
 // $game-width: 100vh;
 // $control-width: $total-width-100vh;
@@ -109,16 +108,17 @@
   -moz-box-shadow: inset 0 0 10px #0f0d1369;
   -webkit-box-shadow: inset 0 0 10px #0f0d1369;
   box-shadow: inset 0 0 10px #0f0d1369;
-
 }
-.red, .blue, .pred, .pblue{
+.red,
+.blue,
+.pred,
+.pblue {
   -moz-box-shadow: inset 0 0 5px #0f0d1369;
   -webkit-box-shadow: inset 0 0 5px #0f0d1369;
   box-shadow: inset 0 0 5px #0f0d1369;
 }
 .red {
   background: #d16666bd;
- 
 }
 
 .pred {
@@ -128,14 +128,14 @@
   background: #826df7;
 }
 .pblue {
-  background: #8EB6F8;
+  background: #8eb6f8;
   // background-image:$wooden-bg-url;
 }
 .top-bar-grid {
   display: grid;
   grid-template-columns: repeat(15, 1fr);
 }
-.wooden-bg{
+.wooden-bg {
   background-image: $wooden-bg-url;
   background-repeat: no-repeat;
   position: absolute;
@@ -149,19 +149,17 @@
   justify-content: center;
   align-items: center;
 }
-letter-bg{
+letter-bg {
   position: relative;
-
 }
-.singleletter-p{
-  
+.singleletter-p {
   background: transparent;
   font-size: 2rem;
   font-weight: 800;
   color: white;
   font-family: 'Nanum Gothic', sans-serif;
 }
-.singleletter-p-point{
+.singleletter-p-point {
   position: absolute;
   bottom: 1px;
   right: 1px;
@@ -173,9 +171,9 @@ letter-bg{
 //Game Container ends
 
 //Controls Container
-.controls-container{
+.controls-container {
   box-sizing: border-box;
-  background: #DAE0E6;
+  background: #dae0e6;
   position: absolute;
   top: 0;
   left: 100vh;
@@ -183,10 +181,10 @@ letter-bg{
   height: 100vh;
 }
 
-.player-control{
+.player-control {
   position: relative;
 }
-.player-letter-grid{
+.player-letter-grid {
   display: grid;
   padding: 0.5rem;
   grid-template-columns: repeat(7, 1fr);
@@ -196,21 +194,21 @@ letter-bg{
   border-radius: 0.4vh;
   // padding: 0 1rem;
   background: #ffffff;
-  
 }
-.player-div-one, .player-div-two{
+.player-div-one,
+.player-div-two {
   padding: 1rem;
   margin: 0.5rem;
   border: 1px solid #949494;
-  background: #d6e3e0;
+  background:transparent #d6e3e0;
   height: 96%;
   // background-image: url('../images/89499.jpg');
 }
-.player-div-one{
+.player-div-one {
   padding-top: 5vh;
 }
 
-.player-one-outer-div{
+.player-one-outer-div {
   position: absolute;
   top: 0;
   left: 0;
@@ -222,7 +220,7 @@ letter-bg{
   // background-color: #2C3E50;
   // border-radius: 1rem;
 }
-.player-two-outer-div{
+.player-two-outer-div {
   position: absolute;
   top: 50vh;
   left: 0;
@@ -234,7 +232,7 @@ letter-bg{
   // background-color: #2C3E50;
   // border-radius: 1rem;
 }
-.player-control-title{
+.player-control-title {
   font-family: 'Fredoka One', cursive;
   text-transform: uppercase;
   text-align: center;
@@ -244,60 +242,58 @@ letter-bg{
   color: #1c6e50;
   cursor: default;
 }
-.player-letter-elem{
+.player-letter-elem {
   // margin: 0.5rem 0;
   height: 100%;
-  
-  input[type="checkbox"] {
+
+  input[type='checkbox'] {
     display: none;
   }
-  input[type="checkbox"]:checked + label {
-    .playerletter-p{
+  input[type='checkbox']:checked + label {
+    .playerletter-p {
       color: #e7a518;
     }
-    .playerletter-p-point{
+    .playerletter-p-point {
       color: #e7a518;
     }
-    // border: 4px solid #26AA5A;
-    -webkit-box-shadow: 8px 1px 12px -5px rgba(231, 165, 24, 0.65);
-  -moz-box-shadow: 8px 1px 12px -5px rgba(231, 165, 24, 0.65);
-  box-shadow: 8px 1px 12px -5px rgba(231, 165, 24, 0.65);
-  -webkit-box-shadow: -6px 1px 12px -5px rgba(231, 165, 24, 0.65);
-  -moz-box-shadow: -6px 1px 12px -5px rgba(231, 165, 24, 0.65);
-  box-shadow: -6px 1px 12px -5px rgba(231, 165, 24, 0.65);
+    -webkit-box-shadow: -3px -3px 11px -1px
+      rgba(231, 165, 24, 0.65);
+    -moz-box-shadow: -3px -3px 11px -1px
+      rgba(231, 165, 24, 0.65);
+    box-shadow: -3px -3px 11px -1px rgba(231, 165, 24, 0.65);
   }
-  input[type="checkbox"]:disabled + label {
+  input[type='checkbox']:disabled + label {
     opacity: 0.25;
-    
+    transition-delay: 0.2s;
+    transition: opacity 0.2s ease-in;
   }
-  -webkit-box-shadow: 8px 1px 12px -5px rgba(0,0,0,0.54);
-  -moz-box-shadow: 8px 1px 12px -5px rgba(0,0,0,0.54);
-  box-shadow: 8px 1px 12px -5px rgba(0,0,0,0.54);
-  -webkit-box-shadow: -6px 1px 12px -5px rgba(0,0,0,0.54);
-  -moz-box-shadow: -6px 1px 12px -5px rgba(0,0,0,0.54);
-  box-shadow: -6px 1px 12px -5px rgba(0,0,0,0.54);
+  -webkit-box-shadow: -3px -3px 11px -1px
+    rgba(126, 107, 94, 0.75);
+  -moz-box-shadow: -3px -3px 11px -1px
+    rgba(126, 107, 94, 0.75);
+  box-shadow: -3px -3px 11px -1px rgba(126, 107, 94, 0.75);
+
   overflow-inline: hidden;
 }
-.input+label{
-  opacity: 1.0;
+.input + label {
+  opacity: 1;
 }
-input:disabled+label {
+input:disabled + label {
   opacity: 0.8;
 }
-.player-letter-bg{
+.player-letter-bg {
   position: relative;
   height: 100%;
   cursor: pointer;
 }
-.playerletter-p{
-  
+.playerletter-p {
   background: transparent;
   font-size: 3rem;
   font-weight: 900;
   color: white;
   font-family: 'Noto Serif KR', serif;
 }
-.playerletter-p-point{
+.playerletter-p-point {
   position: absolute;
   bottom: 2px;
   right: 2px;
@@ -307,10 +303,7 @@ input:disabled+label {
   font-family: 'Noto Serif KR', serif;
 }
 
-
-
 //Player Letter ends here
-
 
 //Player controls button here
 $green: #2ecc71;
@@ -320,18 +313,17 @@ $yellow: #f1c40f;
 $purple: #8e44ad;
 $turquoise: #2e70cc;
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
-.player-control-button{
+.player-control-button {
   margin-top: 5vh;
   margin-bottom: 5vh;
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   justify-content: space-evenly;
   grid-auto-rows: 10vh;
-  
 }
-.general-btn{
+.general-btn {
   font-family: 'Montserrat', sans-serif;
-  font-size: 16px;  
+  font-size: 16px;
   box-sizing: border-box;
   appearance: none;
   background-color: transparent;
@@ -360,179 +352,181 @@ $turquoise: #2e70cc;
     color: #fff;
     outline: 0;
   }
-  &:disabled{
+  &:disabled {
     opacity: 0.25;
-
+    transition: opacity 0.2s ease-in;
   }
 }
-.submit-btn{
+.submit-btn {
   // height: 60px;
   // width: 160px;
-  font-size: 24px;  
+  font-size: 24px;
   border-radius: 12px;
   border-color: $turquoise;
   color: #fff;
   padding: 1em 1.5em;
   background: {
-    image: linear-gradient(to right, 
+    image: linear-gradient(
+      to right,
       transparentize($turquoise, 0.4),
       transparentize($turquoise, 0.4) 5%,
-      $turquoise 5%, 
+      $turquoise 5%,
       $turquoise 10%,
       transparentize($turquoise, 0.4) 10%,
       transparentize($turquoise, 0.4) 15%,
-      $turquoise 15%, 
+      $turquoise 15%,
       $turquoise 20%,
       transparentize($turquoise, 0.4) 20%,
       transparentize($turquoise, 0.4) 25%,
-      $turquoise 25%, 
+      $turquoise 25%,
       $turquoise 30%,
       transparentize($turquoise, 0.4) 30%,
       transparentize($turquoise, 0.4) 35%,
-      $turquoise 35%, 
+      $turquoise 35%,
       $turquoise 40%,
       transparentize($turquoise, 0.4) 40%,
       transparentize($turquoise, 0.4) 45%,
-      $turquoise 45%, 
+      $turquoise 45%,
       $turquoise 50%,
       transparentize($turquoise, 0.4) 50%,
       transparentize($turquoise, 0.4) 55%,
-      $turquoise 55%, 
+      $turquoise 55%,
       $turquoise 60%,
       transparentize($turquoise, 0.4) 60%,
       transparentize($turquoise, 0.4) 65%,
-      $turquoise 65%, 
+      $turquoise 65%,
       $turquoise 70%,
       transparentize($turquoise, 0.4) 70%,
       transparentize($turquoise, 0.4) 75%,
-      $turquoise 75%, 
+      $turquoise 75%,
       $turquoise 80%,
       transparentize($turquoise, 0.4) 80%,
       transparentize($turquoise, 0.4) 85%,
-      $turquoise 85%, 
+      $turquoise 85%,
       $turquoise 90%,
       transparentize($turquoise, 0.4) 90%,
       transparentize($turquoise, 0.4) 95%,
-      $turquoise 95%, 
-      $turquoise 100%);
+      $turquoise 95%,
+      $turquoise 100%
+    );
     position: 0 0;
     size: 100%;
   }
   transition: background 300ms ease-in-out;
-  
+
   &:hover {
     background-position: 100px;
   }
 }
-.pass-btn{
-  
+.pass-btn {
   border-color: $red;
   color: #fff;
   background: {
-    image: linear-gradient(to right, 
+    image: linear-gradient(
+      to right,
       transparentize($red, 0.4),
       transparentize($red, 0.4) 5%,
-      $red 5%, 
+      $red 5%,
       $red 10%,
       transparentize($red, 0.4) 10%,
       transparentize($red, 0.4) 15%,
-      $red 15%, 
+      $red 15%,
       $red 20%,
       transparentize($red, 0.4) 20%,
       transparentize($red, 0.4) 25%,
-      $red 25%, 
+      $red 25%,
       $red 30%,
       transparentize($red, 0.4) 30%,
       transparentize($red, 0.4) 35%,
-      $red 35%, 
+      $red 35%,
       $red 40%,
       transparentize($red, 0.4) 40%,
       transparentize($red, 0.4) 45%,
-      $red 45%, 
+      $red 45%,
       $red 50%,
       transparentize($red, 0.4) 50%,
       transparentize($red, 0.4) 55%,
-      $red 55%, 
+      $red 55%,
       $red 60%,
       transparentize($red, 0.4) 60%,
       transparentize($red, 0.4) 65%,
-      $red 65%, 
+      $red 65%,
       $red 70%,
       transparentize($red, 0.4) 70%,
       transparentize($red, 0.4) 75%,
-      $red 75%, 
+      $red 75%,
       $red 80%,
       transparentize($red, 0.4) 80%,
       transparentize($red, 0.4) 85%,
-      $red 85%, 
+      $red 85%,
       $red 90%,
       transparentize($red, 0.4) 90%,
       transparentize($red, 0.4) 95%,
-      $red 95%, 
-      $red 100%);
-	    position: 0 0;
-      size: 100%;
-	}
-	transition: background 300ms ease-in-out;
-  
-	&:hover {
-    background-position: 80px;
-	}
-}
-.draw-btn{
+      $red 95%,
+      $red 100%
+    );
+    position: 0 0;
+    size: 100%;
+  }
+  transition: background 300ms ease-in-out;
 
+  &:hover {
+    background-position: 80px;
+  }
+}
+.draw-btn {
   border-color: $purple;
   color: #fff;
   background: {
-    image: linear-gradient(to right, 
+    image: linear-gradient(
+      to right,
       transparentize($purple, 0.4),
       transparentize($purple, 0.4) 5%,
-      $purple 5%, 
+      $purple 5%,
       $purple 10%,
       transparentize($purple, 0.4) 10%,
       transparentize($purple, 0.4) 15%,
-      $purple 15%, 
+      $purple 15%,
       $purple 20%,
       transparentize($purple, 0.4) 20%,
       transparentize($purple, 0.4) 25%,
-      $purple 25%, 
+      $purple 25%,
       $purple 30%,
       transparentize($purple, 0.4) 30%,
       transparentize($purple, 0.4) 35%,
-      $purple 35%, 
+      $purple 35%,
       $purple 40%,
       transparentize($purple, 0.4) 40%,
       transparentize($purple, 0.4) 45%,
-      $purple 45%, 
+      $purple 45%,
       $purple 50%,
       transparentize($purple, 0.4) 50%,
       transparentize($purple, 0.4) 55%,
-      $purple 55%, 
+      $purple 55%,
       $purple 60%,
       transparentize($purple, 0.4) 60%,
       transparentize($purple, 0.4) 65%,
-      $purple 65%, 
+      $purple 65%,
       $purple 70%,
       transparentize($purple, 0.4) 70%,
       transparentize($purple, 0.4) 75%,
-      $purple 75%, 
+      $purple 75%,
       $purple 80%,
       transparentize($purple, 0.4) 80%,
       transparentize($purple, 0.4) 85%,
-      $purple 85%, 
+      $purple 85%,
       $purple 90%,
       transparentize($purple, 0.4) 90%,
       transparentize($purple, 0.4) 95%,
-      $purple 95%, 
-      $purple 100%);
-	    position: 0 0;
-      size: 100%;
-	}
-	transition: background 300ms ease-in-out;
-  
-	&:hover {
+      $purple 95%,
+      $purple 100%
+    );
+    position: 0 0;
+    size: 100%;
+  }
+  transition: background 300ms ease-in-out;
+
+  &:hover {
     background-position: 80px;
   }
-  
-  
 }

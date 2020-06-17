@@ -4,7 +4,7 @@ import {
   mapLetterArr,
   mapLetterPointArr,
 } from './../utilities/board-init'
-import {calcScore} from './../utilities/Calculation';
+import {calcScore, findAllWordsOfBoard} from './../utilities/Calculation';
 import PlayerControlButtons from './PlayerControlButton'
 import BoardMainCell from './BoardMainCell'
 import BoardSideBar from './BoardSideBar'
@@ -255,9 +255,13 @@ class Board extends React.Component {
       this.setState({arrAllDraws});
       this.setState({firstIsNext});
     }
+    
   }
   componentWillMount() { }
-  componentDidMount() { }
+  componentDidUpdate() {
+    let arr = findAllWordsOfBoard(this.state.boardState);
+    console.log('Allwords: ' , arr);
+   }
   render() {
     console.log(this.state)
 
