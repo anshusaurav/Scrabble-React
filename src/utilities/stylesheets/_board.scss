@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600&display=swap');
 // $total-width: 100vw;
 // $game-width: 100vh;
 // $control-width: $total-width-100vh;
@@ -564,5 +564,177 @@ $turquoise: #2e70cc;
 
   &:hover {
     background-position: 80px;
+  }
+}
+
+//PopUp
+
+
+@mixin font-stack{
+  font-family: 'Raleway', sans-serif;
+}
+
+$background-opacity: .5;
+
+.hidden{
+  opacity:0;
+}
+
+@mixin absolute-position-center(){
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  margin:auto;
+}
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  border-radius: $radius;
+  background-clip: padding-box;
+}
+
+@mixin box-shadow() {
+  -webkit-box-shadow: 0px 0px 59px 5px rgba(0,0,0,0.48);
+-moz-box-shadow: 0px 0px 59px 5px rgba(0,0,0,0.48);
+box-shadow: 0px 0px 59px 5px rgba(0,0,0,0.48);
+}
+
+#pop-up{
+  @include absolute-position-center();
+  @include box-shadow();
+  // display: none ;
+  width:90%;
+  // opacity:0;
+  max-height:450px;
+  max-width:800px;
+  // height:90%;
+  background-color:white;
+  z-index:10000;
+  overflow:hidden;
+  border: 4px solid indigo;
+  .border-overlay{
+    @include absolute-position-center;
+    width:100%;
+    height:100%;
+    .white{
+      width:100%;
+      height:100%;
+      border:20px solid white;
+    }
+  }
+ 
+  .text{
+    // display:inline-block;
+    float:left;
+    width:50%;
+    height:90%;
+    margin:2.5% 0;
+    padding:0 40px;
+    color: black !important;
+    h1{
+      font-weight:900;
+      font-size:4vw;
+      margin:0;
+    }
+    p{
+    width: 90%;
+    font-weight: 500;
+    font-size: 1.2em;
+    line-height: 1.8em;
+    }
+    button{
+      background-color:#16a085;
+      border:none;
+      font-size:1.7em;
+      margin:20px 0;
+      padding:10px 40px;
+      color:white;
+      cursor:pointer;
+    }
+    .close{
+      position:absolute;
+      top:-10px;
+      right:40px;
+      width:10px;
+      font-weight:700;
+      font-size:2em;
+      color:black;
+      cursor:pointer;
+    }
+  }
+  hr{
+    width: 40%;
+    height: 10px;
+    margin:10px auto 30px 0;
+    border: none;
+    outline: none;
+    background-color: #333;
+    color: grey;
+  }
+}
+
+#innerPopUp{
+  height:100%;
+  overflow: auto;
+  // opacity:0;
+}
+
+.fade-in{
+  animation: fadeIn 1.3s ease forwards 1s;
+}
+
+.fade-out{
+  animation: fadeOut 1.3s ease forwards;
+}
+
+.animate-in{
+  animation: popIn 1.3s cubic-bezier(.87,-.41,.19,1.22) forwards;
+}
+
+.animate-out{
+  animation: popOut 1.3s cubic-bezier(.87,-.41,.19,1.22) forwards;
+}
+
+@keyframes fadeIn{
+  from{
+    transform:translateY(-20px);
+    opacity:0;
+  }
+  to{
+    transform:translateY(0px);
+    opacity:1;
+  }
+}
+@keyframes popIn{
+  0%{
+    opacity:0;
+    transform:scale(0,0);
+  }
+  60%{
+    opacity:1;
+    transform:scale(1,1);
+  }
+  100%{
+    opacity:1;
+    transform:scale(1,1);
+  }
+}
+
+@keyframes popOut{
+  0%{
+    z-index:100;
+    opacity:1;
+    transform:scale(1,1);
+  }
+  60%{
+    z-index:0;
+    opacity:.1;
+    transform:scale(.001,.001);
+  }
+  100%{
+    opacity:0;
+    transform:scale(0,0);
   }
 }

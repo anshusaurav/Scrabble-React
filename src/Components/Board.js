@@ -4,7 +4,12 @@ import {
   mapLetterArr,
   mapLetterPointArr,
 } from './../utilities/board-init'
-import {checkWordsOfMap, findAllWordsOfBoard, getDifferenceAsMap, getCompleteScoreThisMove} from './../utilities/Calculation';
+import {
+  checkWordsOfMap,
+  findAllWordsOfBoard,
+  getDifferenceAsMap,
+  getCompleteScoreThisMove,
+} from './../utilities/Calculation'
 import PlayerControlButtons from './PlayerControlButton'
 import BoardMainCell from './BoardMainCell'
 import BoardSideBar from './BoardSideBar'
@@ -12,8 +17,9 @@ import BordTopBar from './BoardTopBar'
 import PlayerLetterGrpOne from './PlayerLetterGrpOne'
 import PlayerLetterGrpTwo from './PlayerLetterGrpTwo'
 import PlayerDetails from './PlayerDetails'
+import PopUp from './PopUp'
 class Board extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     let arrAllDraws = []
@@ -26,9 +32,11 @@ class Board extends React.Component {
       letterMapCount: new Map(mapLetterArr),
       letterMapPoint: new Map(mapLetterPointArr),
       firstIsNext: true,
-      firstPlayer:{name:'Mark', score:0},
-      secondPlayer:{name:'Mia', score: 0},
-      currMoveLetters:[],
+      firstPlayer: {name: 'Mark', score: 0},
+      secondPlayer: {name: 'Mia', score: 0},
+      currMoveLetters: [],
+      showPopUp: false,
+      popUpObj: {type: '', msg: ''},
     }
 
     //letterMapCount contains letters as many times they are currently avaiable in game
@@ -48,22 +56,22 @@ class Board extends React.Component {
       // console.log(randomOne, arrAllDraws.length);
       let letterGot = arrAllDraws[randomOne]
       // console.log(randomOne, letterGot, arrAllDraws.length)
-      fPlayerTiles.push({letter: letterGot, checked:false})
-      arrAllDraws.splice(randomOne, 1);
+      fPlayerTiles.push({letter: letterGot, checked: false})
+      arrAllDraws.splice(randomOne, 1)
       let randomTwo = Board.randomInteger(
         0,
         arrAllDraws.length,
       )
       letterGot = arrAllDraws[randomTwo]
       // console.log(randomTwo, letterGot, arrAllDraws.length)
-      sPlayerTiles.push({letter: letterGot, checked:false})
+      sPlayerTiles.push({letter: letterGot, checked: false})
       arrAllDraws.splice(randomTwo, 1)
     }
-    this.state.arrAllDraws = arrAllDraws;
-    this.state.fPlayerTiles = fPlayerTiles;
-    this.state.sPlayerTiles = sPlayerTiles;
-    this.state.currentMode = 'SelectLetterToPlace';
-    this.state.selectedLetter = null;
+    this.state.arrAllDraws = arrAllDraws
+    this.state.fPlayerTiles = fPlayerTiles
+    this.state.sPlayerTiles = sPlayerTiles
+    this.state.currentMode = 'SelectLetterToPlace'
+    this.state.selectedLetter = null
 
     this.handlePlayerLetterChange = this.handlePlayerLetterChange.bind(
       this,
@@ -71,15 +79,16 @@ class Board extends React.Component {
     this.handleBoardLetterChange = this.handleBoardLetterChange.bind(
       this,
     )
-    this.onPlayerDraw = this.onPlayerDraw.bind(this);
-    this.onPlayerPass = this.onPlayerPass.bind(this);
-    this.onPlayerSubmit = this.onPlayerSubmit.bind(this);
+    this.onPlayerDraw = this.onPlayerDraw.bind(this)
+    this.onPlayerPass = this.onPlayerPass.bind(this)
+    this.onPlayerSubmit = this.onPlayerSubmit.bind(this)
+    this.onClosePopUp = this.onClosePopUp.bind(this)
   }
-  static randomInteger(min, max) {
+  static randomInteger (min, max) {
     let rand = min + Math.random() * (max - min)
     return Math.floor(rand)
   }
-  static checkValidAsync(word) {
+  static checkValidAsync (word) {
     return new Promise((resolve, reject) => {
       languageRegex.test(word, (err, isWordValid) => {
         if (err) reject(err)
@@ -87,213 +96,268 @@ class Board extends React.Component {
       })
     })
   }
+
+  onClosePopUp () {
+    this.setState({showPopUp: !this.state.showPopUp})
+  }
   //Modify state fPlayerTiles and dPlayerTiles to keep track of checked letters
-  handlePlayerLetterChange(
-    lo, index,
+  handlePlayerLetterChange (
+    lo,
+    index,
     selectedLetterValue,
     pointOfSelectLetter,
   ) {
+    let selectedLetter = {
+      value: selectedLetterValue,
+      point: pointOfSelectLetter,
+    }
+    this.setState({selectedLetter})
+    if (this.state.firstIsNext) {
+      let fPlayerTiles = [...this.state.fPlayerTiles]
+      fPlayerTiles[index].checked = !fPlayerTiles[index]
+        .checked
+      this.setState({fPlayerTiles})
       let selectedLetter = {
-        value: selectedLetterValue,
-        point: pointOfSelectLetter,
-      };
-      this.setState({selectedLetter});
-      if(this.state.firstIsNext){
-        let fPlayerTiles = [...this.state.fPlayerTiles];
-        fPlayerTiles[index].checked = !fPlayerTiles[index].checked;
-        this.setState({fPlayerTiles});
-        let selectedLetter = {
-          value: fPlayerTiles[index].letter,
-          point: this.state.letterMapPoint.get(fPlayerTiles[index].letter)
-        };
-        this.setState({selectedLetter});
+        value: fPlayerTiles[index].letter,
+        point: this.state.letterMapPoint.get(
+          fPlayerTiles[index].letter,
+        ),
       }
-      else{
-        let sPlayerTiles = [...this.state.sPlayerTiles];
-        sPlayerTiles[index].checked = !sPlayerTiles[index].checked;
-        this.setState({sPlayerTiles});
-        let selectedLetter = {
-          value: sPlayerTiles[index].letter,
-          point: this.state.letterMapPoint.get(sPlayerTiles[index].letter)
-        };
-        this.setState({selectedLetter});
+      this.setState({selectedLetter})
+    } else {
+      let sPlayerTiles = [...this.state.sPlayerTiles]
+      sPlayerTiles[index].checked = !sPlayerTiles[index]
+        .checked
+      this.setState({sPlayerTiles})
+      let selectedLetter = {
+        value: sPlayerTiles[index].letter,
+        point: this.state.letterMapPoint.get(
+          sPlayerTiles[index].letter,
+        ),
       }
+      this.setState({selectedLetter})
+    }
   }
   //Modify boardState, Add to boardState
-  handleBoardLetterChange(xPos, yPos) {
+  handleBoardLetterChange (xPos, yPos) {
     if (this.state.selectedLetter) {
-      let currMoveLetters = this.state.currMoveLetters;
+      let currMoveLetters = this.state.currMoveLetters
       var newBoard = this.state.boardState
-      newBoard[xPos * 15 + yPos] = this.state.selectedLetter.value;
-      currMoveLetters.push({xPos, yPos, letter:this.state.selectedLetter.value});
-      this.setState({ boardState: newBoard })
-      this.setState({currMoveLetters});
+      newBoard[
+        xPos * 15 + yPos
+      ] = this.state.selectedLetter.value
+      currMoveLetters.push({
+        xPos,
+        yPos,
+        letter: this.state.selectedLetter.value,
+      })
+      this.setState({boardState: newBoard})
+      this.setState({currMoveLetters})
       this.setState({selectedLetter: null})
     }
   }
-  onPlayerPass(){
-    let fPlayerTiles = this.state.fPlayerTiles;
-    let sPlayerTiles = this.state.sPlayerTiles;
-    fPlayerTiles.forEach(elem =>elem.checked=false);
-    sPlayerTiles.forEach(elem=>elem.checked=false);
-    this.setState({fPlayerTiles});
-    this.setState({sPlayerTiles});
-    this.setState({firstIsNext:!this.state.firstIsNext});
+  onPlayerPass () {
+    let fPlayerTiles = this.state.fPlayerTiles
+    let sPlayerTiles = this.state.sPlayerTiles
+    fPlayerTiles.forEach(elem => (elem.checked = false))
+    sPlayerTiles.forEach(elem => (elem.checked = false))
+    this.setState({fPlayerTiles})
+    this.setState({sPlayerTiles})
+    this.setState({firstIsNext: !this.state.firstIsNext})
   }
 
-  onPlayerDraw(){
-    let arrAllDraws = [...this.state.arrAllDraws];
-    let firstIsNext = this.state.firstIsNext;
-    
-    if(this.state.firstIsNext) {
-      let fPlayerTiles = [...this.state.fPlayerTiles];
-      let updateArrInd = 0;
+  onPlayerDraw () {
+    let arrAllDraws = [...this.state.arrAllDraws]
+    let firstIsNext = this.state.firstIsNext
 
-      let fNewPlayerTiles = fPlayerTiles.reduce((acc, letterObj) => {
-        if(letterObj.checked) {
-          let randomOne = Board.randomInteger(
-            0,
-            arrAllDraws.length,
-          );
-          let letterGot = arrAllDraws[randomOne];
-          arrAllDraws.splice(randomOne, 1);
-          acc.push({letter: letterGot, checked:false});
-        }
-        return acc;
-      },[]);
-      fPlayerTiles = fPlayerTiles.map(letterObj =>{
-        if(letterObj.checked) {
-          updateArrInd++;
-          arrAllDraws.push(letterObj.letter);
-          return fNewPlayerTiles[updateArrInd-1];
-        }
-        return letterObj;
-      });
-      this.setState({fPlayerTiles});
-    }
-    else {
-      let sPlayerTiles = [...this.state.sPlayerTiles];
-      let updateArrInd = 0;
+    if (this.state.firstIsNext) {
+      let fPlayerTiles = [...this.state.fPlayerTiles]
+      let updateArrInd = 0
 
-      let sNewPlayerTiles = sPlayerTiles.reduce((acc, letterObj) => {
-        if(letterObj.checked) {
-          let randomOne = Board.randomInteger(
-            0,
-            arrAllDraws.length,
-          );
-          let letterGot = arrAllDraws[randomOne];
-          arrAllDraws.splice(randomOne, 1);
-          acc.push({letter: letterGot, checked:false});
+      let fNewPlayerTiles = fPlayerTiles.reduce(
+        (acc, letterObj) => {
+          if (letterObj.checked) {
+            let randomOne = Board.randomInteger(
+              0,
+              arrAllDraws.length,
+            )
+            let letterGot = arrAllDraws[randomOne]
+            arrAllDraws.splice(randomOne, 1)
+            acc.push({letter: letterGot, checked: false})
+          }
+          return acc
+        },
+        [],
+      )
+      fPlayerTiles = fPlayerTiles.map(letterObj => {
+        if (letterObj.checked) {
+          updateArrInd++
+          arrAllDraws.push(letterObj.letter)
+          return fNewPlayerTiles[updateArrInd - 1]
         }
-        return acc;
-      },[]);
-      sPlayerTiles = sPlayerTiles.map(letterObj =>{
-        if(letterObj.checked) {
-          updateArrInd++;
-          arrAllDraws.push(letterObj.letter);
-          return sNewPlayerTiles[updateArrInd-1];
+        return letterObj
+      })
+      this.setState({fPlayerTiles})
+    } else {
+      let sPlayerTiles = [...this.state.sPlayerTiles]
+      let updateArrInd = 0
+
+      let sNewPlayerTiles = sPlayerTiles.reduce(
+        (acc, letterObj) => {
+          if (letterObj.checked) {
+            let randomOne = Board.randomInteger(
+              0,
+              arrAllDraws.length,
+            )
+            let letterGot = arrAllDraws[randomOne]
+            arrAllDraws.splice(randomOne, 1)
+            acc.push({letter: letterGot, checked: false})
+          }
+          return acc
+        },
+        [],
+      )
+      sPlayerTiles = sPlayerTiles.map(letterObj => {
+        if (letterObj.checked) {
+          updateArrInd++
+          arrAllDraws.push(letterObj.letter)
+          return sNewPlayerTiles[updateArrInd - 1]
         }
-        return letterObj;
-      });
-      this.setState({sPlayerTiles});
+        return letterObj
+      })
+      this.setState({sPlayerTiles})
     }
-    firstIsNext = !firstIsNext;
-    this.setState({arrAllDraws});
-    this.setState({firstIsNext});
+    firstIsNext = !firstIsNext
+    this.setState({arrAllDraws})
+    this.setState({firstIsNext})
   }
 
-  
-  onPlayerSubmit(){
-    let validWord = true;
-    let allIncludingNewWords = findAllWordsOfBoard([...this.state.boardState]);
-    let currMoveLetters = [...this.state.currMoveLetters];
-    let oldBoardState = [...this.state.boardState];
-    currMoveLetters.forEach(elem =>{
-      oldBoardState[elem.xPos*15 + elem.yPos] = '';
-    });
+  onPlayerSubmit () {
+    let validWord = true
+    let allIncludingNewWords = findAllWordsOfBoard([
+      ...this.state.boardState,
+    ])
+    let currMoveLetters = [...this.state.currMoveLetters]
+    let oldBoardState = [...this.state.boardState]
+    currMoveLetters.forEach(elem => {
+      oldBoardState[elem.xPos * 15 + elem.yPos] = ''
+    })
 
-    let allOldWords = findAllWordsOfBoard(oldBoardState);
-    let oldWordsMap = new Map([...new Set(allOldWords)].map(
-      x => [x, allOldWords.filter(y => y === x).length]
-    ));
+    let allOldWords = findAllWordsOfBoard(oldBoardState)
+    let oldWordsMap = new Map(
+      [...new Set(allOldWords)].map(x => [
+        x,
+        allOldWords.filter(y => y === x).length,
+      ]),
+    )
 
-    let allWordsMap = new Map([...new Set(allIncludingNewWords)].map(
-      x => [x, allIncludingNewWords.filter(y => y === x).length]
-    ));
+    let allWordsMap = new Map(
+      [...new Set(allIncludingNewWords)].map(x => [
+        x,
+        allIncludingNewWords.filter(y => y === x).length,
+      ]),
+    )
     // console.log(oldWordsMap);
     console.log(allWordsMap)
-    let wordsAddedMap = getDifferenceAsMap(oldWordsMap, allWordsMap);
-    
-    validWord = checkWordsOfMap(wordsAddedMap);
-    
+    let wordsAddedMap = getDifferenceAsMap(
+      oldWordsMap,
+      allWordsMap,
+    )
+
+    validWord = checkWordsOfMap(wordsAddedMap).result
+    let popUpObj = {...this.state.popUpObj}
+    if (validWord) {
+      popUpObj = {
+        type: 'Success',
+        msg: 'Word/Words added successfully',
+      }
+    } else {
+      let message = checkWordsOfMap(wordsAddedMap).word
+      popUpObj = {
+        type: 'Error',
+        msg: `${message} is not a valid word in English UK.`,
+      }
+    }
+    this.setState({popUpObj}, function () {
+        this.setState({showPopUp: true});
+    })
+
     console.log(validWord)
     // console.log(wordsAddedMap);
     //Still need to check if word is valid and not used in game till now
-    let arrAllDraws = [...this.state.arrAllDraws];
-    let firstIsNext = this.state.firstIsNext;
-    if(validWord) {
-      if(this.state.firstIsNext) {
-        let fPlayerTiles = [...this.state.fPlayerTiles];
-        let removedLetters = [];
+    let arrAllDraws = [...this.state.arrAllDraws]
+    let firstIsNext = this.state.firstIsNext
+    if (validWord) {
+      if (this.state.firstIsNext) {
+        let fPlayerTiles = [...this.state.fPlayerTiles]
+        let removedLetters = []
         fPlayerTiles = fPlayerTiles.map(letterObj => {
-          if(letterObj.checked) {
+          if (letterObj.checked) {
             let randomOne = Board.randomInteger(
               0,
               arrAllDraws.length,
-            );
-            let letterGot = arrAllDraws[randomOne];
-            arrAllDraws.splice(randomOne, 1);
-            removedLetters.push(letterObj.letter);
-            return({letter: letterGot, checked:false});
+            )
+            let letterGot = arrAllDraws[randomOne]
+            arrAllDraws.splice(randomOne, 1)
+            removedLetters.push(letterObj.letter)
+            return {letter: letterGot, checked: false}
           }
-          return letterObj;
-        });
-        this.setState({fPlayerTiles});
-        let firstPlayer = {...this.state.firstPlayer};
-        firstPlayer.score+=getCompleteScoreThisMove(wordsAddedMap);
-        this.setState({firstPlayer});
-      }
-      else {
-        let sPlayerTiles = [...this.state.sPlayerTiles];
-        let removedLetters = [];
+          return letterObj
+        })
+        this.setState({fPlayerTiles})
+        let firstPlayer = {...this.state.firstPlayer}
+        firstPlayer.score += getCompleteScoreThisMove(
+          wordsAddedMap,
+        )
+        this.setState({firstPlayer})
+      } else {
+        let sPlayerTiles = [...this.state.sPlayerTiles]
+        let removedLetters = []
         sPlayerTiles = sPlayerTiles.map(letterObj => {
-          if(letterObj.checked) {
+          if (letterObj.checked) {
             let randomOne = Board.randomInteger(
               0,
               arrAllDraws.length,
-            );
-            let letterGot = arrAllDraws[randomOne];
-            arrAllDraws.splice(randomOne, 1);
-            removedLetters.push(letterObj.letter);
-            return({letter: letterGot, checked:false});
+            )
+            let letterGot = arrAllDraws[randomOne]
+            arrAllDraws.splice(randomOne, 1)
+            removedLetters.push(letterObj.letter)
+            return {letter: letterGot, checked: false}
           }
-          return letterObj;
-        });
-      
-        this.setState({sPlayerTiles});
-        let secondPlayer = {...this.state.secondPlayer};
-        secondPlayer.score+=getCompleteScoreThisMove(wordsAddedMap);
-        this.setState({secondPlayer});
+          return letterObj
+        })
+
+        this.setState({sPlayerTiles})
+        let secondPlayer = {...this.state.secondPlayer}
+        secondPlayer.score += getCompleteScoreThisMove(
+          wordsAddedMap,
+        )
+        this.setState({secondPlayer})
       }
-      firstIsNext = !firstIsNext;
-      this.setState({arrAllDraws});
-      this.setState({firstIsNext});
-      this.setState({currMoveLetters:[]});
+      firstIsNext = !firstIsNext
+      this.setState({arrAllDraws})
+      this.setState({firstIsNext})
+      this.setState({currMoveLetters: []})
     }
-    
   }
-  componentWillMount() { }
-  componentDidUpdate() {
-    let arr = findAllWordsOfBoard(this.state.boardState);
-    // console.log('Allwords: ' , arr);
-   }
-  render() {
+  // componentWillMount() { }
+  // componentDidUpdate() {
+  //   // let arr = findAllWordsOfBoard(this.state.boardState);
+  //   // console.log('Allwords: ' , arr);
+  //  }
+  render () {
     // console.log(languageRegex.test('Dog'));
     // console.log(languageRegex.test('offasdas'));
     console.log(this.state)
 
     return (
       <div className="main-container">
+        {this.state.showPopUp?
+        <PopUp
+          
+          popUpObj={this.state.popUpObj}
+          onClosePopUp={this.onClosePopUp}
+        />:null}
         <div className="game-container">
           <div className="side-bar-one">
             <BoardSideBar />
@@ -319,7 +383,9 @@ class Board extends React.Component {
           <div className="player-control">
             <div className="player-one-outer-div">
               <div className="player-div-one">
-              <PlayerDetails player={this.state.firstPlayer}/>
+                <PlayerDetails
+                  player={this.state.firstPlayer}
+                />
                 <PlayerLetterGrpOne
                   playerTiles={this.state.fPlayerTiles}
                   handlePlayerLetterChange={
@@ -328,12 +394,22 @@ class Board extends React.Component {
                   isDisabled={!this.state.firstIsNext}
                   letterMapPoint={this.state.letterMapPoint}
                 />
-                <PlayerControlButtons isDisabled={!this.state.firstIsNext} handlePlayerPass = {this.onPlayerPass} handlePlayerSubmit={this.onPlayerSubmit} handlePlayerDraw = {this.onPlayerDraw}/>
+                <PlayerControlButtons
+                  isDisabled={!this.state.firstIsNext}
+                  handlePlayerPass={this.onPlayerPass}
+                  handlePlayerSubmit={this.onPlayerSubmit}
+                  handlePlayerDraw={this.onPlayerDraw}
+                />
               </div>
             </div>
             <div className="player-two-outer-div">
               <div className="player-div-two">
-                <PlayerControlButtons isDisabled={this.state.firstIsNext} handlePlayerPass = {this.onPlayerPass} handlePlayerSubmit={this.onPlayerSubmit} handlePlayerDraw = {this.onPlayerDraw}/>
+                <PlayerControlButtons
+                  isDisabled={this.state.firstIsNext}
+                  handlePlayerPass={this.onPlayerPass}
+                  handlePlayerSubmit={this.onPlayerSubmit}
+                  handlePlayerDraw={this.onPlayerDraw}
+                />
                 <PlayerLetterGrpTwo
                   playerTiles={this.state.sPlayerTiles}
                   handlePlayerLetterChange={
@@ -342,7 +418,9 @@ class Board extends React.Component {
                   isDisabled={this.state.firstIsNext}
                   letterMapPoint={this.state.letterMapPoint}
                 />
-                <PlayerDetails player={this.state.secondPlayer}/>
+                <PlayerDetails
+                  player={this.state.secondPlayer}
+                />
               </div>
             </div>
           </div>

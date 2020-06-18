@@ -71,9 +71,13 @@ export function checkWordsOfMap (addedWordsMap) {
     return languageRegex.test(word);
      
   })
+  let word = '';
   for(let i = 0; i < res.length; i++)
-    if(!res[i])  return false;
-  return true;
+    if(!res[i]){  
+        word = keysArr[i];
+        return {result:false, word};
+    }
+  return {result: true};
 //   return true;
 }
 
