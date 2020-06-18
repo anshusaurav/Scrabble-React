@@ -18,26 +18,27 @@ function returnColumn (board, index) {
   }, []);
 }
 function findWords (arrTobeSearched) {
-  let tmpStr = ''
-  return arrTobeSearched.reduce((acc, elem) => {
-    if (elem.length > 0) tmpStr += elem
+  let res=[];
+  let str = ''
+  for(let i = 0; i < arrTobeSearched.length; i++) {
+    if(arrTobeSearched[i])
+      str+=arrTobeSearched[i];
     else {
-      if (tmpStr.length > 1) {
-        acc.push(tmpStr)
-        tmpStr = ''
-      }
+      if(str.length > 1)
+        res.push(str);
+      str=''
     }
-    return acc
-  }, []);
+  }
+  return res;
 }
 export function findAllWordsOfBoard (board) {
   let allWords = []
   for (let i = 0; i < 15; i++) {
     let arrRow = returnRow(board, i);
-    console.log(arrRow);
+    // console.log(arrRow);
     allWords = allWords.concat(findWords(arrRow))
     let arrCol = returnColumn(board, i)
-    console.log(arrCol);
+    // console.log(arrCol);
     allWords = allWords.concat(findWords(arrCol))
   }
   return allWords;
@@ -69,7 +70,7 @@ export function getDifferenceAsMap (
 export function checkWordsOfMap (addedWordsMap) {
   let keysArr = Array.from(addedWordsMap.keys())
   let res = keysArr.map(word => {
-      console.log(word);
+      // console.log(word);
     return languageRegex.test(word);
      
   })
