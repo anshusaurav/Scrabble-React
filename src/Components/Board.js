@@ -17,7 +17,7 @@ import BordTopBar from './BoardTopBar'
 import PlayerLetterGrpOne from './PlayerLetterGrpOne'
 import PlayerLetterGrpTwo from './PlayerLetterGrpTwo'
 import PlayerDetails from './PlayerDetails'
-import PopUp from './PopUp'
+import PopUp from './PopUp' 
 class Board extends React.Component {
   constructor (props) {
     super(props)
@@ -258,21 +258,23 @@ class Board extends React.Component {
       ]),
     )
     // console.log(oldWordsMap);
-    console.log(allWordsMap)
+    console.log(allWordsMap);
+    console.log(oldWordsMap);
     let wordsAddedMap = getDifferenceAsMap(
       oldWordsMap,
       allWordsMap,
-    )
+    );
 
     validWord = checkWordsOfMap(wordsAddedMap).result
     let popUpObj = {...this.state.popUpObj}
     if (validWord) {
+      let message = checkWordsOfMap(wordsAddedMap).word;
       popUpObj = {
         type: 'Success',
-        msg: 'Word/Words added successfully',
+        msg: `${message} added to board`,
       }
     } else {
-      let message = checkWordsOfMap(wordsAddedMap).word
+      let message = checkWordsOfMap(wordsAddedMap).word;
       popUpObj = {
         type: 'Error',
         msg: `${message} is not a valid word in English UK.`,
@@ -282,7 +284,7 @@ class Board extends React.Component {
         this.setState({showPopUp: true});
     })
 
-    console.log(validWord)
+    // console.log(validWord)
     // console.log(wordsAddedMap);
     //Still need to check if word is valid and not used in game till now
     let arrAllDraws = [...this.state.arrAllDraws]
@@ -340,15 +342,8 @@ class Board extends React.Component {
       this.setState({currMoveLetters: []})
     }
   }
-  // componentWillMount() { }
-  // componentDidUpdate() {
-  //   // let arr = findAllWordsOfBoard(this.state.boardState);
-  //   // console.log('Allwords: ' , arr);
-  //  }
   render () {
-    // console.log(languageRegex.test('Dog'));
-    // console.log(languageRegex.test('offasdas'));
-    console.log(this.state)
+    // console.log(this.state)
 
     return (
       <div className="main-container">

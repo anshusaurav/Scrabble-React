@@ -30,7 +30,6 @@ class PopUp extends React.Component{
                   
                   <div className="text">
                     <h1>{type}</h1>
-                    <hr/>
                     <p className="close" onClick={this.closePopUp.bind(this)}>X</p>
                     <p>{msg}</p>
                   </div>

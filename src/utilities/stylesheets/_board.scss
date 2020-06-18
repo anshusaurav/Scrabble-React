@@ -607,8 +607,8 @@ box-shadow: 0px 0px 59px 5px rgba(0,0,0,0.48);
   // display: none ;
   width:90%;
   // opacity:0;
-  max-height:450px;
-  max-width:800px;
+  max-height:240px;
+  max-width:400px;
   // height:90%;
   background-color:white;
   z-index:10000;
@@ -627,16 +627,17 @@ box-shadow: 0px 0px 59px 5px rgba(0,0,0,0.48);
  
   .text{
     // display:inline-block;
-    float:left;
-    width:50%;
+    // float:left;
+    // width:50%;
     height:90%;
     margin:2.5% 0;
     padding:0 40px;
-    color: black !important;
+    // color: black !important;
     h1{
       font-weight:900;
       font-size:4vw;
       margin:0;
+      text-decoration: underline;
     }
     p{
     width: 90%;

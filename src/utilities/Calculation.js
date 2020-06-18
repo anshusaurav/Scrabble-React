@@ -8,14 +8,14 @@ export function calcScore (letters, board) {
   }, 0)
 }
 function returnRow (board, index) {
-  return board.slice(index * 15, index * 15 + 15)
+  return board.slice(index * 15, index * 15 + 15);
 }
 
 function returnColumn (board, index) {
   return board.reduce((acc, letter, ind) => {
     if (ind % 15 === index) acc.push(letter)
     return acc
-  }, [])
+  }, []);
 }
 function findWords (arrTobeSearched) {
   let tmpStr = ''
@@ -28,17 +28,19 @@ function findWords (arrTobeSearched) {
       }
     }
     return acc
-  }, [])
+  }, []);
 }
 export function findAllWordsOfBoard (board) {
   let allWords = []
   for (let i = 0; i < 15; i++) {
-    let arrRow = returnRow(board, i)
+    let arrRow = returnRow(board, i);
+    console.log(arrRow);
     allWords = allWords.concat(findWords(arrRow))
     let arrCol = returnColumn(board, i)
+    console.log(arrCol);
     allWords = allWords.concat(findWords(arrCol))
   }
-  return allWords
+  return allWords;
 }
 
 //Function take two maps old and new, Return a map with words and their count
@@ -71,13 +73,18 @@ export function checkWordsOfMap (addedWordsMap) {
     return languageRegex.test(word);
      
   })
+  let wordsArr = [];
   let word = '';
-  for(let i = 0; i < res.length; i++)
+  for(let i = 0; i < res.length; i++) {
     if(!res[i]){  
         word = keysArr[i];
         return {result:false, word};
     }
-  return {result: true};
+    else{
+      wordsArr.push(keysArr[i]);
+    }
+  }
+  return {result: true, word: wordsArr.join(', ')};
 //   return true;
 }
 

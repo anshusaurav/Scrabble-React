@@ -6,7 +6,7 @@ class PlayerLetterTwo extends React.Component {
     this.handleChange =  this.handleChange.bind(this);
   }
   handleChange(e) {
-    console.dir(e.target)
+    // console.dir(e.target)
     this.props.onPlayerLetterChange(e.target.checked, this.props.id, this.props.value, this.props.point);
   }
   render () {
