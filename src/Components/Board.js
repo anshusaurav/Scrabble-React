@@ -4,7 +4,7 @@ import {
   mapLetterArr,
   mapLetterPointArr,
 } from './../utilities/board-init'
-import {calcScore, findAllWordsOfBoard} from './../utilities/Calculation';
+import {checkWordsOfMap, findAllWordsOfBoard, getDifferenceAsMap, getCompleteScoreThisMove} from './../utilities/Calculation';
 import PlayerControlButtons from './PlayerControlButton'
 import BoardMainCell from './BoardMainCell'
 import BoardSideBar from './BoardSideBar'
@@ -47,7 +47,7 @@ class Board extends React.Component {
       )
       // console.log(randomOne, arrAllDraws.length);
       let letterGot = arrAllDraws[randomOne]
-      console.log(randomOne, letterGot, arrAllDraws.length)
+      // console.log(randomOne, letterGot, arrAllDraws.length)
       fPlayerTiles.push({letter: letterGot, checked:false})
       arrAllDraws.splice(randomOne, 1);
       let randomTwo = Board.randomInteger(
@@ -55,7 +55,7 @@ class Board extends React.Component {
         arrAllDraws.length,
       )
       letterGot = arrAllDraws[randomTwo]
-      console.log(randomTwo, letterGot, arrAllDraws.length)
+      // console.log(randomTwo, letterGot, arrAllDraws.length)
       sPlayerTiles.push({letter: letterGot, checked:false})
       arrAllDraws.splice(randomTwo, 1)
     }
@@ -161,7 +161,6 @@ class Board extends React.Component {
         }
         return acc;
       },[]);
-      console.log('newTiles ', fNewPlayerTiles);
       fPlayerTiles = fPlayerTiles.map(letterObj =>{
         if(letterObj.checked) {
           updateArrInd++;
@@ -170,7 +169,6 @@ class Board extends React.Component {
         }
         return letterObj;
       });
-      console.log('newTiles Updates ', fPlayerTiles);
       this.setState({fPlayerTiles});
     }
     else {
@@ -189,7 +187,6 @@ class Board extends React.Component {
         }
         return acc;
       },[]);
-      console.log('newTiles ', sNewPlayerTiles);
       sPlayerTiles = sPlayerTiles.map(letterObj =>{
         if(letterObj.checked) {
           updateArrInd++;
@@ -198,7 +195,6 @@ class Board extends React.Component {
         }
         return letterObj;
       });
-      console.log('newTiles updates', sPlayerTiles);
       this.setState({sPlayerTiles});
     }
     firstIsNext = !firstIsNext;
@@ -217,8 +213,6 @@ class Board extends React.Component {
     });
 
     let allOldWords = findAllWordsOfBoard(oldBoardState);
-    console.log('Old words: ',  allOldWords);
-    console.log('All words: ', allIncludingNewWords);
     let oldWordsMap = new Map([...new Set(allOldWords)].map(
       x => [x, allOldWords.filter(y => y === x).length]
     ));
@@ -226,8 +220,14 @@ class Board extends React.Component {
     let allWordsMap = new Map([...new Set(allIncludingNewWords)].map(
       x => [x, allIncludingNewWords.filter(y => y === x).length]
     ));
-    console.log(oldWordsMap);
-    console.log(allWordsMap);
+    // console.log(oldWordsMap);
+    console.log(allWordsMap)
+    let wordsAddedMap = getDifferenceAsMap(oldWordsMap, allWordsMap);
+    
+    validWord = checkWordsOfMap(wordsAddedMap);
+    
+    console.log(validWord)
+    // console.log(wordsAddedMap);
     //Still need to check if word is valid and not used in game till now
     let arrAllDraws = [...this.state.arrAllDraws];
     let firstIsNext = this.state.firstIsNext;
@@ -250,7 +250,7 @@ class Board extends React.Component {
         });
         this.setState({fPlayerTiles});
         let firstPlayer = {...this.state.firstPlayer};
-        firstPlayer.score+=calcScore(removedLetters);
+        firstPlayer.score+=getCompleteScoreThisMove(wordsAddedMap);
         this.setState({firstPlayer});
       }
       else {
@@ -272,7 +272,7 @@ class Board extends React.Component {
       
         this.setState({sPlayerTiles});
         let secondPlayer = {...this.state.secondPlayer};
-        secondPlayer.score+=calcScore(removedLetters);
+        secondPlayer.score+=getCompleteScoreThisMove(wordsAddedMap);
         this.setState({secondPlayer});
       }
       firstIsNext = !firstIsNext;
@@ -285,9 +285,11 @@ class Board extends React.Component {
   componentWillMount() { }
   componentDidUpdate() {
     let arr = findAllWordsOfBoard(this.state.boardState);
-    console.log('Allwords: ' , arr);
+    // console.log('Allwords: ' , arr);
    }
   render() {
+    // console.log(languageRegex.test('Dog'));
+    // console.log(languageRegex.test('offasdas'));
     console.log(this.state)
 
     return (
