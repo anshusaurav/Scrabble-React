@@ -29,7 +29,7 @@ class PopUp extends React.Component{
                 <div id="innerPopUp" className={this.state.fade}>
                   
                   <div className="text">
-                    <h1 class={type.toLowerCase()}>{type}</h1>
+                    <h1 className={type.toLowerCase()}>{type}</h1>
                     <p>{msg}</p>
                     <div className='all-center'>
                     <p className='pop-up-ok' onClick={this.closePopUp.bind(this)}>OK</p>

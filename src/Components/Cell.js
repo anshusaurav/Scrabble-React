@@ -41,6 +41,21 @@ class Cell extends React.Component {
         onClick={this.handleChange}
         onContextMenu={this.handleChange}
       >
+      {
+        bgTag==='red'?(<div class='red-bg'>
+          <p>3X</p>
+          <p>WS</p>
+        </div>):bgTag==='pred'?(<div class='pred-bg'>
+          <p>2X</p>
+          <p>WS</p>
+        </div>):bgTag==='blue'?(<div class='blue-bg'>
+          <p>3X</p>
+          <p>LS</p>
+        </div>):bgTag==='pblue'?(<div class='pblue-bg'>
+          <p>2X</p>
+          <p>LS</p>
+        </div>):null
+      }
         <div className={value ? 'letter-bg wooden-bg' : ''}>
           <p className="singleletter-p">{value}</p>
           <p className="singleletter-p-point">{point}</p>

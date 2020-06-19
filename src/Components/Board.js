@@ -168,7 +168,7 @@ class Board extends React.Component {
       let fPlayerTiles = [...this.state.fPlayerTiles];
       let isMarkedUsed = false;
       fPlayerTiles.forEach((tile, index) =>{
-        if(tile.checked && tile.letter=== this.state.selectedLetter.value &&tile.checked &&!isMarkedUsed) {
+        if(tile.checked && !tile.used && tile.letter=== this.state.selectedLetter.value && tile.checked &&!isMarkedUsed) {
           tile.used = true;
           isMarkedUsed = true
         }
@@ -179,7 +179,7 @@ class Board extends React.Component {
       let sPlayerTiles = [...this.state.sPlayerTiles];
       let isMarkedUsed = false;
       sPlayerTiles.forEach((tile, index) =>{
-        if(tile.checked && tile.letter=== this.state.selectedLetter.value &&tile.checked &&!isMarkedUsed) {
+        if(tile.checked && !tile.used && tile.letter=== this.state.selectedLetter.value &&tile.checked &&!isMarkedUsed) {
           tile.used = true;
           isMarkedUsed = true
         }
@@ -393,7 +393,7 @@ class Board extends React.Component {
         let fPlayerTiles = [...this.state.fPlayerTiles]
         let removedLetters = []
         fPlayerTiles = fPlayerTiles.map(letterObj => {
-          if (letterObj.checked) {
+          if (letterObj.used) {
             let randomOne = Board.randomInteger(
               0,
               arrAllDraws.length,
@@ -415,7 +415,7 @@ class Board extends React.Component {
         let sPlayerTiles = [...this.state.sPlayerTiles]
         let removedLetters = []
         sPlayerTiles = sPlayerTiles.map(letterObj => {
-          if (letterObj.checked) {
+          if (letterObj.used) {
             let randomOne = Board.randomInteger(
               0,
               arrAllDraws.length,
