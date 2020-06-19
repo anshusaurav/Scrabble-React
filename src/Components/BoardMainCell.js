@@ -26,6 +26,9 @@ class BoardMainCell extends React.Component {
               onBoardLetterChange={
                 this.props.handleBoardLetterChange
               }
+              onBoardLetterRemove={
+                this.props.handleBoardLetterRemove
+              }
             />
           )
         })}

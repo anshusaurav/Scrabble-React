@@ -4,13 +4,25 @@ class Cell extends React.Component {
   constructor(props){
     super(props);
     this.handleChange =  this.handleChange.bind(this);
+    // this.handleRemove = this.handleRemove.bind(this);
   }
   handleChange(e) {
 
-    console.log('props',this.props.xPos, this.props.yPos);
-    
-    this.props.onBoardLetterChange(this.props.xPos, this.props.yPos);
+    console.log(e.type,this.props.xPos, this.props.yPos);
+    if(e.type==='click')
+      this.props.onBoardLetterChange(this.props.xPos, this.props.yPos);
+    else if(e.type ==='contextmenu'){
+      this.props.onBoardLetterRemove(this.props.xPos, this.props.yPos);
+    }
+    e.preventDefault();
+
   }
+  // handleRemove(e){
+    
+  //   console.log(e.type, this.props.xPos, this.props.yPos);
+    
+  //   // e.preventDefault();
+  // }
   render () {
     const {bgTag, value, point} = this.props
     return (
@@ -27,6 +39,7 @@ class Cell extends React.Component {
             : ''}`
         }
         onClick={this.handleChange}
+        onContextMenu={this.handleChange}
       >
         <div className={value ? 'letter-bg wooden-bg' : ''}>
           <p className="singleletter-p">{value}</p>

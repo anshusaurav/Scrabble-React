@@ -75,10 +75,11 @@ class Board extends React.Component {
 
     this.handlePlayerLetterChange = this.handlePlayerLetterChange.bind(
       this,
-    )
+    );
     this.handleBoardLetterChange = this.handleBoardLetterChange.bind(
       this,
-    )
+    );
+    this.handleBoardLetterRemove = this.handleBoardLetterRemove.bind(this);
     this.onPlayerDraw = this.onPlayerDraw.bind(this)
     this.onPlayerPass = this.onPlayerPass.bind(this)
     this.onPlayerSubmit = this.onPlayerSubmit.bind(this)
@@ -140,9 +141,10 @@ class Board extends React.Component {
   }
   //Modify boardState, Add to boardState
   handleBoardLetterChange (xPos, yPos) {
+    console.log('HERE add');
     if (this.state.selectedLetter) {
-      let currMoveLetters = this.state.currMoveLetters
-      var newBoard = this.state.boardState
+      let currMoveLetters = [...this.state.currMoveLetters]
+      let newBoard = [...this.state.boardState]
       newBoard[
         xPos * 15 + yPos
       ] = this.state.selectedLetter.value
@@ -154,6 +156,68 @@ class Board extends React.Component {
       this.setState({boardState: newBoard})
       this.setState({currMoveLetters})
       this.setState({selectedLetter: null})
+    }
+  }
+
+  /**
+   * Removes Letter from Board
+   * 1. On right click
+   * 2. Check if there is a letter in that position on board
+   * 3. Check if current player has placed this letter
+   * 4. Remove from current Player move back to current player letters
+   * 5. Remove from board
+   * 
+   * @param {*} xPos 
+   * @param {*} yPos 
+   */
+  handleBoardLetterRemove(xPos, yPos) {
+    console.log('HERE remove');
+    let newBoard = [...this.state.boardState];
+    let letter = '';
+    if(!newBoard[xPos*15+yPos])
+      return;
+    else
+      letter = newBoard[xPos*15+yPos];
+    let currMoveLetters = [...this.state.currMoveLetters];
+    let found = false, fIndex = -1;
+    currMoveLetters.forEach((move, index) =>{
+      if(xPos === move.xPos && yPos === move.yPos){
+        found = true;
+        fIndex = index; 
+      }
+    });
+   
+    if(!found)
+      return;
+    console.log(found, fIndex);
+    newBoard[xPos*15+yPos]='';
+    currMoveLetters.splice(fIndex, 1);
+    
+    if(this.state.firstIsNext) {
+      let fPlayerTiles = [...this.state.fPlayerTiles];
+      let isAddedBackToLetter = false;
+      fPlayerTiles.forEach((tile, index) =>{
+        if(tile.checked && tile.letter=== letter &&!isAddedBackToLetter) {
+          tile.checked = false;
+          isAddedBackToLetter = true
+        }
+      });
+      this.setState({boardState: newBoard});
+      this.setState({currMoveLetters});
+      this.setState({fPlayerTiles});
+    }
+    else {
+      let sPlayerTiles = [...this.state.sPlayerTiles];
+      let isAddedBackToLetter = false;
+      sPlayerTiles.forEach((tile, index) =>{
+        if(tile.checked && tile.letter=== letter &&!isAddedBackToLetter) {
+          tile.checked = false;
+          isAddedBackToLetter = true
+        }
+      });
+      this.setState({boardState: newBoard});
+      this.setState({currMoveLetters});
+      this.setState({sPlayerTiles});
     }
   }
   onPlayerPass () {
@@ -183,7 +247,7 @@ class Board extends React.Component {
             )
             let letterGot = arrAllDraws[randomOne]
             arrAllDraws.splice(randomOne, 1)
-            acc.push({letter: letterGot, checked: false})
+            acc.push({letter: letterGot, checked: false, used: false})
           }
           return acc
         },
@@ -349,7 +413,7 @@ class Board extends React.Component {
       <div className="main-container">
         {this.state.showPopUp?
         <PopUp
-          
+          // cssOpacity={this.state.showPopUp?'opacity:1':'opacity:0'}
           popUpObj={this.state.popUpObj}
           onClosePopUp={this.onClosePopUp}
         />:null}
@@ -371,6 +435,9 @@ class Board extends React.Component {
             letterMapPoint={this.state.letterMapPoint}
             handleBoardLetterChange={
               this.handleBoardLetterChange
+            }
+            handleBoardLetterRemove={
+              this.handleBoardLetterRemove
             }
           />
         </div>

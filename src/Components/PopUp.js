@@ -25,7 +25,7 @@ class PopUp extends React.Component{
           let {type, msg}= this.props.popUpObj;
           return (
             
-              <section id="pop-up" className={this.state.animation_name}>
+              <section id="pop-up" className={this.state.animation_name||'animate-in'}>
                 <div id="innerPopUp" className={this.state.fade}>
                   
                   <div className="text">
