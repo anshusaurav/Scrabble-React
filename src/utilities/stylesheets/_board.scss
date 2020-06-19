@@ -214,7 +214,7 @@ letter-bg {
   grid-gap: 1rem;
   border-radius: 0.4vh;
   // padding: 0 1rem;
-  background: #ffffff;
+  background: transparent;
 }
 .player-div-one,
 .player-div-two {
@@ -376,224 +376,86 @@ $blue: #3498db;
 $yellow: #f1c40f;
 $purple: #8e44ad;
 $turquoise: #2e70cc;
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
 .player-control-button {
   margin-top: 5vh;
   margin-bottom: 5vh;
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   justify-content: space-evenly;
   grid-auto-rows: 10vh;
 }
 .general-btn {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 16px;
-  box-sizing: border-box;
-  appearance: none;
-  background-color: transparent;
-  border: 2px solid $red;
-  border-radius: 6em;
-  color: $red;
+  position: relative;
+  top: 0;
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-self: center;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1;
-  margin: 24px;
-  text-align: center;
-  padding: 1em 1.5em;
-  text-decoration: none;
-  text-align: center;
-  text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-
-  &:hover,
-  &:focus {
-    color: #fff;
-    outline: 0;
-  }
+  text-decoration: none !important;
+  outline: none !important;
+  font-family: 'Carter One', sans-serif;
+  font-size: 20px;
+  line-height: 1.5em;
+  letter-spacing: .1em;
+  text-shadow: 2px 2px 1px #0066a2, -2px 2px 1px #0066a2, 2px -2px 1px #0066a2, -2px -2px 1px #0066a2, 0px 2px 1px #0066a2, 0px -2px 1px #0066a2, 0px 4px 1px #004a87, 2px 4px 1px #004a87, -2px 4px 1px  #004a87;
+  border: none;
+  margin: 15px 15px 30px;
+  background: repeating-linear-gradient( 45deg, #3ebbf7, #3ebbf7 5px, #45b1f4 5px, #45b1f4 10px);
+  border-bottom: 3px solid rgba(16, 91, 146, 0.5);
+  border-top: 3px solid rgba(255,255,255,.3);
+  color: #fff !important;
+  border-radius: 8px;
+  padding: 8px 15px 10px;
+  box-shadow: 0 6px 0 #266b91, 0 8px 1px 1px rgba(0,0,0,.3), 0 10px 0 5px #12517d, 0 12px 0 5px #1a6b9a, 0 15px 0 5px #0c405e, 0 15px 1px 6px rgba(0,0,0,.3);
   &:disabled {
     opacity: 0.25;
     transition: opacity 0.2s ease-in;
   }
 }
-.submit-btn {
-  // height: 60px;
-  // width: 160px;
-  font-size: 24px;
-  border-radius: 12px;
-  border-color: $turquoise;
-  color: #fff;
-  padding: 1em 1.5em;
-  background: {
-    image: linear-gradient(
-      to right,
-      transparentize($turquoise, 0.4),
-      transparentize($turquoise, 0.4) 5%,
-      $turquoise 5%,
-      $turquoise 10%,
-      transparentize($turquoise, 0.4) 10%,
-      transparentize($turquoise, 0.4) 15%,
-      $turquoise 15%,
-      $turquoise 20%,
-      transparentize($turquoise, 0.4) 20%,
-      transparentize($turquoise, 0.4) 25%,
-      $turquoise 25%,
-      $turquoise 30%,
-      transparentize($turquoise, 0.4) 30%,
-      transparentize($turquoise, 0.4) 35%,
-      $turquoise 35%,
-      $turquoise 40%,
-      transparentize($turquoise, 0.4) 40%,
-      transparentize($turquoise, 0.4) 45%,
-      $turquoise 45%,
-      $turquoise 50%,
-      transparentize($turquoise, 0.4) 50%,
-      transparentize($turquoise, 0.4) 55%,
-      $turquoise 55%,
-      $turquoise 60%,
-      transparentize($turquoise, 0.4) 60%,
-      transparentize($turquoise, 0.4) 65%,
-      $turquoise 65%,
-      $turquoise 70%,
-      transparentize($turquoise, 0.4) 70%,
-      transparentize($turquoise, 0.4) 75%,
-      $turquoise 75%,
-      $turquoise 80%,
-      transparentize($turquoise, 0.4) 80%,
-      transparentize($turquoise, 0.4) 85%,
-      $turquoise 85%,
-      $turquoise 90%,
-      transparentize($turquoise, 0.4) 90%,
-      transparentize($turquoise, 0.4) 95%,
-      $turquoise 95%,
-      $turquoise 100%
-    );
-    position: 0 0;
-    size: 100%;
-  }
-  transition: background 300ms ease-in-out;
-
-  &:hover {
-    background-position: 100px;
-  }
+.general-btn:hover {
+  top:2px;
+  box-shadow: 0 4px 0 #266b91, 0 6px 1px 1px rgba(0,0,0,.3), 0 8px 0 5px #12517d, 0 10px 0 5px #1a6b9a, 0 13px 0 5px #0c405e, 0 13px 1px 6px rgba(0,0,0,.3);
 }
-.pass-btn {
-  border-color: $red;
-  color: #fff;
-  background: {
-    image: linear-gradient(
-      to right,
-      transparentize($red, 0.4),
-      transparentize($red, 0.4) 5%,
-      $red 5%,
-      $red 10%,
-      transparentize($red, 0.4) 10%,
-      transparentize($red, 0.4) 15%,
-      $red 15%,
-      $red 20%,
-      transparentize($red, 0.4) 20%,
-      transparentize($red, 0.4) 25%,
-      $red 25%,
-      $red 30%,
-      transparentize($red, 0.4) 30%,
-      transparentize($red, 0.4) 35%,
-      $red 35%,
-      $red 40%,
-      transparentize($red, 0.4) 40%,
-      transparentize($red, 0.4) 45%,
-      $red 45%,
-      $red 50%,
-      transparentize($red, 0.4) 50%,
-      transparentize($red, 0.4) 55%,
-      $red 55%,
-      $red 60%,
-      transparentize($red, 0.4) 60%,
-      transparentize($red, 0.4) 65%,
-      $red 65%,
-      $red 70%,
-      transparentize($red, 0.4) 70%,
-      transparentize($red, 0.4) 75%,
-      $red 75%,
-      $red 80%,
-      transparentize($red, 0.4) 80%,
-      transparentize($red, 0.4) 85%,
-      $red 85%,
-      $red 90%,
-      transparentize($red, 0.4) 90%,
-      transparentize($red, 0.4) 95%,
-      $red 95%,
-      $red 100%
-    );
-    position: 0 0;
-    size: 100%;
+.general-btn::before {
+  content: '';
+  height: 10%;
+  position: absolute;
+  width: 40%;
+  background: #fff;
+  right: 13%;
+  top: -3%;
+  border-radius: 99px;
   }
-  transition: background 300ms ease-in-out;
+.general-btn::after {
+  content: '';
+  height: 10%;
+  position: absolute;
+  width: 5%;
+  background: #fff;
+  right: 5%;
+  top: -3%;
+  border-radius: 99px;
+  }
 
-  &:hover {
-    background-position: 80px;
-  }
+.general-btn.pass-btn {
+   background: repeating-linear-gradient( 45deg, #ff4f4c, #ff4f4c 5px, #ff4643 5px, #ff4643 10px);
+  box-shadow: 0 6px 0 #ae2725, 0 8px 1px 1px rgba(0,0,0,.3), 0 10px 0 5px #831614, 0 12px 0 5px #a33634, 0 15px 0 5px #631716, 0 15px 1px 6px rgba(0,0,0,.3);
+  border-bottom: 3px solid rgba(160, 25, 23, 0.5);
+  text-shadow: 2px 2px 1px #d72d21, -2px 2px 1px #d72d21, 2px -2px 1px #d72d21, -2px -2px 1px #d72d21, 0px 2px 1px #d72d21, 0px -2px 1px #d72d21, 0px 4px 1px #930704, 2px 4px 1px #930704, -2px 4px 1px  #930704;
+  
 }
-.draw-btn {
-  border-color: $purple;
-  color: #fff;
-  background: {
-    image: linear-gradient(
-      to right,
-      transparentize($purple, 0.4),
-      transparentize($purple, 0.4) 5%,
-      $purple 5%,
-      $purple 10%,
-      transparentize($purple, 0.4) 10%,
-      transparentize($purple, 0.4) 15%,
-      $purple 15%,
-      $purple 20%,
-      transparentize($purple, 0.4) 20%,
-      transparentize($purple, 0.4) 25%,
-      $purple 25%,
-      $purple 30%,
-      transparentize($purple, 0.4) 30%,
-      transparentize($purple, 0.4) 35%,
-      $purple 35%,
-      $purple 40%,
-      transparentize($purple, 0.4) 40%,
-      transparentize($purple, 0.4) 45%,
-      $purple 45%,
-      $purple 50%,
-      transparentize($purple, 0.4) 50%,
-      transparentize($purple, 0.4) 55%,
-      $purple 55%,
-      $purple 60%,
-      transparentize($purple, 0.4) 60%,
-      transparentize($purple, 0.4) 65%,
-      $purple 65%,
-      $purple 70%,
-      transparentize($purple, 0.4) 70%,
-      transparentize($purple, 0.4) 75%,
-      $purple 75%,
-      $purple 80%,
-      transparentize($purple, 0.4) 80%,
-      transparentize($purple, 0.4) 85%,
-      $purple 85%,
-      $purple 90%,
-      transparentize($purple, 0.4) 90%,
-      transparentize($purple, 0.4) 95%,
-      $purple 95%,
-      $purple 100%
-    );
-    position: 0 0;
-    size: 100%;
-  }
-  transition: background 300ms ease-in-out;
+.general-btn.pass-btn:hover {
+  top:2px;
+  box-shadow: 0 4px 0 #ae2725, 0 6px 1px 1px rgba(0,0,0,.3), 0 8px 0 5px #831614, 0 10px 0 5px #a33634, 0 13px 0 5px #631716, 0 13px 1px 6px rgba(0,0,0,.3);
+}
+.general-btn.submit-btn {
+   background: repeating-linear-gradient( 45deg, #54d440, #54d440 5px, #52cc3f 5px, #52cc3f 10px);
+    box-shadow: 0 6px 0 #348628, 0 8px 1px 1px rgba(0,0,0,.3), 0 10px 0 5px #2a6d20, 0 12px 0 5px #39822e, 0 15px 0 5px #1d4c16, 0 15px 1px 6px rgba(0,0,0,.3);
+    border-bottom: 3px solid rgba(40, 117, 29, 0.5);
+    text-shadow: 2px 2px 1px #348628, -2px 2px 1px #348628, 2px -2px 1px #348628, -2px -2px 1px #348628, 0px 2px 1px #348628, 0px -2px 1px #348628, 0px 4px 1px #1d4c16, 2px 4px 1px #1d4c16, -2px 4px 1px #1d4c16;
+}
+.general-btn.submit-btn:hover {
+  top:2px;
+  box-shadow: 0 4px 0 #348628, 0 6px 1px 1px rgba(0,0,0,.3), 0 8px 0 5px #2a6d20, 0 10px 0 5px #39822e, 0 13px 0 5px #1d4c16, 0 13px 1px 6px rgba(0,0,0,.3);
+}
 
-  &:hover {
-    background-position: 80px;
-  }
-}
 
 //PopUp
 

@@ -37,7 +37,7 @@ class PlayerControlButtons extends React.Component {
         </div>
         <div className="all-center">
           <button disabled={this.props.isDisabled}
-            className="draw-btn general-btn"
+            className="general-btn"
             onClick={this.handleDraw}
           >
             Draw
