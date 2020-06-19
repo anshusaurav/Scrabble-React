@@ -401,7 +401,7 @@ class Board extends React.Component {
             let letterGot = arrAllDraws[randomOne]
             arrAllDraws.splice(randomOne, 1)
             removedLetters.push(letterObj.letter)
-            return {letter: letterGot, checked: false}
+            return {letter: letterGot, checked: false, used: false}
           }
           return letterObj
         })
@@ -423,7 +423,7 @@ class Board extends React.Component {
             let letterGot = arrAllDraws[randomOne]
             arrAllDraws.splice(randomOne, 1)
             removedLetters.push(letterObj.letter)
-            return {letter: letterGot, checked: false}
+            return {letter: letterGot, checked: false, used: false}
           }
           return letterObj
         })
@@ -439,6 +439,29 @@ class Board extends React.Component {
       this.setState({arrAllDraws})
       this.setState({firstIsNext})
       this.setState({currMoveLetters: []})
+    }
+    else {
+      if(this.state.firstIsNext) {
+        let fPlayerTiles = [...this.state.fPlayerTiles]
+        fPlayerTiles = fPlayerTiles.map(letterObj => {
+          letterObj.checked = false;
+          letterObj.used = false;
+          return letterObj;
+        });
+        this.setState({fPlayerTiles});
+        this.setState({currMoveLetters:[]})
+      }
+      else {
+        let sPlayerTiles = [...this.state.sPlayerTiles]
+        sPlayerTiles = sPlayerTiles.map(letterObj => {
+          letterObj.checked = false;
+          letterObj.used = false;
+          return letterObj;
+        });
+        this.setState({sPlayerTiles});
+        this.setState({currMoveLetters:[]})
+      }
+      this.setState({boardState: oldBoardState});
     }
   }
   render () {
