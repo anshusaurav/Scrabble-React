@@ -8,7 +8,7 @@ class Cell extends React.Component {
   }
   handleChange(e) {
 
-    console.log(e.type,this.props.xPos, this.props.yPos);
+    // console.log(e.type,this.props.xPos, this.props.yPos);
     if(e.type==='click')
       this.props.onBoardLetterChange(this.props.xPos, this.props.yPos);
     else if(e.type ==='contextmenu'){
@@ -42,16 +42,16 @@ class Cell extends React.Component {
         onContextMenu={this.handleChange}
       >
       {
-        bgTag==='red'?(<div class='red-bg'>
+        bgTag==='red'?(<div className='red-bg'>
           <p>3X</p>
           <p>WS</p>
-        </div>):bgTag==='pred'?(<div class='pred-bg'>
+        </div>):bgTag==='pred'?(<div className='pred-bg'>
           <p>2X</p>
           <p>WS</p>
-        </div>):bgTag==='blue'?(<div class='blue-bg'>
+        </div>):bgTag==='blue'?(<div className='blue-bg'>
           <p>3X</p>
           <p>LS</p>
-        </div>):bgTag==='pblue'?(<div class='pblue-bg'>
+        </div>):bgTag==='pblue'?(<div className='pblue-bg'>
           <p>2X</p>
           <p>LS</p>
         </div>):null

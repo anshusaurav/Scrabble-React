@@ -103,3 +103,8 @@ export function getCompleteScoreThisMove (addedWordsMap) {
     });
     return totalScore;
 }
+export function isCenterOccupied(boardState) {
+  if(boardState[112])
+    return true;
+  return false;
+}

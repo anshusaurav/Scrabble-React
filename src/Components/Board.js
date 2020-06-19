@@ -9,6 +9,7 @@ import {
   findAllWordsOfBoard,
   getDifferenceAsMap,
   getCompleteScoreThisMove,
+  isCenterOccupied,
 } from './../utilities/Calculation'
 import PlayerControlButtons from './PlayerControlButton'
 import BoardMainCell from './BoardMainCell'
@@ -37,6 +38,7 @@ class Board extends React.Component {
       currMoveLetters: [],
       showPopUp: false,
       popUpObj: {type: '', msg: ''},
+      isFirstMove: true
     }
 
     //letterMapCount contains letters as many times they are currently avaiable in game
@@ -150,7 +152,7 @@ class Board extends React.Component {
    * @param {*} yPos 
    */
   handleBoardLetterChange (xPos, yPos) {
-    console.log('HERE add');
+    // console.log('HERE add');
     if(!this.state.selectedLetter)
       return;
   
@@ -332,12 +334,26 @@ class Board extends React.Component {
   }
 
   onPlayerSubmit () {
+    
     let validWord = true
     let allIncludingNewWords = findAllWordsOfBoard([
       ...this.state.boardState,
-    ])
-    let currMoveLetters = [...this.state.currMoveLetters]
-    let oldBoardState = [...this.state.boardState]
+    ]);
+    let currMoveLetters = [...this.state.currMoveLetters];
+    let oldBoardState = [...this.state.boardState];
+    if(this.state.isFirstMove){
+      console.log('First move accepted')
+      if(!isCenterOccupied(oldBoardState)){ 
+        let popUpObj = {
+          type: 'Error',
+          msg: `Center should be occupied on first move`,
+        }
+        this.setState({popUpObj}, function () {
+          this.setState({showPopUp: true});
+        })
+        return;
+      }
+    }
     currMoveLetters.forEach(elem => {
       oldBoardState[elem.xPos * 15 + elem.yPos] = ''
     })
@@ -436,6 +452,7 @@ class Board extends React.Component {
         this.setState({secondPlayer})
       }
       firstIsNext = !firstIsNext
+      this.setState({isFirstMove: false})
       this.setState({arrAllDraws})
       this.setState({firstIsNext})
       this.setState({currMoveLetters: []})
