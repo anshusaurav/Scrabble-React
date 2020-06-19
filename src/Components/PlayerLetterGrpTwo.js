@@ -43,6 +43,9 @@ class PlayerLetterGrpTwo extends React.Component {
                   ? this.props.handlePlayerLetterChange
                   : null
               }
+              used={
+                index < this.props.playerTiles.length? this.props.playerTiles[index].used:''
+              }
             />
           )
         })}

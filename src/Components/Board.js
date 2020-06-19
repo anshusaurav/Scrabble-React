@@ -56,7 +56,7 @@ class Board extends React.Component {
       // console.log(randomOne, arrAllDraws.length);
       let letterGot = arrAllDraws[randomOne]
       // console.log(randomOne, letterGot, arrAllDraws.length)
-      fPlayerTiles.push({letter: letterGot, checked: false})
+      fPlayerTiles.push({letter: letterGot, checked: false, used: false})
       arrAllDraws.splice(randomOne, 1)
       let randomTwo = Board.randomInteger(
         0,
@@ -64,7 +64,7 @@ class Board extends React.Component {
       )
       letterGot = arrAllDraws[randomTwo]
       // console.log(randomTwo, letterGot, arrAllDraws.length)
-      sPlayerTiles.push({letter: letterGot, checked: false})
+      sPlayerTiles.push({letter: letterGot, checked: false, used: false})
       arrAllDraws.splice(randomTwo, 1)
     }
     this.state.arrAllDraws = arrAllDraws
@@ -140,24 +140,57 @@ class Board extends React.Component {
     }
   }
   //Modify boardState, Add to boardState
+  /**
+   * It saved this.state.selectedLetter at position xPos, yPos on board
+   * 1. Mark board
+   * 2. Add to currMove of the state
+   * 3. Mark player letter used as true
+   * 4. Sets seletectedLetter to null
+   * @param {*} xPos 
+   * @param {*} yPos 
+   */
   handleBoardLetterChange (xPos, yPos) {
     console.log('HERE add');
-    if (this.state.selectedLetter) {
-      let currMoveLetters = [...this.state.currMoveLetters]
-      let newBoard = [...this.state.boardState]
-      newBoard[
-        xPos * 15 + yPos
-      ] = this.state.selectedLetter.value
-      currMoveLetters.push({
-        xPos,
-        yPos,
-        letter: this.state.selectedLetter.value,
-      })
-      this.setState({boardState: newBoard})
-      this.setState({currMoveLetters})
-      this.setState({selectedLetter: null})
+    if(!this.state.selectedLetter)
+      return;
+  
+    let currMoveLetters = [...this.state.currMoveLetters];
+    let newBoard = [...this.state.boardState];
+    newBoard[
+      xPos * 15 + yPos
+    ] = this.state.selectedLetter.value;
+    currMoveLetters.push({
+      xPos,
+      yPos,
+      letter: this.state.selectedLetter.value,
+    })
+    if(this.state.firstIsNext) {
+      let fPlayerTiles = [...this.state.fPlayerTiles];
+      let isMarkedUsed = false;
+      fPlayerTiles.forEach((tile, index) =>{
+        if(tile.checked && tile.letter=== this.state.selectedLetter.value &&tile.checked &&!isMarkedUsed) {
+          tile.used = true;
+          isMarkedUsed = true
+        }
+        this.setState({fPlayerTiles});
+      });
     }
+    else {
+      let sPlayerTiles = [...this.state.sPlayerTiles];
+      let isMarkedUsed = false;
+      sPlayerTiles.forEach((tile, index) =>{
+        if(tile.checked && tile.letter=== this.state.selectedLetter.value &&tile.checked &&!isMarkedUsed) {
+          tile.used = true;
+          isMarkedUsed = true
+        }
+        this.setState({sPlayerTiles});
+      });
+    }
+    this.setState({boardState: newBoard})
+    this.setState({currMoveLetters})
+    this.setState({selectedLetter: null})
   }
+  
 
   /**
    * Removes Letter from Board
@@ -199,6 +232,7 @@ class Board extends React.Component {
       fPlayerTiles.forEach((tile, index) =>{
         if(tile.checked && tile.letter=== letter &&!isAddedBackToLetter) {
           tile.checked = false;
+          tile.used = false;
           isAddedBackToLetter = true
         }
       });
@@ -212,6 +246,7 @@ class Board extends React.Component {
       sPlayerTiles.forEach((tile, index) =>{
         if(tile.checked && tile.letter=== letter &&!isAddedBackToLetter) {
           tile.checked = false;
+          tile.used = false;
           isAddedBackToLetter = true
         }
       });
