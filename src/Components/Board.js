@@ -258,26 +258,41 @@ class Board extends React.Component {
     }
   }
   onPlayerPass () {
-    let fPlayerTiles = this.state.fPlayerTiles
-    let sPlayerTiles = this.state.sPlayerTiles
-    fPlayerTiles.forEach(elem => (elem.checked = false))
-    sPlayerTiles.forEach(elem => (elem.checked = false))
-    this.setState({fPlayerTiles})
-    this.setState({sPlayerTiles})
-    this.setState({firstIsNext: !this.state.firstIsNext})
+    let fPlayerTiles = this.state.fPlayerTiles;
+    let sPlayerTiles = this.state.sPlayerTiles;
+    let currMoveLetters = [...this.state.currMoveLetters];
+    let oldBoardState = [...this.state.boardState];
+
+    currMoveLetters.forEach(elem => {
+      oldBoardState[elem.xPos * 15 + elem.yPos] = ''
+    });
+
+    fPlayerTiles.forEach(elem => (elem.checked = false, elem.used = false));
+    sPlayerTiles.forEach(elem => (elem.checked = false, elem.used = false));
+    this.setState({currMoveLetters:[]});
+    this.setState({fPlayerTiles});
+    this.setState({sPlayerTiles});
+    this.setState({boardState: oldBoardState})
+    this.setState({firstIsNext: !this.state.firstIsNext});
   }
 
   onPlayerDraw () {
     let arrAllDraws = [...this.state.arrAllDraws]
     let firstIsNext = this.state.firstIsNext
+    let currMoveLetters = [...this.state.currMoveLetters];
+    let oldBoardState = [...this.state.boardState];
 
+    currMoveLetters.forEach(elem => {
+      oldBoardState[elem.xPos * 15 + elem.yPos] = ''
+    });
+    this.setState({boardState: oldBoardState});
     if (this.state.firstIsNext) {
       let fPlayerTiles = [...this.state.fPlayerTiles]
       let updateArrInd = 0
 
       let fNewPlayerTiles = fPlayerTiles.reduce(
         (acc, letterObj) => {
-          if (letterObj.checked) {
+          if (letterObj.checked && !letterObj.used) {
             let randomOne = Board.randomInteger(
               0,
               arrAllDraws.length,
@@ -291,10 +306,16 @@ class Board extends React.Component {
         [],
       )
       fPlayerTiles = fPlayerTiles.map(letterObj => {
-        if (letterObj.checked) {
+        if (letterObj.checked && !letterObj.used) {
           updateArrInd++
           arrAllDraws.push(letterObj.letter)
           return fNewPlayerTiles[updateArrInd - 1]
+        }
+        else if(letterObj.used) {
+          let tempObj = {...letterObj};
+          tempObj.used = false;
+          tempObj.checked = false;
+          return tempObj;
         }
         return letterObj
       })
@@ -305,7 +326,7 @@ class Board extends React.Component {
 
       let sNewPlayerTiles = sPlayerTiles.reduce(
         (acc, letterObj) => {
-          if (letterObj.checked) {
+          if (letterObj.checked && !letterObj.used) {
             let randomOne = Board.randomInteger(
               0,
               arrAllDraws.length,
@@ -319,10 +340,16 @@ class Board extends React.Component {
         [],
       )
       sPlayerTiles = sPlayerTiles.map(letterObj => {
-        if (letterObj.checked) {
+        if (letterObj.checked && !letterObj.used) {
           updateArrInd++
           arrAllDraws.push(letterObj.letter)
           return sNewPlayerTiles[updateArrInd - 1]
+        }
+        else if(letterObj.used) {
+          let tempObj = {...letterObj};
+          tempObj.used = false;
+          tempObj.checked = false;
+          return tempObj;
         }
         return letterObj
       })
@@ -418,6 +445,11 @@ class Board extends React.Component {
             arrAllDraws.splice(randomOne, 1)
             removedLetters.push(letterObj.letter)
             return {letter: letterGot, checked: false, used: false}
+          }
+          else if(letterObj.checked) {
+            let tempObj = {...letterObj};
+            tempObj.checked = false;
+            return tempObj;
           }
           return letterObj
         })

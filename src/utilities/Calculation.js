@@ -103,8 +103,17 @@ export function getCompleteScoreThisMove (addedWordsMap) {
     });
     return totalScore;
 }
+
+/**
+ * 
+ * @param {} boardState 
+ */
 export function isCenterOccupied(boardState) {
   if(boardState[112])
     return true;
   return false;
+}
+
+export function isConnectedLetters(currMoveLetters, boardState) {
+
 }

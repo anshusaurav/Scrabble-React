@@ -24,7 +24,7 @@ class PlayerControlButtons extends React.Component {
             className="pass-btn general-btn"
             onClick={this.handlePass}
           >
-            Pass
+            PASS
           </button>
         </div>
         <div className="all-center">
@@ -32,7 +32,7 @@ class PlayerControlButtons extends React.Component {
             className="submit-btn general-btn"
             onClick={this.handleSubmit}
           >
-            Submit
+            SUBMIT
           </button>
         </div>
         <div className="all-center">
@@ -40,7 +40,7 @@ class PlayerControlButtons extends React.Component {
             className="general-btn"
             onClick={this.handleDraw}
           >
-            Draw
+            DRAW
           </button>
         </div>
       </div>
