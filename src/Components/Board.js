@@ -10,6 +10,7 @@ import {
   getDifferenceAsMap,
   getCompleteScoreThisMove,
   isCenterOccupied,
+  isConnectedLetters
 } from './../utilities/Calculation'
 import PlayerControlButtons from './PlayerControlButton'
 import BoardMainCell from './BoardMainCell'
@@ -267,8 +268,14 @@ class Board extends React.Component {
       oldBoardState[elem.xPos * 15 + elem.yPos] = ''
     });
 
-    fPlayerTiles.forEach(elem => (elem.checked = false, elem.used = false));
-    sPlayerTiles.forEach(elem => (elem.checked = false, elem.used = false));
+    fPlayerTiles.forEach(elem => {
+      elem.checked = false;
+      elem.used = false;
+    });
+    sPlayerTiles.forEach(elem => {
+      elem.checked = false;
+      elem.used = false;
+    });
     this.setState({currMoveLetters:[]});
     this.setState({fPlayerTiles});
     this.setState({sPlayerTiles});
@@ -381,6 +388,18 @@ class Board extends React.Component {
         return;
       }
     }
+    validWord = isConnectedLetters(currMoveLetters, oldBoardState, this.state.isFirstMove);
+    // if(validWord == false) {}
+    if(!validWord) {
+      let popUpObj = {
+        type: 'Error',
+        msg: `Wrong placement of letters`,
+      }
+      this.setState({popUpObj}, function () {
+        this.setState({showPopUp: true});
+      });
+      return;
+    }
     currMoveLetters.forEach(elem => {
       oldBoardState[elem.xPos * 15 + elem.yPos] = ''
     })
@@ -392,7 +411,7 @@ class Board extends React.Component {
         allOldWords.filter(y => y === x).length,
       ]),
     )
-
+    
     let allWordsMap = new Map(
       [...new Set(allIncludingNewWords)].map(x => [
         x,
@@ -400,8 +419,8 @@ class Board extends React.Component {
       ]),
     )
     // console.log(oldWordsMap);
-    console.log(allWordsMap);
-    console.log(oldWordsMap);
+    // console.log(allWordsMap);
+    // console.log(oldWordsMap);
     let wordsAddedMap = getDifferenceAsMap(
       oldWordsMap,
       allWordsMap,
