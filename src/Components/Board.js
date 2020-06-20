@@ -404,20 +404,23 @@ class Board extends React.Component {
       oldBoardState[elem.xPos * 15 + elem.yPos] = ''
     })
 
-    let allOldWords = findAllWordsOfBoard(oldBoardState)
-    let oldWordsMap = new Map(
-      [...new Set(allOldWords)].map(x => [
-        x,
-        allOldWords.filter(y => y === x).length,
-      ]),
-    )
+    let allOldWords = findAllWordsOfBoard(oldBoardState);
+    let oldWordsMap = new Map(), allWordsMap = new Map();
+    console.log('oldwords: ',allOldWords);
+    console.log('all including new words: ',allIncludingNewWords);
+    // let oldWordsMap = new Map(
+    //   [...new Set(allOldWords)].map(x => [
+    //     x,
+    //     allOldWords.filter(y => y === x).length,
+    //   ]),
+    // )
     
-    let allWordsMap = new Map(
-      [...new Set(allIncludingNewWords)].map(x => [
-        x,
-        allIncludingNewWords.filter(y => y === x).length,
-      ]),
-    )
+    // let allWordsMap = new Map(
+    //   [...new Set(allIncludingNewWords)].map(x => [
+    //     x,
+    //     allIncludingNewWords.filter(y => y === x).length,
+    //   ]),
+    // )
     // console.log(oldWordsMap);
     // console.log(allWordsMap);
     // console.log(oldWordsMap);

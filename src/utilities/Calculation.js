@@ -1,5 +1,6 @@
 import {mapLetterPointArr} from './board-init'
 import * as languageRegex from './../utilities/en-regex'
+import findColor from './marker-position';
 export function calcScore (letters, board) {
   let mapLetterPoint = new Map(mapLetterPointArr);
   return letters.reduce((acc, letter) => {
@@ -17,16 +18,99 @@ function returnColumn (board, index) {
     return acc
   }, []);
 }
-function findWords (arrTobeSearched) {
+/**
+ * Modified to Return array of object in place of string
+ * object ={startX, startY, endX, endY, letterMultArr[], word, wordMultuplier}
+ * 
+ * @param {} arrTobeSearched 
+ */
+function findWords (arrTobeSearched, isRow, rowOrColIndex) {
   let res=[];
+  let mapLetterPoint = new Map(mapLetterPointArr);
   let str = ''
-  for(let i = 0; i < arrTobeSearched.length; i++) {
-    if(arrTobeSearched[i])
-      str+=arrTobeSearched[i];
-    else {
-      if(str.length > 1)
-        res.push(str);
-      str=''
+  if(isRow) {
+    let yStart = -1, yEnd = -1, xStart = rowOrColIndex;
+    for(let i = 0; i < arrTobeSearched.length; i++) {
+      if(arrTobeSearched[i]){
+        if(str)
+        {
+          yEnd = i;
+        }
+        else {
+          yStart = i;
+        }
+        str+=arrTobeSearched[i];
+      }
+      else {
+
+        if(str.length > 1){
+          console.log(str + ' ' + str.length);
+          let letterMultiplierArr = new Array(yEnd-yStart+1).fill(1);
+          for(let i = 0; i < yEnd-yStart+1; i++) {
+             console.log('One ltter: ',xStart, yStart+i, xStart*15+yStart+i , findColor(xStart*15+yStart+i))
+            if(findColor(xStart*15+yStart+i) ==='blue')
+              letterMultiplierArr[i] = 3;
+            else if(findColor(xStart*15+yStart+i) ==='pblue')
+              letterMultiplierArr[i] = 2;
+          }
+          let wordMultiplier = 1;
+          for(let i = 0; i < yEnd-yStart+1; i++) {
+            if(findColor(xStart*15+yStart+i) ==='red')
+              wordMultiplier = 3;
+            else if(findColor(xStart*15+yStart+i) ==='pred' && wordMultiplier < 2)
+              wordMultiplier = 2;
+          }
+          let score = str.split('').reduce((acc, letter, index) =>{
+            acc+=letterMultiplierArr[index]*mapLetterPoint.get(letter);
+            return acc;
+          }, 0);
+          console.log(wordMultiplier, ' = wordMultipiier');
+          score*=wordMultiplier;
+          res.push({word: str, isRow, xStart, yStart, score});
+        }
+        str=''
+      }
+    }
+  }
+  else {
+    let xStart = -1, xEnd = -1, yStart = rowOrColIndex;
+    for(let i = 0; i < arrTobeSearched.length; i++) {
+      if(arrTobeSearched[i]){
+        if(str)
+        {
+          xEnd = i;
+        }
+        else {
+          xStart = i;
+        }
+        str+=arrTobeSearched[i];
+      }
+      else {
+
+        if(str.length > 1){
+          let letterMultiplierArr = new Array(xEnd-xStart+1).fill(1);
+          for(let i = 0; i < xEnd-xStart+1; i++) {
+            if(findColor(xStart*15+yStart+i) ==='blue')
+              letterMultiplierArr[i] = 3;
+            else if(findColor(xStart*15+yStart+i) ==='pblue')
+              letterMultiplierArr[i] = 2;
+          }
+          let wordMultiplier = 1;
+          for(let i = 0; i < xEnd-xStart+1; i++) {
+            if(findColor(xStart*15+yStart+i) ==='red')
+              wordMultiplier = 3;
+            else if(findColor(xStart*15+yStart+i) ==='pred' && wordMultiplier < 2)
+              wordMultiplier = 2;
+          }
+          let score = str.split('').reduce((acc, letter, index) =>{
+            acc+= letterMultiplierArr[index]*mapLetterPoint.get(letter);
+            return acc;
+          }, 0);
+          score*=wordMultiplier;
+          res.push({word: str, isRow, xStart, yStart, score});
+        }
+        str=''
+      }
     }
   }
   return res;
@@ -36,10 +120,10 @@ export function findAllWordsOfBoard (board) {
   for (let i = 0; i < 15; i++) {
     let arrRow = returnRow(board, i);
     // console.log(arrRow);
-    allWords = allWords.concat(findWords(arrRow))
+    allWords = allWords.concat(findWords(arrRow, true, i))
     let arrCol = returnColumn(board, i)
     // console.log(arrCol);
-    allWords = allWords.concat(findWords(arrCol))
+    allWords = allWords.concat(findWords(arrCol, false, i))
   }
   return allWords;
 }
