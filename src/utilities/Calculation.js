@@ -44,10 +44,10 @@ function findWords (arrTobeSearched, isRow, rowOrColIndex) {
       else {
 
         if(str.length > 1){
-          console.log(str + ' ' + str.length);
+          // console.log(str + ' ' + str.length);
           let letterMultiplierArr = new Array(yEnd-yStart+1).fill(1);
           for(let i = 0; i < yEnd-yStart+1; i++) {
-             console.log('One ltter: ',xStart, yStart+i, xStart*15+yStart+i , findColor(xStart*15+yStart+i))
+            //  console.log('One ltter: ',xStart, yStart+i, xStart*15+yStart+i , findColor(xStart*15+yStart+i))
             if(findColor(xStart*15+yStart+i) ==='blue')
               letterMultiplierArr[i] = 3;
             else if(findColor(xStart*15+yStart+i) ==='pblue')
@@ -64,7 +64,7 @@ function findWords (arrTobeSearched, isRow, rowOrColIndex) {
             acc+=letterMultiplierArr[index]*mapLetterPoint.get(letter);
             return acc;
           }, 0);
-          console.log(wordMultiplier, ' = wordMultipiier');
+          // console.log(wordMultiplier, ' = wordMultipiier');
           score*=wordMultiplier;
           res.push({word: str, isRow, xStart, yStart, score});
         }
@@ -90,16 +90,16 @@ function findWords (arrTobeSearched, isRow, rowOrColIndex) {
         if(str.length > 1){
           let letterMultiplierArr = new Array(xEnd-xStart+1).fill(1);
           for(let i = 0; i < xEnd-xStart+1; i++) {
-            if(findColor(xStart*15+yStart+i) ==='blue')
+            if(findColor((xStart+i)*15+yStart) ==='blue')
               letterMultiplierArr[i] = 3;
-            else if(findColor(xStart*15+yStart+i) ==='pblue')
+            else if(findColor((xStart+i)*15+yStart) ==='pblue')
               letterMultiplierArr[i] = 2;
           }
           let wordMultiplier = 1;
           for(let i = 0; i < xEnd-xStart+1; i++) {
-            if(findColor(xStart*15+yStart+i) ==='red')
+            if(findColor((xStart+i)*15+yStart) ==='red')
               wordMultiplier = 3;
-            else if(findColor(xStart*15+yStart+i) ==='pred' && wordMultiplier < 2)
+            else if(findColor((xStart+i)*15+yStart) ==='pred' && wordMultiplier < 2)
               wordMultiplier = 2;
           }
           let score = str.split('').reduce((acc, letter, index) =>{
@@ -128,63 +128,67 @@ export function findAllWordsOfBoard (board) {
   return allWords;
 }
 
-//Function take two maps old and new, Return a map with words and their count
-//not in old but present in new
-export function getDifferenceAsMap (
-  oldWordsMap,
-  newWordsMap,
-) {
-  let res = new Map()
-  let newKeys = Array.from(newWordsMap.keys())
-  newKeys.forEach(key => {
-    let present = oldWordsMap.has(key)
-    if (present) {
-      let diff = newWordsMap.get(key) - oldWordsMap.get(key)
-      if (diff > 0) res.set(key, diff)
-    } else {
-      res.set(key, newWordsMap.get(key))
+
+export function getDifferenceAsArray(allOldWords, allWords) {
+  // return allWords.reduce((acc, newWord) =>{
+  //   let found = false;
+  //   allWords.forEach(oldWord =>{
+  //     if(oldWord.word === newWord.word && oldWord.isRow === newWord.isRow &&
+  //       oldWord.xStart === newWord.xStart && oldWord.yStart === newWord.yStart)
+  //       found = true;
+  //   })
+  //   if(!found)
+  //     acc.push(newWord);
+  //   return acc;
+  // },[])
+  let res = [];
+  for(let i = 0;i <allWords.length; i++) {
+    let found = false;
+    for(let j = 0; j < allOldWords.length; j++) {
+      if(allOldWords[j].word === allWords[i].word && allOldWords[j].isRow === allWords[i].isRow &&
+        allOldWords[j].xStart === allWords[i].xStart && allOldWords[j].yStart === allWords[i].yStart)
+        found = true;
     }
-  })
-  return res
+    if(!found)
+      res.push(allWords[i]);
+  }
+  return res;
 }
 
-//check words present in addedWordsMap as keys to be valid return
-// true if all words are valid false otherwise
 
-export function checkWordsOfMap (addedWordsMap) {
-  let keysArr = Array.from(addedWordsMap.keys())
-  let res = keysArr.map(word => {
+//check words present in addedWordsArr as word to be valid return
+// true if all words are valid false otherwise
+export function checkWordsOfArr (addedWordsArr) {
+  let res = addedWordsArr.map(word => {
       // console.log(word);
-    return languageRegex.test(word);
+    return languageRegex.test(word.word);
      
   })
   let wordsArr = [];
   let word = '';
   for(let i = 0; i < res.length; i++) {
     if(!res[i]){  
-        word = keysArr[i];
+        word = addedWordsArr[i].word;
         return {result:false, word};
     }
     else{
-      wordsArr.push(keysArr[i]);
+      wordsArr.push(addedWordsArr[i].word);
     }
   }
   return {result: true, word: wordsArr.join(', ')};
 //   return true;
 }
 
+
 //Calculate score based on words formed not taking multipliers
 //into consideration for now
-export function getCompleteScoreThisMove (addedWordsMap) {
+export function getCompleteScoreThisMove (addedWordsArray) {
     let totalScore = 0;
-    let mapLetterPoint = new Map(mapLetterPointArr);
-    addedWordsMap.forEach((value, key, map) =>{
-        let sum = 0;
-        key.split('').forEach(letter =>{
-            sum += mapLetterPoint.get(letter)
-        })
-        totalScore+=sum;
+    addedWordsArray.forEach(elem =>{
+      console.log('Score being added: ',elem)
+        totalScore += elem.score;
     });
+    
     return totalScore;
 }
 

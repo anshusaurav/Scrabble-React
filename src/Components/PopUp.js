@@ -1,4 +1,6 @@
 import React from 'react'
+import correct from './../utilities/images/tick.png'
+import wrong from './../utilities/images/cancel.png'
 class PopUp extends React.Component{
     constructor(props) {
         super(props);
@@ -29,10 +31,13 @@ class PopUp extends React.Component{
                 <div id="innerPopUp" className={this.state.fade}>
                   
                   <div className="text">
-                    <h1 className={type.toLowerCase()}>{type}</h1>
+                  <div className='img-popup'>
+                      <img src={type==='Success'?correct:wrong} alt='Msg'></img>
+                    </div>
                     <p>{msg}</p>
+                    
                     <div className='all-center'>
-                    <p className='pop-up-ok' onClick={this.closePopUp.bind(this)}>OK</p>
+                    <p className='general-btn submit-btn' onClick={this.closePopUp.bind(this)}>OK</p>
                     </div>
                   </div>
                   

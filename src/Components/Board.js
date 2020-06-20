@@ -5,9 +5,9 @@ import {
   mapLetterPointArr,
 } from './../utilities/board-init'
 import {
-  checkWordsOfMap,
+  checkWordsOfArr,
   findAllWordsOfBoard,
-  getDifferenceAsMap,
+  getDifferenceAsArray,
   getCompleteScoreThisMove,
   isCenterOccupied,
   isConnectedLetters
@@ -50,15 +50,12 @@ class Board extends React.Component {
     })
     let fPlayerTiles = [] //First player tiles
     let sPlayerTiles = [] //second player tiles
-    // console.log(arrAllDraws)
     for (let i = 0; i < 7; i++) {
       let randomOne = Board.randomInteger(
         0,
         arrAllDraws.length,
       )
-      // console.log(randomOne, arrAllDraws.length);
       let letterGot = arrAllDraws[randomOne]
-      // console.log(randomOne, letterGot, arrAllDraws.length)
       fPlayerTiles.push({letter: letterGot, checked: false, used: false})
       arrAllDraws.splice(randomOne, 1)
       let randomTwo = Board.randomInteger(
@@ -389,7 +386,6 @@ class Board extends React.Component {
       }
     }
     validWord = isConnectedLetters(currMoveLetters, oldBoardState, this.state.isFirstMove);
-    // if(validWord == false) {}
     if(!validWord) {
       let popUpObj = {
         type: 'Error',
@@ -405,40 +401,20 @@ class Board extends React.Component {
     })
 
     let allOldWords = findAllWordsOfBoard(oldBoardState);
-    let oldWordsMap = new Map(), allWordsMap = new Map();
     console.log('oldwords: ',allOldWords);
     console.log('all including new words: ',allIncludingNewWords);
-    // let oldWordsMap = new Map(
-    //   [...new Set(allOldWords)].map(x => [
-    //     x,
-    //     allOldWords.filter(y => y === x).length,
-    //   ]),
-    // )
-    
-    // let allWordsMap = new Map(
-    //   [...new Set(allIncludingNewWords)].map(x => [
-    //     x,
-    //     allIncludingNewWords.filter(y => y === x).length,
-    //   ]),
-    // )
-    // console.log(oldWordsMap);
-    // console.log(allWordsMap);
-    // console.log(oldWordsMap);
-    let wordsAddedMap = getDifferenceAsMap(
-      oldWordsMap,
-      allWordsMap,
-    );
-
-    validWord = checkWordsOfMap(wordsAddedMap).result
+    let wordsAddedArr = getDifferenceAsArray(allOldWords, allIncludingNewWords);
+    console.log('words added: ', wordsAddedArr);
+    validWord = checkWordsOfArr(wordsAddedArr).result
     let popUpObj = {...this.state.popUpObj}
     if (validWord) {
-      let message = checkWordsOfMap(wordsAddedMap).word;
+      let message = checkWordsOfArr(wordsAddedArr).word;
       popUpObj = {
         type: 'Success',
         msg: `${message} added to board`,
       }
     } else {
-      let message = checkWordsOfMap(wordsAddedMap).word;
+      let message = checkWordsOfArr(wordsAddedArr).word;
       popUpObj = {
         type: 'Error',
         msg: `${message} is not a valid word in English UK.`,
@@ -447,9 +423,6 @@ class Board extends React.Component {
     this.setState({popUpObj}, function () {
         this.setState({showPopUp: true});
     })
-
-    // console.log(validWord)
-    // console.log(wordsAddedMap);
     //Still need to check if word is valid and not used in game till now
     let arrAllDraws = [...this.state.arrAllDraws]
     let firstIsNext = this.state.firstIsNext
@@ -478,7 +451,7 @@ class Board extends React.Component {
         this.setState({fPlayerTiles})
         let firstPlayer = {...this.state.firstPlayer}
         firstPlayer.score += getCompleteScoreThisMove(
-          wordsAddedMap,
+          wordsAddedArr,
         )
         this.setState({firstPlayer})
       } else {
@@ -501,7 +474,7 @@ class Board extends React.Component {
         this.setState({sPlayerTiles})
         let secondPlayer = {...this.state.secondPlayer}
         secondPlayer.score += getCompleteScoreThisMove(
-          wordsAddedMap,
+          wordsAddedArr,
         )
         this.setState({secondPlayer})
       }
@@ -536,7 +509,6 @@ class Board extends React.Component {
     }
   }
   render () {
-    // console.log(this.state)
 
     return (
       <div className="main-container">

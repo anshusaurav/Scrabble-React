@@ -240,7 +240,7 @@ letter-bg {
   right: 0;
   height: 50vh;
 
-  background-image: url('../images/89499.jpg');
+  // background-image: url('../images/89499.jpg');
   // margin: 0.4rem;
   // padding: 0.4rem;
   // background-color: #363636;
@@ -252,7 +252,7 @@ letter-bg {
   left: 0;
   right: 0;
   height: 50vh;
-  background-image: url('../images/89499.jpg');
+  // background-image: url('../images/89499.jpg');
   // margin: 0.4rem;
   // padding: 0.4rem;
   // background-color: #363636;
@@ -561,6 +561,17 @@ $background-opacity: 0.5;
     // float:left;
     // width:50%;
     // height:90%;
+    .img-popup{
+      height: 60px;
+      width: 60px;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+    }
+    img{
+      width: 100%;
+      height: 100%;
+    }
     min-height: 240px;
     min-width: 400px;
     max-height: 240px;
