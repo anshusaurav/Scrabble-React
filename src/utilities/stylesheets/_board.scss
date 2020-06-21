@@ -159,7 +159,7 @@
   grid-template-columns: repeat(15, 1fr);
 }
 .wooden-bg {
-  background-image: $wooden-bg-url;
+  background-image: $light-wood-url;
   background-repeat: no-repeat;
   position: absolute;
   top: 0;
@@ -180,16 +180,16 @@ letter-bg {
   background: transparent;
   font-size: 2rem;
   font-weight: 800;
-  color: white;
+  color: #242222c2;
   font-family: 'Nanum Gothic', sans-serif;
 }
 .singleletter-p-point {
   position: absolute;
   bottom: 1px;
   right: 1px;
-  font-size: 0.6rem;
-  font-weight: 400;
-  color: white;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #242222c2;
   font-family: 'Nanum Gothic', sans-serif;
 }
 //Game Container ends
@@ -197,7 +197,7 @@ letter-bg {
 //Controls Container
 .controls-container {
   box-sizing: border-box;
-  background: #dae0e6;
+  background: #363636;
   position: absolute;
   top: 0;
   left: 100vh;
@@ -215,7 +215,7 @@ letter-bg {
   grid-template-columns: repeat(7, 1fr);
   justify-content: space-around;
   grid-auto-rows: 10vh;
-  grid-gap: 1rem;
+  grid-gap: 1.75rem;
   border-radius: 0.4vh;
   // padding: 0 1rem;
   background: transparent;
@@ -354,18 +354,18 @@ input:disabled + label {
 }
 .playerletter-p {
   background: transparent;
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 900;
-  color: white;
+  color: #242222c2;
   font-family: 'Noto Serif KR', serif;
 }
 .playerletter-p-point {
   position: absolute;
   bottom: 2px;
   right: 2px;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 400;
-  color: white;
+  color: #242222c2;
   font-family: 'Noto Serif KR', serif;
 }
 
