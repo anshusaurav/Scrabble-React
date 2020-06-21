@@ -13,6 +13,7 @@
   height: 100vh;
   position: relative;
   background: #363636;
+  overflow: hidden;
 }
 //Game container
 .game-container {
@@ -505,6 +506,16 @@ $turquoise: #2e70cc;
     0 13px 1px 6px rgba(0, 0, 0, 0.3);
 }
 
+.general-btn.apply-btn {
+  background: repeating-linear-gradient( 45deg, #ffc800, #ffc800 5px, #ffc200 5px, #ffc200 10px);
+ box-shadow: 0 6px 0 #b76113, 0 8px 1px 1px rgba(0,0,0,.3), 0 10px 0 5px #75421f, 0 12px 0 5px #8a542b, 0 15px 0 5px #593116, 0 15px 1px 6px rgba(0,0,0,.3);
+ border-bottom: 3px solid rgba(205, 102, 0, 0.5);
+ text-shadow: 2px 2px 1px #e78700, -2px 2px 1px #e78700, 2px -2px 1px #e78700, -2px -2px 1px #e78700, 0px 2px 1px #e78700, 0px -2px 1px #e78700, 0px 4px 1px #c96100, 2px 4px 1px #c96100, -2px 4px 1px  #c96100;
+}
+.general-btn.apply-btn:hover {
+ top:2px;
+ box-shadow: 0 4px 0 #b76113, 0 6px 1px 1px rgba(0,0,0,.3), 0 8px 0 5px #75421f, 0 10px 0 5px #8a542b, 0 13px 0 5px #593116, 0 13px 1px 6px rgba(0,0,0,.3);
+}
 //PopUp
 
 @mixin font-stack {
@@ -698,17 +709,18 @@ $background-opacity: 0.5;
   width: 100%;
   justify-content: center;
   margin: 0 auto;
-  grid-template-columns: repeat(6, 36px);
+  grid-template-columns: repeat(6, 40px);
   // justify-content: center;
   align-content: center;
-  grid-auto-rows: 36px;
+  grid-auto-rows: 40px;
   grid-gap: 0.25rem;
-  input[type='checkbox'] {
+  input[type='radio'] {
     display: none;
   }
   .add-special-letter-div{
    
   }
+  
   .special-add-label{
     // padding: 0.1rem;
     // background-color: #c6b7a5e0;
@@ -731,13 +743,18 @@ $background-opacity: 0.5;
       justify-content: center;
     }
   }
+  input[type='radio']:checked + label {
+    .letter-special-single{
+      color: #e7a518;
+    } 
+  }
 
 }
 .special-letter-text{
-  min-height: 344px;
-    min-width: 400px;
-    max-height: 344px;
-    max-width: 400px;
+  min-height: 400px;
+    min-width: 480px;
+    max-height: 400px;
+    max-width: 480px;
     border-radius: 6px;
     margin: 2.5% 0;
     padding: 20px;
@@ -748,6 +765,13 @@ $background-opacity: 0.5;
       font-size: 20px;
       font-weight: 500;
       text-transform: uppercase;
+    }
+    .special-letter-warning{
+      margin-top: 0.5rem;
+      p{
+        letter-spacing: 0.5px;
+        font-size: 12px;
+      }
     }
 }
 

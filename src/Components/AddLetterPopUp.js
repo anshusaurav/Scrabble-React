@@ -9,21 +9,36 @@ class AddLetterPopUp extends React.Component{
             depth: '',
             fade: '', 
             alphabets: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            selectedLetter:'A'
           };
+        
           
     }
     closePopUp(){
-        this.setState({animation_name: 'animate-out'});
-        this.setState({depth:'above'});
-        this.setState({fade:'fade-out'});
+      this.setState({animation_name: 'animate-out'},function(){
+        this.setState({depth:'above'}, function(){
+          this.setState({fade:'fade-out'}, function(){
+            setTimeout(this.props.onClosePopUp, 1500); 
+          })
+        })
+      });
         //  this.props.onClosePopUp();
       }
       openPopUp(){
         this.setState({animation_name: 'animate-in'});
         this.setState({depth:'below'});
         this.setState({fade:'fade-in'});
+        
       }
-  
+      applyPopUp(){
+        this.props.onApplySpecialLetter();
+      }
+      onChange(e) {
+        let nameLetter = e.target.name;
+        console.log(nameLetter);
+        const letterValue = nameLetter.slice(4, 5);
+        this.setState({selectedLetter: letterValue})
+      }
       render(){
           // let {type, msg}= this.props.popUpObj;
           return (
@@ -39,7 +54,7 @@ class AddLetterPopUp extends React.Component{
                           this.state.alphabets.split('').map(sLetter =>{
                           return (
                             <div className='add-special-letter-div'>
-                              <input type='checkbox' id={'special-add-' + sLetter}/>
+                              <input type='radio' name='letter-sp-option' id={'special-add-' + sLetter} checked={sLetter===this.state.selectedLetter} value={'name'+sLetter} onChange={this.onChange.bind(this)}/>
                               <label htmlFor={'special-add-'+sLetter} className='special-add-label'>
                                 <p className='letter-special-single'>{sLetter}</p>
                               </label>
@@ -48,8 +63,12 @@ class AddLetterPopUp extends React.Component{
                           })
                         }
                     </div>
+                    <div className='special-letter-warning all-center'>
+                        <p>*You wont be able to change assigned letter in subsequest moves.</p>
+                    </div>
                     <div className='all-center'>
-                    <p className='general-btn submit-btn' onClick={this.closePopUp.bind(this)}>OK</p>
+                    <button className='general-btn apply-btn' onClick={this.applyPopUp.bind(this)}>APPLY</button>
+                    <button className='general-btn pass-btn' onClick={this.closePopUp.bind(this)}>EXIT</button>
                     </div>
                   </div>
                   

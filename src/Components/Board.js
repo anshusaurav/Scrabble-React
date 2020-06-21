@@ -97,6 +97,7 @@ class Board extends React.Component {
     this.onPlayerPass = this.onPlayerPass.bind(this)
     this.onPlayerSubmit = this.onPlayerSubmit.bind(this)
     this.onClosePopUp = this.onClosePopUp.bind(this)
+    this.onCloseSpecialLetterPopUp = this.onCloseSpecialLetterPopUp.bind(this);
   }
   static randomInteger (min, max) {
     let rand = min + Math.random() * (max - min)
@@ -114,7 +115,10 @@ class Board extends React.Component {
   onClosePopUp () {
     this.setState({showPopUp: !this.state.showPopUp})
   }
-  //Modify state fPlayerTiles and dPlayerTiles to keep track of checked letters
+  onCloseSpecialLetterPopUp(){
+    this.setState({showAddLetterPopUp: false})
+  }
+  //Modify state fPlayerTiles and sPlayerTiles to keep track of checked letters
   handlePlayerLetterChange (
     lo,
     index,
@@ -565,7 +569,9 @@ class Board extends React.Component {
           />
         ) : null}
         {this.state.showAddLetterPopUp?(
-          <AddLetterPopUp/>
+          <AddLetterPopUp
+            onClosePopUp={this.onCloseSpecialLetterPopUp}
+          />
         ):null
 
         }
