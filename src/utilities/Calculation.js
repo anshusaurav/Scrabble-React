@@ -232,6 +232,8 @@ export function isConnectedLetters(currMoveLetters, boardState, isFirstMove) {
       let x = Array.from(setX.keys())[0];
       let minY = 14, maxY = 0;
       let onePrevLetterUsed = isFirstMove;
+      let checkArr= (new Array(15)).fill('');
+
       for(let i = 0; i < 15; i++) {
         if(boardState[x*15 + i]){
           if(minY > i)
@@ -239,12 +241,17 @@ export function isConnectedLetters(currMoveLetters, boardState, isFirstMove) {
           if(maxY < i)
             maxY = i;
         }
-      }
-
-      for(let i = minY; i<=maxY; i++) {
-        if(!boardState[x*15+i]){
-          return false;
+        if(oldBoardState[x*15+i]){
+          checkArr[i] = 'o';
         }
+        else if(boardState[x*15+i]){
+          checkArr[i] ='n';
+        }
+      }
+      if(!isValidConfig(checkArr, isFirstMove))
+          return false;
+      for(let i = minY; i<=maxY; i++) {
+        
         if(oldBoardState[x*15+i]){
           onePrevLetterUsed = true;
         }
@@ -256,6 +263,7 @@ export function isConnectedLetters(currMoveLetters, boardState, isFirstMove) {
       let y = Array.from(setY.keys())[0];
       let minX = 14, maxX = 0;
       let onePrevLetterUsed = isFirstMove;
+      let checkArr= (new Array(15)).fill('');
       for(let i = 0; i < 15; i++) {
         if(boardState[i*15 + y]){
           if(minX > i)
@@ -263,11 +271,18 @@ export function isConnectedLetters(currMoveLetters, boardState, isFirstMove) {
           if(maxX < i)
             maxX = i;
         }
+        if(oldBoardState[i*15+y]){
+          checkArr[i] = 'o';
+        }
+        else if(boardState[i*15+y]){
+          checkArr[i] ='n';
+        }
       }
-
+      if(!isValidConfig(checkArr, isFirstMove))
+          return false;
       for(let i = minX; i<=maxX; i++) {
         if(!boardState[i*15+y]){
-          return false;
+          // return false;
         }
         if(oldBoardState[i*15+y]){
           onePrevLetterUsed = true;
@@ -278,5 +293,44 @@ export function isConnectedLetters(currMoveLetters, boardState, isFirstMove) {
     }
   }
   return false;
+
+}
+
+function isValidConfig(arrNewOld, isFirstMove) {
+  let tempStr = ''
+  let strArr = [];
+  console.log('Jooos: ', arrNewOld);
+  for(let i = 0; i < 15; i++) {
+    if(arrNewOld[i]==='n' || arrNewOld[i]==='o') {
+      tempStr+=arrNewOld[i];
+    }
+    else{
+      if(tempStr)
+        strArr.push(tempStr);
+      tempStr = '';
+    }
+    if(i ===14 && tempStr) {
+      strArr.push(tempStr);
+    }
+  }
+  if(isFirstMove){
+    if(strArr.length ===1)
+      return true;
+    return false;
+  }
+  console.log(strArr);
+  let cntN = strArr.reduce((acc, elem) =>{
+    if(elem.includes('n'))
+      acc++;
+    return acc;
+  },0);
+  let cntNOON = strArr.reduce((acc, elem) =>{
+    if(elem.includes('no')|| elem.includes('on'))
+      acc++;
+    return acc;
+  }, 0);
+  if(cntN !== 1 || cntNOON !== 1)
+    return false;
+  return true;
 
 }

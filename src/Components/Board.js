@@ -42,7 +42,7 @@ class Board extends React.Component {
       popUpObj: {type: '', msg: ''},
       isFirstMove: true,
       showAddLetterPopUp: false,
-      letterAssigned: '',
+      specialLetterAssigned: '',
     }
 
     //letterMapCount contains letters as many times they are currently avaiable in game
@@ -98,6 +98,7 @@ class Board extends React.Component {
     this.onPlayerSubmit = this.onPlayerSubmit.bind(this)
     this.onClosePopUp = this.onClosePopUp.bind(this)
     this.onCloseSpecialLetterPopUp = this.onCloseSpecialLetterPopUp.bind(this);
+    this.onApplySpecialLetter = this.onApplySpecialLetter.bind(this);
   }
   static randomInteger (min, max) {
     let rand = min + Math.random() * (max - min)
@@ -115,9 +116,19 @@ class Board extends React.Component {
   onClosePopUp () {
     this.setState({showPopUp: !this.state.showPopUp})
   }
+  /**
+   * Special Pop close close handler
+   */
   onCloseSpecialLetterPopUp(){
     this.setState({showAddLetterPopUp: false})
   }
+  /**
+   * Special Pop up select letter apply handler
+   */
+  onApplySpecialLetter(letter){
+    this.setState({specialLetterAssigned:letter}) 
+  }
+
   //Modify state fPlayerTiles and sPlayerTiles to keep track of checked letters
   handlePlayerLetterChange (
     lo,
@@ -156,6 +167,11 @@ class Board extends React.Component {
       this.setState({selectedLetter})
     }
   }
+  functionInf = () =>{
+    while(this.state.showAddLetterPopUp){
+
+    }
+  }
   //Modify boardState, Add to boardState
   /**
    * It saved this.state.selectedLetter at position xPos, yPos on board
@@ -168,9 +184,37 @@ class Board extends React.Component {
    */
   handleBoardLetterChange (xPos, yPos) {
     // console.log('HERE add');
-    if (!this.state.selectedLetter) return
+    if (!this.state.selectedLetter) return;
+    if(this.state.boardState[xPos*15+yPos]){
+      let popUpObj = {
+        type: 'Error',
+        msg: `Cell already occupied`,
+      }
+      this.setState({popUpObj}, function () {
+        this.setState({showPopUp: true})
+      })
+      return;
+    }
     if (this.state.selectedLetter.value === ' ') {
-      this.setState({showAddLetterPopUp : true});
+      // this.setState({showAddLetterPopUp : true}, function(){
+      //   setTimeout(this.functionInf,6000);
+      // });
+      //   setTimeout(, 1000);
+        
+      // });
+      // console.log(;)
+      // this.componentDidUpdate(_prevProps, prevState) {
+
+      // }
+
+      // if(this.state.specialLetterAssigned !== ' '){
+      //   return;
+      // }
+      // else{
+      //   let sL = {...this.state.selectedLetter};
+      //   sL.value = this.state.specialLetterAssigned;
+      //   this.setState({selectedLetter: sL})
+      // }
     }
     // console.log('HERE');
     let currMoveLetters = [...this.state.currMoveLetters]
@@ -571,6 +615,7 @@ class Board extends React.Component {
         {this.state.showAddLetterPopUp?(
           <AddLetterPopUp
             onClosePopUp={this.onCloseSpecialLetterPopUp}
+            onSpecialLetter={this.onApplySpecialLetter}
           />
         ):null
 

@@ -114,6 +114,23 @@
   -webkit-box-shadow: inset 0 0 10px #0f0d1369;
   box-shadow: inset 0 0 10px #0f0d1369;
 }
+.occupied{
+  .wooden-bg {
+    background-image: $light-wood-url;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: -0.25vh;
+    left: -0.25vh;
+    right: -0.25vh;
+    bottom: -0.25vh;
+    border-radius: 0.4vh;
+    border-bottom-right-radius: 0;
+    display: flex;
+    opacity: 0.8;
+    justify-content: center;
+    align-items: center;
+  }
+}
 .red-bg,
 .pred-bg,
 .blue-bg,
@@ -188,8 +205,8 @@ letter-bg {
   position: absolute;
   bottom: 1px;
   right: 1px;
-  font-size: 0.7  rem;
-  font-weight: 500;
+  font-size: 0.65 rem;
+  font-weight: 400;
   color: #242222c2;
   font-family: 'Nanum Gothic', sans-serif;
 }
@@ -507,14 +524,30 @@ $turquoise: #2e70cc;
 }
 
 .general-btn.apply-btn {
-  background: repeating-linear-gradient( 45deg, #ffc800, #ffc800 5px, #ffc200 5px, #ffc200 10px);
- box-shadow: 0 6px 0 #b76113, 0 8px 1px 1px rgba(0,0,0,.3), 0 10px 0 5px #75421f, 0 12px 0 5px #8a542b, 0 15px 0 5px #593116, 0 15px 1px 6px rgba(0,0,0,.3);
- border-bottom: 3px solid rgba(205, 102, 0, 0.5);
- text-shadow: 2px 2px 1px #e78700, -2px 2px 1px #e78700, 2px -2px 1px #e78700, -2px -2px 1px #e78700, 0px 2px 1px #e78700, 0px -2px 1px #e78700, 0px 4px 1px #c96100, 2px 4px 1px #c96100, -2px 4px 1px  #c96100;
+  background: repeating-linear-gradient(
+    45deg,
+    #ffc800,
+    #ffc800 5px,
+    #ffc200 5px,
+    #ffc200 10px
+  );
+  box-shadow: 0 6px 0 #b76113,
+    0 8px 1px 1px rgba(0, 0, 0, 0.3), 0 10px 0 5px #75421f,
+    0 12px 0 5px #8a542b, 0 15px 0 5px #593116,
+    0 15px 1px 6px rgba(0, 0, 0, 0.3);
+  border-bottom: 3px solid rgba(205, 102, 0, 0.5);
+  text-shadow: 2px 2px 1px #e78700, -2px 2px 1px #e78700,
+    2px -2px 1px #e78700, -2px -2px 1px #e78700,
+    0px 2px 1px #e78700, 0px -2px 1px #e78700,
+    0px 4px 1px #c96100, 2px 4px 1px #c96100,
+    -2px 4px 1px #c96100;
 }
 .general-btn.apply-btn:hover {
- top:2px;
- box-shadow: 0 4px 0 #b76113, 0 6px 1px 1px rgba(0,0,0,.3), 0 8px 0 5px #75421f, 0 10px 0 5px #8a542b, 0 13px 0 5px #593116, 0 13px 1px 6px rgba(0,0,0,.3);
+  top: 2px;
+  box-shadow: 0 4px 0 #b76113,
+    0 6px 1px 1px rgba(0, 0, 0, 0.3), 0 8px 0 5px #75421f,
+    0 10px 0 5px #8a542b, 0 13px 0 5px #593116,
+    0 13px 1px 6px rgba(0, 0, 0, 0.3);
 }
 //PopUp
 
@@ -571,18 +604,18 @@ $background-opacity: 0.5;
     line-height: 1.5;
     background-color: white;
     border: 4px solid rgba(209, 78, 39, 0.761);
-    .img-popup{
+    .img-popup {
       height: 60px;
       width: 60px;
       justify-content: center;
       align-items: center;
       margin: 0 auto;
     }
-    img{
+    img {
       width: 100%;
       height: 100%;
     }
-    
+
     // color: black !important;
     h1 {
       font-weight: 600;
@@ -703,9 +736,8 @@ $background-opacity: 0.5;
 
 //Add letter popup starts here
 
-
-.add-special-letter-grid{
-  display:grid;
+.add-special-letter-grid {
+  display: grid;
   width: 100%;
   justify-content: center;
   margin: 0 auto;
@@ -717,11 +749,9 @@ $background-opacity: 0.5;
   input[type='radio'] {
     display: none;
   }
-  .add-special-letter-div{
-   
-  }
-  
-  .special-add-label{
+ 
+
+  .special-add-label {
     // padding: 0.1rem;
     // background-color: #c6b7a5e0;
     position: relative;
@@ -730,11 +760,11 @@ $background-opacity: 0.5;
     display: flex;
     justify-content: center;
     align-items: center;
-    .letter-special-single{
+    .letter-special-single {
       background-color: #c6b7a5e0;
       padding: 2px;
       font-weight: 500;
-      width:100%;
+      width: 100%;
       font-size: 18px;
       height: 100%;
       border-radius: 4px;
@@ -744,35 +774,35 @@ $background-opacity: 0.5;
     }
   }
   input[type='radio']:checked + label {
-    .letter-special-single{
-      color: #e7a518;
-    } 
+    .letter-special-single {
+      color: #8e6b21;
+    }
   }
-
 }
-.special-letter-text{
+.special-letter-text {
   min-height: 400px;
-    min-width: 480px;
-    max-height: 400px;
-    max-width: 480px;
-    border-radius: 6px;
-    margin: 2.5% 0;
-    padding: 20px;
-    line-height: 1.5;
-    background-color: white;
-    border: 4px solid rgba(209, 78, 39, 0.761);
-    .s-special-letter{
-      font-size: 20px;
-      font-weight: 500;
-      text-transform: uppercase;
+  min-width: 480px;
+  max-height: 400px;
+  max-width: 480px;
+  border-radius: 6px;
+  margin: 2.5% 0;
+  padding: 20px;
+  line-height: 1.5;
+  background-color: white;
+  border: 4px solid rgba(209, 78, 39, 0.761);
+  .s-special-letter {
+    font-size: 20px;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .special-letter-warning {
+    margin-top: 0.5rem;
+    p {
+      letter-spacing: 0.5px;
+      font-size: 12px;
     }
-    .special-letter-warning{
-      margin-top: 0.5rem;
-      p{
-        letter-spacing: 0.5px;
-        font-size: 12px;
-      }
-    }
+  }
 }
 
 //addletter pop up ends here

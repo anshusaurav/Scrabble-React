@@ -28,15 +28,25 @@ class Cell extends React.Component {
     return (
       <div
         className={
-          `board-cell ${bgTag === 'red'
+          `board-cell ${bgTag === 'red'&&value!==''
+            ? 'red occupied'
+            :bgTag === 'red'&&value===''
             ? 'red'
-            : bgTag === 'pred'
+            : bgTag === 'pred'&&value!==''
+            ? 'pred occupied'
+            : bgTag === 'pred'&&value===''
             ? 'pred'
-            : bgTag === 'blue'
+            : bgTag === 'blue'&&value!==''
+            ? 'blue occupied'
+            : bgTag === 'blue'&&value===''
             ? 'blue'
+            : bgTag === 'pblue'&&value!==''
+            ? 'pblue occupied'
             : bgTag === 'pblue'
             ? 'pblue'
-            : ''}`
+            : value!==''
+            ? 'occupied'
+            :''}`
         }
         onClick={this.handleChange}
         onContextMenu={this.handleChange}
