@@ -1,5 +1,5 @@
 import {mapLetterPointArr} from './board-init'
-import * as languageRegex from './../utilities/en-regex'
+import * as Dictionary from './../utilities/Dictionary'
 import findColor from './marker-position';
 export function calcScore (letters, board) {
   let mapLetterPoint = new Map(mapLetterPointArr);
@@ -161,8 +161,8 @@ export function getDifferenceAsArray(allOldWords, allWords) {
 export function checkWordsOfArr (addedWordsArr) {
   let res = addedWordsArr.map(word => {
       // console.log(word);
-    return languageRegex.test(word.word);
-     
+    // return languageRegex.test(word.word);
+     return Dictionary.test(word.word.toLowerCase());
   })
   let wordsArr = [];
   let word = '';

@@ -1,5 +1,4 @@
 import React from 'react'
-import * as languageRegex from './../utilities/en-regex'
 import {
   mapLetterArr,
   mapLetterPointArr,
@@ -106,15 +105,7 @@ class Board extends React.Component {
     let rand = min + Math.random() * (max - min)
     return Math.floor(rand)
   }
-  static checkValidAsync (word) {
-    return new Promise((resolve, reject) => {
-      languageRegex.test(word, (err, isWordValid) => {
-        if (err) reject(err)
-        return resolve(isWordValid)
-      })
-    })
-  }
-
+  
   onClosePopUp () {
     this.setState({showPopUp: !this.state.showPopUp})
   }
@@ -128,8 +119,6 @@ class Board extends React.Component {
    * Special Pop up select letter apply handler
    */
   onApplySpecialLetter(letter, xPos, yPos){
-    let obj = {value: letter, xPos, yPos};
-    // this.setState({specialLetterAssignedObj:obj});
     console.log('Apply: ',letter, xPos, yPos)
     let currMoveLetters = [...this.state.currMoveLetters]
     let newBoard = [...this.state.boardState]
