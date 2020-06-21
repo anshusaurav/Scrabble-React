@@ -42,7 +42,9 @@ class Board extends React.Component {
       popUpObj: {type: '', msg: ''},
       isFirstMove: true,
       showAddLetterPopUp: false,
-      specialLetterAssigned: '',
+      specialLetterAssigned:'A',
+      specialLetterPosX:null,
+      specialLetterPosY:null
     }
 
     //letterMapCount contains letters as many times they are currently avaiable in game
@@ -125,8 +127,57 @@ class Board extends React.Component {
   /**
    * Special Pop up select letter apply handler
    */
-  onApplySpecialLetter(letter){
-    this.setState({specialLetterAssigned:letter}) 
+  onApplySpecialLetter(letter, xPos, yPos){
+    let obj = {value: letter, xPos, yPos};
+    // this.setState({specialLetterAssignedObj:obj});
+    console.log('Apply: ',letter, xPos, yPos)
+    let currMoveLetters = [...this.state.currMoveLetters]
+    let newBoard = [...this.state.boardState]
+    newBoard[
+      xPos * 15 + yPos
+    ] = letter;
+    currMoveLetters.push({
+      xPos,
+      yPos,
+      letter,
+    })
+    if (this.state.firstIsNext) {
+      let fPlayerTiles = [...this.state.fPlayerTiles]
+      let isMarkedUsed = false
+      fPlayerTiles.forEach((tile, index) => {
+        if (
+          tile.checked &&
+          !tile.used &&
+          tile.letter === ' ' &&
+          tile.checked &&
+          !isMarkedUsed
+        ) {
+          tile.used = true
+          isMarkedUsed = true
+        }
+        this.setState({fPlayerTiles})
+      })
+    } else {
+      let sPlayerTiles = [...this.state.sPlayerTiles]
+      let isMarkedUsed = false
+      sPlayerTiles.forEach((tile, index) => {
+        if (
+          tile.checked &&
+          !tile.used &&
+          tile.letter === ' ' &&
+          tile.checked &&
+          !isMarkedUsed
+        ) {
+          tile.used = true
+          isMarkedUsed = true
+        }
+        this.setState({sPlayerTiles})
+      })
+    }
+    this.setState({boardState: newBoard})
+    this.setState({currMoveLetters})
+    this.setState({selectedLetter: null});
+    this.setState({specialLetterAssigned:{}});
   }
 
   //Modify state fPlayerTiles and sPlayerTiles to keep track of checked letters
@@ -167,11 +218,11 @@ class Board extends React.Component {
       this.setState({selectedLetter})
     }
   }
-  functionInf = () =>{
-    while(this.state.showAddLetterPopUp){
+  // functionInf = () =>{
+  //   while(this.state.showAddLetterPopUp){
 
-    }
-  }
+  //   }
+  // }
   //Modify boardState, Add to boardState
   /**
    * It saved this.state.selectedLetter at position xPos, yPos on board
@@ -196,26 +247,26 @@ class Board extends React.Component {
       return;
     }
     if (this.state.selectedLetter.value === ' ') {
-      // this.setState({showAddLetterPopUp : true}, function(){
-      //   setTimeout(this.functionInf,6000);
+      // let obj = {xPos, yPos};
+      this.setState({specialLetterPosX: xPos}, function(){
+        this.setState({specialLetterPosY: yPos}, function(){
+          this.setState({showAddLetterPopUp: true});
+        })
+        
+      })
+      
+    }
+      // function(){
+      //   setInterval(this.functionInf,4000);
       // });
-      //   setTimeout(, 1000);
         
       // });
       // console.log(;)
       // this.componentDidUpdate(_prevProps, prevState) {
 
       // }
-
-      // if(this.state.specialLetterAssigned !== ' '){
-      //   return;
-      // }
-      // else{
-      //   let sL = {...this.state.selectedLetter};
-      //   sL.value = this.state.specialLetterAssigned;
-      //   this.setState({selectedLetter: sL})
-      // }
-    }
+      
+      
     // console.log('HERE');
     let currMoveLetters = [...this.state.currMoveLetters]
     let newBoard = [...this.state.boardState]
@@ -616,6 +667,8 @@ class Board extends React.Component {
           <AddLetterPopUp
             onClosePopUp={this.onCloseSpecialLetterPopUp}
             onSpecialLetter={this.onApplySpecialLetter}
+            xPos = {this.state.specialLetterPosX}
+            yPos = {this.state.specialLetterPosY}
           />
         ):null
 

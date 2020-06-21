@@ -31,7 +31,7 @@ class AddLetterPopUp extends React.Component {
     this.setState({fade: 'fade-in'})
   }
   applyPopUp () {
-    this.props.onSpecialLetter(this.state.selectedLetter);
+    this.props.onSpecialLetter(this.state.selectedLetter, this.props.xPos, this.props.yPos);
   }
   onChange (e) {
     let nameLetter = e.target.value
