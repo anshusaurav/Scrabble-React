@@ -10,7 +10,7 @@ import {
   getDifferenceAsArray,
   getCompleteScoreThisMove,
   isCenterOccupied,
-  isConnectedLetters
+  isConnectedLetters,
 } from './../utilities/Calculation'
 import PlayerControlButtons from './PlayerControlButton'
 import BoardMainCell from './BoardMainCell'
@@ -19,7 +19,8 @@ import BordTopBar from './BoardTopBar'
 import PlayerLetterGrpOne from './PlayerLetterGrpOne'
 import PlayerLetterGrpTwo from './PlayerLetterGrpTwo'
 import PlayerDetails from './PlayerDetails'
-import PopUp from './PopUp' 
+import PopUp from './PopUp'
+import AddLetterPopUp from './AddLetterPopUp'
 class Board extends React.Component {
   constructor (props) {
     super(props)
@@ -39,7 +40,9 @@ class Board extends React.Component {
       currMoveLetters: [],
       showPopUp: false,
       popUpObj: {type: '', msg: ''},
-      isFirstMove: true
+      isFirstMove: true,
+      showAddLetterPopUp: false,
+      letterAssigned: '',
     }
 
     //letterMapCount contains letters as many times they are currently avaiable in game
@@ -56,7 +59,11 @@ class Board extends React.Component {
         arrAllDraws.length,
       )
       let letterGot = arrAllDraws[randomOne]
-      fPlayerTiles.push({letter: letterGot, checked: false, used: false})
+      fPlayerTiles.push({
+        letter: letterGot,
+        checked: false,
+        used: false,
+      })
       arrAllDraws.splice(randomOne, 1)
       let randomTwo = Board.randomInteger(
         0,
@@ -64,7 +71,11 @@ class Board extends React.Component {
       )
       letterGot = arrAllDraws[randomTwo]
       // console.log(randomTwo, letterGot, arrAllDraws.length)
-      sPlayerTiles.push({letter: letterGot, checked: false, used: false})
+      sPlayerTiles.push({
+        letter: letterGot,
+        checked: false,
+        used: false,
+      })
       arrAllDraws.splice(randomTwo, 1)
     }
     this.state.arrAllDraws = arrAllDraws
@@ -75,11 +86,13 @@ class Board extends React.Component {
 
     this.handlePlayerLetterChange = this.handlePlayerLetterChange.bind(
       this,
-    );
+    )
     this.handleBoardLetterChange = this.handleBoardLetterChange.bind(
       this,
-    );
-    this.handleBoardLetterRemove = this.handleBoardLetterRemove.bind(this);
+    )
+    this.handleBoardLetterRemove = this.handleBoardLetterRemove.bind(
+      this,
+    )
     this.onPlayerDraw = this.onPlayerDraw.bind(this)
     this.onPlayerPass = this.onPlayerPass.bind(this)
     this.onPlayerSubmit = this.onPlayerSubmit.bind(this)
@@ -146,51 +159,63 @@ class Board extends React.Component {
    * 2. Add to currMove of the state
    * 3. Mark player letter used as true
    * 4. Sets seletectedLetter to null
-   * @param {*} xPos 
-   * @param {*} yPos 
+   * @param {*} xPos
+   * @param {*} yPos
    */
   handleBoardLetterChange (xPos, yPos) {
     // console.log('HERE add');
-    if(!this.state.selectedLetter)
-      return;
-  
-    let currMoveLetters = [...this.state.currMoveLetters];
-    let newBoard = [...this.state.boardState];
+    if (!this.state.selectedLetter) return
+    if (this.state.selectedLetter.value === ' ') {
+      this.setState({showAddLetterPopUp : true});
+    }
+    // console.log('HERE');
+    let currMoveLetters = [...this.state.currMoveLetters]
+    let newBoard = [...this.state.boardState]
     newBoard[
       xPos * 15 + yPos
-    ] = this.state.selectedLetter.value;
+    ] = this.state.selectedLetter.value
     currMoveLetters.push({
       xPos,
       yPos,
       letter: this.state.selectedLetter.value,
     })
-    if(this.state.firstIsNext) {
-      let fPlayerTiles = [...this.state.fPlayerTiles];
-      let isMarkedUsed = false;
-      fPlayerTiles.forEach((tile, index) =>{
-        if(tile.checked && !tile.used && tile.letter=== this.state.selectedLetter.value && tile.checked &&!isMarkedUsed) {
-          tile.used = true;
+    if (this.state.firstIsNext) {
+      let fPlayerTiles = [...this.state.fPlayerTiles]
+      let isMarkedUsed = false
+      fPlayerTiles.forEach((tile, index) => {
+        if (
+          tile.checked &&
+          !tile.used &&
+          tile.letter === this.state.selectedLetter.value &&
+          tile.checked &&
+          !isMarkedUsed
+        ) {
+          tile.used = true
           isMarkedUsed = true
         }
-        this.setState({fPlayerTiles});
-      });
-    }
-    else {
-      let sPlayerTiles = [...this.state.sPlayerTiles];
-      let isMarkedUsed = false;
-      sPlayerTiles.forEach((tile, index) =>{
-        if(tile.checked && !tile.used && tile.letter=== this.state.selectedLetter.value &&tile.checked &&!isMarkedUsed) {
-          tile.used = true;
+        this.setState({fPlayerTiles})
+      })
+    } else {
+      let sPlayerTiles = [...this.state.sPlayerTiles]
+      let isMarkedUsed = false
+      sPlayerTiles.forEach((tile, index) => {
+        if (
+          tile.checked &&
+          !tile.used &&
+          tile.letter === this.state.selectedLetter.value &&
+          tile.checked &&
+          !isMarkedUsed
+        ) {
+          tile.used = true
           isMarkedUsed = true
         }
-        this.setState({sPlayerTiles});
-      });
+        this.setState({sPlayerTiles})
+      })
     }
     this.setState({boardState: newBoard})
     this.setState({currMoveLetters})
     this.setState({selectedLetter: null})
   }
-  
 
   /**
    * Removes Letter from Board
@@ -199,97 +224,102 @@ class Board extends React.Component {
    * 3. Check if current player has placed this letter
    * 4. Remove from current Player move back to current player letters
    * 5. Remove from board
-   * 
-   * @param {*} xPos 
-   * @param {*} yPos 
+   *
+   * @param {*} xPos
+   * @param {*} yPos
    */
-  handleBoardLetterRemove(xPos, yPos) {
-    console.log('HERE remove');
-    let newBoard = [...this.state.boardState];
-    let letter = '';
-    if(!newBoard[xPos*15+yPos])
-      return;
-    else
-      letter = newBoard[xPos*15+yPos];
-    let currMoveLetters = [...this.state.currMoveLetters];
-    let found = false, fIndex = -1;
-    currMoveLetters.forEach((move, index) =>{
-      if(xPos === move.xPos && yPos === move.yPos){
-        found = true;
-        fIndex = index; 
+  handleBoardLetterRemove (xPos, yPos) {
+    console.log('HERE remove')
+    let newBoard = [...this.state.boardState]
+    let letter = ''
+    if (!newBoard[xPos * 15 + yPos]) return
+    else letter = newBoard[xPos * 15 + yPos]
+    let currMoveLetters = [...this.state.currMoveLetters]
+    let found = false,
+      fIndex = -1
+    currMoveLetters.forEach((move, index) => {
+      if (xPos === move.xPos && yPos === move.yPos) {
+        found = true
+        fIndex = index
       }
-    });
-   
-    if(!found)
-      return;
-    console.log(found, fIndex);
-    newBoard[xPos*15+yPos]='';
-    currMoveLetters.splice(fIndex, 1);
-    
-    if(this.state.firstIsNext) {
-      let fPlayerTiles = [...this.state.fPlayerTiles];
-      let isAddedBackToLetter = false;
-      fPlayerTiles.forEach((tile, index) =>{
-        if(tile.checked && tile.letter=== letter &&!isAddedBackToLetter) {
-          tile.checked = false;
-          tile.used = false;
+    })
+
+    if (!found) return
+    console.log(found, fIndex)
+    newBoard[xPos * 15 + yPos] = ''
+    currMoveLetters.splice(fIndex, 1)
+
+    if (this.state.firstIsNext) {
+      let fPlayerTiles = [...this.state.fPlayerTiles]
+      let isAddedBackToLetter = false
+      fPlayerTiles.forEach((tile, index) => {
+        if (
+          tile.checked &&
+          tile.letter === letter &&
+          !isAddedBackToLetter
+        ) {
+          tile.checked = false
+          tile.used = false
           isAddedBackToLetter = true
         }
-      });
-      this.setState({boardState: newBoard});
-      this.setState({currMoveLetters});
-      this.setState({fPlayerTiles});
-    }
-    else {
-      let sPlayerTiles = [...this.state.sPlayerTiles];
-      let isAddedBackToLetter = false;
-      sPlayerTiles.forEach((tile, index) =>{
-        if(tile.checked && tile.letter=== letter &&!isAddedBackToLetter) {
-          tile.checked = false;
-          tile.used = false;
+      })
+      this.setState({boardState: newBoard})
+      this.setState({currMoveLetters})
+      this.setState({fPlayerTiles})
+    } else {
+      let sPlayerTiles = [...this.state.sPlayerTiles]
+      let isAddedBackToLetter = false
+      sPlayerTiles.forEach((tile, index) => {
+        if (
+          tile.checked &&
+          tile.letter === letter &&
+          !isAddedBackToLetter
+        ) {
+          tile.checked = false
+          tile.used = false
           isAddedBackToLetter = true
         }
-      });
-      this.setState({boardState: newBoard});
-      this.setState({currMoveLetters});
-      this.setState({sPlayerTiles});
+      })
+      this.setState({boardState: newBoard})
+      this.setState({currMoveLetters})
+      this.setState({sPlayerTiles})
     }
   }
   onPlayerPass () {
-    let fPlayerTiles = this.state.fPlayerTiles;
-    let sPlayerTiles = this.state.sPlayerTiles;
-    let currMoveLetters = [...this.state.currMoveLetters];
-    let oldBoardState = [...this.state.boardState];
+    let fPlayerTiles = this.state.fPlayerTiles
+    let sPlayerTiles = this.state.sPlayerTiles
+    let currMoveLetters = [...this.state.currMoveLetters]
+    let oldBoardState = [...this.state.boardState]
 
     currMoveLetters.forEach(elem => {
       oldBoardState[elem.xPos * 15 + elem.yPos] = ''
-    });
+    })
 
     fPlayerTiles.forEach(elem => {
-      elem.checked = false;
-      elem.used = false;
-    });
+      elem.checked = false
+      elem.used = false
+    })
     sPlayerTiles.forEach(elem => {
-      elem.checked = false;
-      elem.used = false;
-    });
-    this.setState({currMoveLetters:[]});
-    this.setState({fPlayerTiles});
-    this.setState({sPlayerTiles});
+      elem.checked = false
+      elem.used = false
+    })
+    this.setState({currMoveLetters: []})
+    this.setState({fPlayerTiles})
+    this.setState({sPlayerTiles})
     this.setState({boardState: oldBoardState})
-    this.setState({firstIsNext: !this.state.firstIsNext});
+    this.setState({firstIsNext: !this.state.firstIsNext})
   }
 
   onPlayerDraw () {
     let arrAllDraws = [...this.state.arrAllDraws]
     let firstIsNext = this.state.firstIsNext
-    let currMoveLetters = [...this.state.currMoveLetters];
-    let oldBoardState = [...this.state.boardState];
+    let currMoveLetters = [...this.state.currMoveLetters]
+    let oldBoardState = [...this.state.boardState]
 
     currMoveLetters.forEach(elem => {
       oldBoardState[elem.xPos * 15 + elem.yPos] = ''
-    });
-    this.setState({boardState: oldBoardState});
+    })
+    this.setState({boardState: oldBoardState})
     if (this.state.firstIsNext) {
       let fPlayerTiles = [...this.state.fPlayerTiles]
       let updateArrInd = 0
@@ -303,7 +333,11 @@ class Board extends React.Component {
             )
             let letterGot = arrAllDraws[randomOne]
             arrAllDraws.splice(randomOne, 1)
-            acc.push({letter: letterGot, checked: false, used: false})
+            acc.push({
+              letter: letterGot,
+              checked: false,
+              used: false,
+            })
           }
           return acc
         },
@@ -314,12 +348,11 @@ class Board extends React.Component {
           updateArrInd++
           arrAllDraws.push(letterObj.letter)
           return fNewPlayerTiles[updateArrInd - 1]
-        }
-        else if(letterObj.used) {
-          let tempObj = {...letterObj};
-          tempObj.used = false;
-          tempObj.checked = false;
-          return tempObj;
+        } else if (letterObj.used) {
+          let tempObj = {...letterObj}
+          tempObj.used = false
+          tempObj.checked = false
+          return tempObj
         }
         return letterObj
       })
@@ -348,12 +381,11 @@ class Board extends React.Component {
           updateArrInd++
           arrAllDraws.push(letterObj.letter)
           return sNewPlayerTiles[updateArrInd - 1]
-        }
-        else if(letterObj.used) {
-          let tempObj = {...letterObj};
-          tempObj.used = false;
-          tempObj.checked = false;
-          return tempObj;
+        } else if (letterObj.used) {
+          let tempObj = {...letterObj}
+          tempObj.used = false
+          tempObj.checked = false
+          return tempObj
         }
         return letterObj
       })
@@ -365,63 +397,72 @@ class Board extends React.Component {
   }
 
   onPlayerSubmit () {
-    
     let validWord = true
     let allIncludingNewWords = findAllWordsOfBoard([
       ...this.state.boardState,
-    ]);
-    let currMoveLetters = [...this.state.currMoveLetters];
-    let oldBoardState = [...this.state.boardState];
-    if(this.state.isFirstMove){
+    ])
+    let currMoveLetters = [...this.state.currMoveLetters]
+    let oldBoardState = [...this.state.boardState]
+    if (this.state.isFirstMove) {
       console.log('First move accepted')
-      if(!isCenterOccupied(oldBoardState)){ 
+      if (!isCenterOccupied(oldBoardState)) {
         let popUpObj = {
           type: 'Error',
           msg: `Center should be occupied on first move`,
         }
         this.setState({popUpObj}, function () {
-          this.setState({showPopUp: true});
+          this.setState({showPopUp: true})
         })
-        return;
+        return
       }
     }
-    validWord = isConnectedLetters(currMoveLetters, oldBoardState, this.state.isFirstMove);
-    if(!validWord) {
+    validWord = isConnectedLetters(
+      currMoveLetters,
+      oldBoardState,
+      this.state.isFirstMove,
+    )
+    if (!validWord) {
       let popUpObj = {
         type: 'Error',
         msg: `Wrong placement of letters`,
       }
       this.setState({popUpObj}, function () {
-        this.setState({showPopUp: true});
-      });
-      return;
+        this.setState({showPopUp: true})
+      })
+      return
     }
     currMoveLetters.forEach(elem => {
       oldBoardState[elem.xPos * 15 + elem.yPos] = ''
     })
 
-    let allOldWords = findAllWordsOfBoard(oldBoardState);
-    console.log('oldwords: ',allOldWords);
-    console.log('all including new words: ',allIncludingNewWords);
-    let wordsAddedArr = getDifferenceAsArray(allOldWords, allIncludingNewWords);
-    console.log('words added: ', wordsAddedArr);
+    let allOldWords = findAllWordsOfBoard(oldBoardState)
+    console.log('oldwords: ', allOldWords)
+    console.log(
+      'all including new words: ',
+      allIncludingNewWords,
+    )
+    let wordsAddedArr = getDifferenceAsArray(
+      allOldWords,
+      allIncludingNewWords,
+    )
+    console.log('words added: ', wordsAddedArr)
     validWord = checkWordsOfArr(wordsAddedArr).result
     let popUpObj = {...this.state.popUpObj}
     if (validWord) {
-      let message = checkWordsOfArr(wordsAddedArr).word;
+      let message = checkWordsOfArr(wordsAddedArr).word
       popUpObj = {
         type: 'Success',
         msg: `${message} added to board`,
       }
     } else {
-      let message = checkWordsOfArr(wordsAddedArr).word;
+      let message = checkWordsOfArr(wordsAddedArr).word
       popUpObj = {
         type: 'Error',
         msg: `${message} is not a valid word in English UK.`,
       }
     }
     this.setState({popUpObj}, function () {
-        this.setState({showPopUp: true});
+      this.setState({showPopUp: true})
     })
     //Still need to check if word is valid and not used in game till now
     let arrAllDraws = [...this.state.arrAllDraws]
@@ -439,12 +480,15 @@ class Board extends React.Component {
             let letterGot = arrAllDraws[randomOne]
             arrAllDraws.splice(randomOne, 1)
             removedLetters.push(letterObj.letter)
-            return {letter: letterGot, checked: false, used: false}
-          }
-          else if(letterObj.checked) {
-            let tempObj = {...letterObj};
-            tempObj.checked = false;
-            return tempObj;
+            return {
+              letter: letterGot,
+              checked: false,
+              used: false,
+            }
+          } else if (letterObj.checked) {
+            let tempObj = {...letterObj}
+            tempObj.checked = false
+            return tempObj
           }
           return letterObj
         })
@@ -466,7 +510,11 @@ class Board extends React.Component {
             let letterGot = arrAllDraws[randomOne]
             arrAllDraws.splice(randomOne, 1)
             removedLetters.push(letterObj.letter)
-            return {letter: letterGot, checked: false, used: false}
+            return {
+              letter: letterGot,
+              checked: false,
+              used: false,
+            }
           }
           return letterObj
         })
@@ -483,41 +531,44 @@ class Board extends React.Component {
       this.setState({arrAllDraws})
       this.setState({firstIsNext})
       this.setState({currMoveLetters: []})
-    }
-    else {
-      if(this.state.firstIsNext) {
+    } else {
+      if (this.state.firstIsNext) {
         let fPlayerTiles = [...this.state.fPlayerTiles]
         fPlayerTiles = fPlayerTiles.map(letterObj => {
-          letterObj.checked = false;
-          letterObj.used = false;
-          return letterObj;
-        });
-        this.setState({fPlayerTiles});
-        this.setState({currMoveLetters:[]})
-      }
-      else {
+          letterObj.checked = false
+          letterObj.used = false
+          return letterObj
+        })
+        this.setState({fPlayerTiles})
+        this.setState({currMoveLetters: []})
+      } else {
         let sPlayerTiles = [...this.state.sPlayerTiles]
         sPlayerTiles = sPlayerTiles.map(letterObj => {
-          letterObj.checked = false;
-          letterObj.used = false;
-          return letterObj;
-        });
-        this.setState({sPlayerTiles});
-        this.setState({currMoveLetters:[]})
+          letterObj.checked = false
+          letterObj.used = false
+          return letterObj
+        })
+        this.setState({sPlayerTiles})
+        this.setState({currMoveLetters: []})
       }
-      this.setState({boardState: oldBoardState});
+      this.setState({boardState: oldBoardState})
     }
   }
   render () {
-
     return (
       <div className="main-container">
-        {this.state.showPopUp?
-        <PopUp
-          // cssOpacity={this.state.showPopUp?'opacity:1':'opacity:0'}
-          popUpObj={this.state.popUpObj}
-          onClosePopUp={this.onClosePopUp}
-        />:null}
+        {this.state.showPopUp ? (
+          <PopUp
+            // cssOpacity={this.state.showPopUp?'opacity:1':'opacity:0'}
+            popUpObj={this.state.popUpObj}
+            onClosePopUp={this.onClosePopUp}
+          />
+        ) : null}
+        {this.state.showAddLetterPopUp?(
+          <AddLetterPopUp/>
+        ):null
+
+        }
         <div className="game-container">
           <div className="side-bar-one">
             <BoardSideBar />
