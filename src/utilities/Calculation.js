@@ -70,6 +70,35 @@ function findWords (arrTobeSearched, isRow, rowOrColIndex) {
         }
         str=''
       }
+      if(str && i === arrTobeSearched.length-1)
+      {
+        if(str.length > 1){
+          // console.log(str + ' ' + str.length);
+          let letterMultiplierArr = new Array(yEnd-yStart+1).fill(1);
+          for(let i = 0; i < yEnd-yStart+1; i++) {
+            //  console.log('One ltter: ',xStart, yStart+i, xStart*15+yStart+i , findColor(xStart*15+yStart+i))
+            if(findColor(xStart*15+yStart+i) ==='blue')
+              letterMultiplierArr[i] = 3;
+            else if(findColor(xStart*15+yStart+i) ==='pblue')
+              letterMultiplierArr[i] = 2;
+          }
+          let wordMultiplier = 1;
+          for(let i = 0; i < yEnd-yStart+1; i++) {
+            if(findColor(xStart*15+yStart+i) ==='red')
+              wordMultiplier = 3;
+            else if(findColor(xStart*15+yStart+i) ==='pred' && wordMultiplier < 2)
+              wordMultiplier = 2;
+          }
+          let score = str.split('').reduce((acc, letter, index) =>{
+            acc+=letterMultiplierArr[index]*mapLetterPoint.get(letter);
+            return acc;
+          }, 0);
+          // console.log(wordMultiplier, ' = wordMultipiier');
+          score*=wordMultiplier;
+          res.push({word: str, isRow, xStart, yStart, score});
+        }
+        str=''
+      }
     }
   }
   else {
@@ -87,6 +116,31 @@ function findWords (arrTobeSearched, isRow, rowOrColIndex) {
       }
       else {
 
+        if(str.length > 1){
+          let letterMultiplierArr = new Array(xEnd-xStart+1).fill(1);
+          for(let i = 0; i < xEnd-xStart+1; i++) {
+            if(findColor((xStart+i)*15+yStart) ==='blue')
+              letterMultiplierArr[i] = 3;
+            else if(findColor((xStart+i)*15+yStart) ==='pblue')
+              letterMultiplierArr[i] = 2;
+          }
+          let wordMultiplier = 1;
+          for(let i = 0; i < xEnd-xStart+1; i++) {
+            if(findColor((xStart+i)*15+yStart) ==='red')
+              wordMultiplier = 3;
+            else if(findColor((xStart+i)*15+yStart) ==='pred' && wordMultiplier < 2)
+              wordMultiplier = 2;
+          }
+          let score = str.split('').reduce((acc, letter, index) =>{
+            acc+= letterMultiplierArr[index]*mapLetterPoint.get(letter);
+            return acc;
+          }, 0);
+          score*=wordMultiplier;
+          res.push({word: str, isRow, xStart, yStart, score});
+        }
+        str=''
+      }
+      if(str && i === arrTobeSearched.length-1){
         if(str.length > 1){
           let letterMultiplierArr = new Array(xEnd-xStart+1).fill(1);
           for(let i = 0; i < xEnd-xStart+1; i++) {
@@ -231,7 +285,7 @@ export function isConnectedLetters(currMoveLetters, boardState, isFirstMove) {
     if(setX.size === 1) {
       let x = Array.from(setX.keys())[0];
       let minY = 14, maxY = 0;
-      let onePrevLetterUsed = isFirstMove;
+      // let onePrevLetterUsed = isFirstMove;
       let checkArr= (new Array(15)).fill('');
 
       for(let i = 0; i < 15; i++) {
@@ -248,21 +302,23 @@ export function isConnectedLetters(currMoveLetters, boardState, isFirstMove) {
           checkArr[i] ='n';
         }
       }
-      if(!isValidConfig(checkArr, isFirstMove))
-          return false;
-      for(let i = minY; i<=maxY; i++) {
-        
-        if(oldBoardState[x*15+i]){
-          onePrevLetterUsed = true;
-        }
-      }
-      if(onePrevLetterUsed)
+      if(isValidConfig(checkArr, isFirstMove)) {    // return false;
+        // for(let i = minY; i<=maxY; i++) {
+          
+        //   if(oldBoardState[x*15+i]){
+        //     onePrevLetterUsed = true;
+        //   }
+        // }
+        console.log('Return true')
         return true;
+      }
+      // if(onePrevLetterUsed)
+      //   return true;
     }
-    else if(setY.size === 1) {
+    if(setY.size === 1) {
       let y = Array.from(setY.keys())[0];
       let minX = 14, maxX = 0;
-      let onePrevLetterUsed = isFirstMove;
+      // let onePrevLetterUsed = isFirstMove;
       let checkArr= (new Array(15)).fill('');
       for(let i = 0; i < 15; i++) {
         if(boardState[i*15 + y]){
@@ -278,18 +334,20 @@ export function isConnectedLetters(currMoveLetters, boardState, isFirstMove) {
           checkArr[i] ='n';
         }
       }
-      if(!isValidConfig(checkArr, isFirstMove))
-          return false;
-      for(let i = minX; i<=maxX; i++) {
-        if(!boardState[i*15+y]){
-          // return false;
-        }
-        if(oldBoardState[i*15+y]){
-          onePrevLetterUsed = true;
-        }
-      }
-      if(onePrevLetterUsed)
+      if(isValidConfig(checkArr, isFirstMove)){
+        console.log('Return true')  
         return true;
+      }
+      // for(let i = minX; i<=maxX; i++) {
+      //   if(!boardState[i*15+y]){
+      //     // return false;
+      //   }
+      //   if(oldBoardState[i*15+y]){
+      //     onePrevLetterUsed = true;
+      //   }
+      // }
+      // if(onePrevLetterUsed)
+      //   return true;
     }
   }
   return false;
@@ -300,6 +358,7 @@ function isValidConfig(arrNewOld, isFirstMove) {
   let tempStr = ''
   let strArr = [];
   console.log('Jooos: ', arrNewOld);
+  console.log(arrNewOld.join(''));
   for(let i = 0; i < 15; i++) {
     if(arrNewOld[i]==='n' || arrNewOld[i]==='o') {
       tempStr+=arrNewOld[i];
@@ -313,7 +372,9 @@ function isValidConfig(arrNewOld, isFirstMove) {
       strArr.push(tempStr);
     }
   }
+  console.log('StrArr: ',strArr);
   if(isFirstMove){
+    console.log('here ', strArr.length  )
     if(strArr.length ===1)
       return true;
     return false;

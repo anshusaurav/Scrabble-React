@@ -25,7 +25,7 @@ let mapLetterArr = [
     ['X', 1],
     ['Y', 2],
     ['Z', 1],
-    [' ', 2],
+    // [' ', 2],
   ];
 let mapLetterPointArr =[
     ['A', 1],
@@ -36,7 +36,7 @@ let mapLetterPointArr =[
     ['F', 4],
     ['G', 2],
     ['H', 4],
-    ['I', 1],
+    ['I', 1], 
     ['J', 8],
     ['K', 5],
     ['L', 1],
@@ -54,6 +54,6 @@ let mapLetterPointArr =[
     ['X', 8],
     ['Y', 4],
     ['Z', 10],
-    [' ', 0],
+    // [' ', 0],
   ];
   export {mapLetterPointArr, mapLetterArr};
