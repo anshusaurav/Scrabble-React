@@ -20,6 +20,7 @@ import PlayerLetterGrpTwo from './PlayerLetterGrpTwo'
 import PlayerDetails from './PlayerDetails'
 import PopUp from './PopUp'
 import AddLetterPopUp from './AddLetterPopUp'
+import WelcomePopUp from './WelcomePopUp'
 class Board extends React.Component {
   constructor (props) {
     super(props)
@@ -43,7 +44,8 @@ class Board extends React.Component {
       showAddLetterPopUp: false,
       specialLetterAssigned:'A',
       specialLetterPosX:null,
-      specialLetterPosY:null
+      specialLetterPosY:null,
+      showWelcomePopUp: true,
     }
 
     //letterMapCount contains letters as many times they are currently avaiable in game
@@ -100,6 +102,7 @@ class Board extends React.Component {
     this.onClosePopUp = this.onClosePopUp.bind(this)
     this.onCloseSpecialLetterPopUp = this.onCloseSpecialLetterPopUp.bind(this);
     this.onApplySpecialLetter = this.onApplySpecialLetter.bind(this);
+    this.onCloseWelcomePopUp = this.onCloseWelcomePopUp.bind(this);
   }
   static randomInteger (min, max) {
     let rand = min + Math.random() * (max - min)
@@ -115,6 +118,14 @@ class Board extends React.Component {
   onCloseSpecialLetterPopUp(){
     this.setState({showAddLetterPopUp: false})
   }
+
+  /**
+   * Close welcome popup
+   */
+  onCloseWelcomePopUp(){
+    this.setState({showWelcomePopUp: false});
+  }
+
   /**
    * Special Pop up select letter apply handler
    */
@@ -645,6 +656,14 @@ class Board extends React.Component {
   render () {
     return (
       <div className="main-container">
+        {this.state.showWelcomePopUp? (
+          <WelcomePopUp
+            onClosePopUp={this.onCloseWelcomePopUp}
+
+          />
+        ):null
+          
+        }
         {this.state.showPopUp ? (
           <PopUp
             // cssOpacity={this.state.showPopUp?'opacity:1':'opacity:0'}
