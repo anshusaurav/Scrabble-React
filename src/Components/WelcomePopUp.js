@@ -1,6 +1,4 @@
 import React from 'react'
-import correct from './../utilities/images/tick.png'
-import wrong from './../utilities/images/cancel.png'
 import bground from './../utilities/images/scrabblewcbg.png'
 class PopUp extends React.Component{
     constructor(props) {
@@ -37,7 +35,9 @@ class PopUp extends React.Component{
                 <div id="innerPopUp" className={this.state.fade}>
                   
                   <div className="welcome-popup-text" style={{ backgroundImage:  "url(" + bground+")" }}>
-                  
+                    <h2 className='scrabble-welcome'>
+                        SCRABBLE-GO
+                    </h2>
                     <div className='all-center welcome-popup-btn-div'>
                     <p className='general-btn submit-btn' onClick={this.closePopUp.bind(this)}>PLAY NOW</p>
                     </div>

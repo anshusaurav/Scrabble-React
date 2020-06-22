@@ -123,6 +123,7 @@ class Board extends React.Component {
    * Close welcome popup
    */
   onCloseWelcomePopUp(){
+    this.setState({showSelectGamePopUp: true});
     this.setState({showWelcomePopUp: false});
   }
 

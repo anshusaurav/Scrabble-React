@@ -5,6 +5,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Carter+One');
+@import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap');
 // $total-width: 100vw;
 // $game-width: 100vh;
 // $control-width: $total-width-100vh;
@@ -821,15 +824,26 @@ $background-opacity: 0.5;
   margin: 2.5% 0;
   padding: 20px;
   line-height: 1.5;
-  background-color: white;
+  background-color: rgba(15, 54, 101, 0);
   background-position: center;
   background-repeat: none;
   background-attachment: fixed;
   background-size: contain;
-  border: 4px solid rgba(209, 78, 39, 0.761);
-  welcome-popup-btn-div{
+  border: 4px solid rgba(175, 70, 43, 0.761);
+  .scrabble-welcome{
+      text-align: center;
+      // font-family: 'Monoton', cursive;
+      // font-family: 'Bungee Shade', cursive;
+      font-family: 'Love Ya Like A Sister', cursive;
+      opacity: 0.86;
+      margin-top: 220px;
+      font-size: 116px;
+      font-weight: 700;
+      color: rgb(30, 64, 6);
+  }
+  .welcome-popup-btn-div{
+
     p{
-      margin-top: 600px;
     }
   }
 }
