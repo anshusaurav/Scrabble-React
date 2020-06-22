@@ -14,7 +14,7 @@ class PopUp extends React.Component{
         this.setState({animation_name: 'animate-out'},function(){
           this.setState({depth:'above'}, function(){
             this.setState({fade:'fade-out'}, function(){
-              setTimeout(this.props.onClosePopUp, 1500); 
+              setTimeout(this.props.onClosePopUp, 1200); 
             })
           })
         });

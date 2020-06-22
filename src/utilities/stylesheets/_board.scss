@@ -824,26 +824,30 @@ $background-opacity: 0.5;
   margin: 2.5% 0;
   padding: 20px;
   line-height: 1.5;
-  background-color: rgba(15, 54, 101, 0);
+  // background-color: rgba(15, 54, 101, 0);
   background-position: center;
-  background-repeat: none;
+  background-repeat:no-repeat;
   background-attachment: fixed;
   background-size: contain;
   border: 4px solid rgba(175, 70, 43, 0.761);
   .scrabble-welcome{
+      background-color: #363636;
       text-align: center;
+      border-radius: 16px;
       // font-family: 'Monoton', cursive;
-      // font-family: 'Bungee Shade', cursive;
-      font-family: 'Love Ya Like A Sister', cursive;
-      opacity: 0.86;
+      font-family: 'Bungee Shade', cursive;
+      // font-family: 'Love Ya Like A Sister', cursive;
+      // opacity: 0.86;
       margin-top: 220px;
       font-size: 116px;
       font-weight: 700;
-      color: rgb(30, 64, 6);
+      color: rgb(145, 44, 240);
   }
   .welcome-popup-btn-div{
 
     p{
+      padding: 18px 24px 20px;
+      font-size: 24px;
     }
   }
 }
@@ -852,4 +856,110 @@ $background-opacity: 0.5;
 //Welcome popup ends here
 
 
+//name popup starts here
+.welcome-name-text{
+  min-height: 800px;
+  min-width: 1080px;
+  max-height: 800px;
+  max-width: 1080px;
+  border-radius: 6px;
+  margin: 2.5% 0;
+  padding: 20px;
+  line-height: 1.5;
+  // background-color: rgba(15, 54, 101, 0);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  border: 4px solid rgba(175, 70, 43, 0.761);
+  p{
+    padding: 12px 20px 18px;
+    font-size: 22px;
+  }
+  .name-popup-field-div{
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 30%;
+    margin: 0 auto;
+    justify-content: center;
+  }
+  
+.input-group {
+  display: block;
+  width: 441px;
+  max-width: 100%;
+  height: 82px;
+  border: 0;
+  background-color: #ffffff;
+  border-bottom-left-radius: 41px;
+  border-bottom-right-radius: 41px;
+  border-top-left-radius: 41px;
+  border-top-right-radius: 0;
+  box-shadow: 0 17px 40px 0 rgba(75, 128, 182, 0.07);
+  margin-bottom: 22px;
+  position: relative;
+  font-size: 17px;
+  color: #a7b4c1;
+  transition: opacity 0.2s ease-in-out, filter 0.2s ease-in-out,
+    box-shadow 0.1s ease-in-out;
+}
+
+.input-group:hover {
+  box-shadow: 0 14px 44px 0 rgba(0, 0, 0, 0.077);
+}
+
+.input-group input {
+  font-size: 20px;
+  font-weight: 500;
+  position: absolute;
+  border: 0;
+  box-shadow: none;
+  background-color: rgba(255, 255, 255, 0);
+  top: 0;
+  height: 65px;
+  width: 100%;
+  padding: 0 53px;
+  box-sizing: border-box;
+  z-index: 3;
+  display: block;
+  color: #1a6fc4;
+  font-size: 17px;
+  font-family: "Oxygen", sans-serif;
+  transition: top 0.1s ease-in-out;
+}
+
+.input-group input::placeholder {
+  color: rgba(0, 0, 0, 0);
+}
+
+.input-group input:focus,
+.input-group input:not(:placeholder-shown) {
+  top: 17px;
+  outline: none;
+}
+
+.input-group label {
+  position: absolute;
+  border: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  padding: 0 53px;
+  box-sizing: border-box;
+  transition: all 0.1s ease-in-out;
+  cursor: text;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+  bottom: 20px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+}
 

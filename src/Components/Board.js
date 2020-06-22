@@ -21,6 +21,7 @@ import PlayerDetails from './PlayerDetails'
 import PopUp from './PopUp'
 import AddLetterPopUp from './AddLetterPopUp'
 import WelcomePopUp from './WelcomePopUp'
+import NamePopUp from './NamePopUp'
 class Board extends React.Component {
   constructor (props) {
     super(props)
@@ -35,8 +36,8 @@ class Board extends React.Component {
       letterMapCount: new Map(mapLetterArr),
       letterMapPoint: new Map(mapLetterPointArr),
       firstIsNext: true,
-      firstPlayer: {name: 'Mark', score: 0},
-      secondPlayer: {name: 'Mia', score: 0},
+      firstPlayer: {name: 'Player I', score: 0},
+      secondPlayer: {name: 'Player II', score: 0},
       currMoveLetters: [],
       showPopUp: false,
       popUpObj: {type: '', msg: ''},
@@ -103,6 +104,9 @@ class Board extends React.Component {
     this.onCloseSpecialLetterPopUp = this.onCloseSpecialLetterPopUp.bind(this);
     this.onApplySpecialLetter = this.onApplySpecialLetter.bind(this);
     this.onCloseWelcomePopUp = this.onCloseWelcomePopUp.bind(this);
+    this.onCloseNamePopUp = this.onCloseNamePopUp.bind(this);
+    this.onChangeFirstPlayerName = this.onChangeFirstPlayerName.bind(this);
+    this.onChangeSecondPlayerName = this.onChangeSecondPlayerName.bind(this);
   }
   static randomInteger (min, max) {
     let rand = min + Math.random() * (max - min)
@@ -123,10 +127,25 @@ class Board extends React.Component {
    * Close welcome popup
    */
   onCloseWelcomePopUp(){
-    this.setState({showSelectGamePopUp: true});
+    this.setState({showNamePopUp: true});
     this.setState({showWelcomePopUp: false});
   }
 
+  /**
+   * Close Name pop up
+   *   
+   * */
+  onCloseNamePopUp(){
+    this.setState({showNamePopUp: false});
+  }
+  onChangeFirstPlayerName(value) {
+    let obj = {name: value,score: 0};
+    this.setState({firstPlayer: obj});
+  }
+  onChangeSecondPlayerName(value) {
+    let obj = {name: value,score: 0};
+    this.setState({secondPlayer: obj});
+  }
   /**
    * Special Pop up select letter apply handler
    */
@@ -664,6 +683,16 @@ class Board extends React.Component {
           />
         ):null
           
+        }
+        {this.state.showNamePopUp?(
+          <NamePopUp
+            nameOne = {this.state.firstPlayer.name}
+            nameTwo = {this.state.secondPlayer.name}
+            onChangeFirst = {this.onChangeFirstPlayerName}
+            onChangeSecond = {this.onChangeSecondPlayerName}
+            onClosePopUp = {this.onCloseNamePopUp}
+          />
+        ):null
         }
         {this.state.showPopUp ? (
           <PopUp
